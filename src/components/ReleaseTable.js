@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { Button, Table, Card, Icon, Popover, Tag } from 'antd';
 import TimeAgo from 'react-timeago'
 
@@ -13,15 +13,7 @@ class ReleaseTable extends Component {
         title: 'Report',
         dataIndex: 'kf_id',
         key: 'viewButton',
-        render: id => <Link to="/releases/:id" params={{id: id}}><Button icon='eye-o' type='primary'>View Report</Button></Link>
-    }, {
-        title: 'kf_id',
-        dataIndex: 'kf_id',
-        key: 'kf_id',
-    }, {
-        title: 'Author',
-        dataIndex: 'author',
-        key: 'author',
+        render: id => <Link to={`/releases/${id}`}><Button size='small' icon='profile' type='primary'>{id}</Button></Link>
     }, {
         title: 'Name',
         dataIndex: 'name',
@@ -36,7 +28,7 @@ class ReleaseTable extends Component {
           }
           return(
             <div>
-            {tags.map((tag, i) => <Tag key={i}>{tag}</Tag>)}
+              {tags.map((tag, i) => <Tag key={i}>{tag}</Tag>)}
             </div>
           )
         }
@@ -55,7 +47,7 @@ class ReleaseTable extends Component {
         key: 'created_at',
         render: time => {
           let dt = Date(time);
-          return (<div><TimeAgo date={time} /> - {dt}</div>)
+          return (<div><TimeAgo date={time} /></div>)
         }
     }];
 
@@ -69,7 +61,6 @@ class ReleaseTable extends Component {
     axios.get(`${api}/releases`)
       .then(resp => {
         let data = resp.data.results;
-        console.log(data);
         this.setState({data: data, loading: false});
       });
   }
@@ -88,4 +79,4 @@ class ReleaseTable extends Component {
   }
 }
 
-export default ReleaseTable;
+export default withRouter(ReleaseTable);

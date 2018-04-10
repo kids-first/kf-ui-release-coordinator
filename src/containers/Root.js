@@ -21,7 +21,7 @@ class Root extends Component {
                   <Route exact path="/" component={Status} />
                   <Route path="/planner" component={Planner} />
                   <Route exact path="/releases" component={Releases} />
-                  <Route exact path="/releases/:id" component={Release} />
+                  <Route exact path="/releases/:releaseId" component={Release} />
                 </Content>
               </Layout>
             </Layout>
