@@ -11,6 +11,7 @@ class NewReleaseForm extends Component {
     super(props);
 
     let options = [
+      'Complete Release',
       'Ready for Publication',
       'Under Review',
       'Returned for Modifications',
@@ -56,7 +57,7 @@ class NewReleaseForm extends Component {
         this.setState({loading: true});
         axios.post(`${api}/releases`, release)
           .then(resp => {
-            this.props.history.push(`/releases/${resp.data.kf_id}`);
+            this.props.history.push(`/releases/${resp.data.results.kf_id}`);
           })
           .catch( err => {
             console.log(err);
