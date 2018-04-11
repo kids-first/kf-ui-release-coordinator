@@ -27,7 +27,7 @@ class Progress extends Component {
     } else if (this.props.release.state == 'publishing') {
       current = 3;
     } else if (this.props.release.state == 'published') {
-      current = 4;
+      current = 5;
     }
 
     var s = '';
