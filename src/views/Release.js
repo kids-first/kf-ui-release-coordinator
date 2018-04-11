@@ -5,6 +5,7 @@ import {
   Col, Spin, Timeline, Icon
 } from 'antd';
 import Progress from '../components/Progress';
+import Tasks from '../components/Tasks';
 const ButtonGroup = Button.Group;
 
 
@@ -12,26 +13,10 @@ class Release extends Component {
   constructor(props) {
     super(props)
 
-    let tasks = [
-      {
-        'kf_id': 'TA_DVV673SB',
-        'name': 'Release Tagger',
-        'state': 'ok',
-      }, {
-        'kf_id': 'TA_YW6XBRST',
-        'name': 'Cavatica Sync',
-        'state': 'ok',
-      }, {
-        'kf_id': 'TA_FTDDYNM8',
-        'name': 'Portal ETL',
-        'state': 'ok',
-      }
-    ];
 
     this.state = {
       loading: true,
       release: {},
-      tasks: tasks,
       publishing: false
     };
     this.getData();
@@ -144,31 +129,49 @@ class Release extends Component {
         <Row justify='space-around' type='flex'>
           <Col span={12}>
             <h2>Task Status</h2>
-            <List
-              itemLayout="horizontal"
-              size="large"
-              dataSource={this.state.tasks}
-              renderItem={item => (
-                <List.Item>
-                  <List.Item.Meta
-                    avatar={<Avatar size='large' icon='tool'/>}
-                    title={item.name}
-                    description={item.kf_id}
-                  />
-                  Status: {item.state}
-                </List.Item>
-              )}
-            />
+            <Tasks />
           </Col>
 
           <Col span={10}>
             <h2>Event History</h2>
             <Timeline>
               <Timeline.Item color='blue' dot={<Icon type="right" style={{ fontSize: '18px' }}/>}>Release Scheduled</Timeline.Item>
-              <Timeline.Item color='green'>Release Tagger accepted task</Timeline.Item>
-              <Timeline.Item color='green'>Cavatica Sync accepted task</Timeline.Item>
-              <Timeline.Item color='green'>Portal ETL accepted task</Timeline.Item>
-              <Timeline.Item color='blue' dot={<Icon type="right" style={{ fontSize: '18px' }}/>}>All tasks were accepted, starting run</Timeline.Item>
+              {(this.state.release.state == 'running' || this.state.release.state == 'staged' || this.state.release.state == 'publishing' || this.state.release.state == 'published') && (
+                <div>
+                <Timeline.Item color='green'>Release Tagger accepted task</Timeline.Item>
+                <Timeline.Item color='green'>Cavatica Sync accepted task</Timeline.Item>
+                <Timeline.Item color='green'>Portal ETL accepted task</Timeline.Item>
+                <Timeline.Item color='blue' dot={<Icon type="right" style={{ fontSize: '18px' }}/>}>All tasks were accepted, starting run</Timeline.Item>
+                <Timeline.Item color='green'>Release Tagger started task</Timeline.Item>
+                <Timeline.Item color='green'>Cavatica Sync started task</Timeline.Item>
+                <Timeline.Item color='green'>Portal ETL started task</Timeline.Item>
+                </div>
+              )}
+              {(this.state.release.state == 'staged' || this.state.release.state == 'publishing' || this.state.release.state == 'published') && (
+                <div>
+                <Timeline.Item color='green'>Release Tagger finished task</Timeline.Item>
+                <Timeline.Item color='green'>Cavatica Sync finished task</Timeline.Item>
+                <Timeline.Item color='green'>Portal ETL finished task</Timeline.Item>
+                <Timeline.Item color='blue' dot={<Icon type="right" style={{ fontSize: '18px' }}/>}>All tasks were finished. Wait for review</Timeline.Item>
+                </div>
+              )}
+              {(this.state.release.state == 'publishing' || this.state.release.state == 'published') & (
+                <div>
+                <Timeline.Item color='blue' dot={<Icon type="right" style={{ fontSize: '18px' }}/>}>Positive review recieved. Publishing release</Timeline.Item>
+                <Timeline.Item color='green'>Release Tagger started publishing</Timeline.Item>
+                <Timeline.Item color='green'>Cavatica Sync started publishing</Timeline.Item>
+                <Timeline.Item color='green'>Portal ETL started publishing</Timeline.Item>
+                </div>
+              )}
+              {(this.state.release.state == 'published') && (
+                <div>
+                <Timeline.Item color='blue' dot={<Icon type="right" style={{ fontSize: '18px' }}/>}>Positive review recieved. Publishing release</Timeline.Item>
+                <Timeline.Item color='green'>Release Tagger published</Timeline.Item>
+                <Timeline.Item color='green'>Cavatica Sync published</Timeline.Item>
+                <Timeline.Item color='green'>Portal ETL published</Timeline.Item>
+                <Timeline.Item color='blue' dot={<Icon type="right" style={{ fontSize: '18px' }}/>}>All tasks completed. Release published</Timeline.Item>
+                </div>
+              )}
             </Timeline>
           </Col>
         </Row>
