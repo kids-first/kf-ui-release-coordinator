@@ -27,6 +27,12 @@ class Nav extends Component {
               <span>Releases</span>
             </NavLink>
 					</Menu.Item>
+					<Menu.Item key="4">
+            <NavLink to="/services">
+              <Icon type="tool" />
+              <span>Services</span>
+            </NavLink>
+					</Menu.Item>
 				</Menu>
 			</Sider>
     );
