@@ -13,7 +13,6 @@ class Release extends Component {
   constructor(props) {
     super(props)
 
-
     this.state = {
       loading: true,
       release: {},
@@ -54,13 +53,14 @@ class Release extends Component {
     let api = process.env.REACT_APP_COORDINATOR_API;
     axios.get(`${api}/releases/${this.props.match.params.releaseId}`)
       .then(resp => {
-        let data = resp.data.results;
+        let data = resp.data;
         this.setState({release: data, loading: false});
         this.timer = setTimeout(() => this.getData(), 1000);
       });
   }
 
   render() {
+    console.log(this.state);
     let disabled = (this.state.publishing || this.state.release.state != 'staged') ? 'disabled' : '';
 
     let style = {

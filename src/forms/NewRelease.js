@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
 import axios from 'axios';
-import { Alert, Col, Input, Button, Form, Row, Select, Transfer } from 'antd';
+import { Alert, Col, Input, Button, DatePicker, Form, Row, Select, Transfer } from 'antd';
 const FormItem = Form.Item;
 const Option = Select.Option;
 
@@ -57,11 +57,11 @@ class NewReleaseForm extends Component {
         this.setState({loading: true});
         axios.post(`${api}/releases`, release)
           .then(resp => {
-            this.props.history.push(`/releases/${resp.data.results.kf_id}`);
+            this.props.history.push(`/releases/${resp.data.kf_id}`);
           })
           .catch( err => {
             console.log(err);
-            this.setState({loading: false, error: JSON.stringify(err.response.data.results)});
+            this.setState({loading: false, error: JSON.stringify(err.response.data)});
           });
       }
     });
@@ -96,7 +96,7 @@ class NewReleaseForm extends Component {
     return (
       <Form onSubmit={this.handleSubmit}>
         <Row gutter={8} type='flex' justify='space-around'>
-          <Col span={12}>
+          <Col span={10}>
             <FormItem label="Release Title">
               {getFieldDecorator('title', {
                 rules: [{ required: true, message: 'Please provide a title!' }],
@@ -105,7 +105,7 @@ class NewReleaseForm extends Component {
               )}
             </FormItem>
           </Col>
-          <Col span={12}>
+          <Col span={10}>
             <FormItem label='Tags'>
               <Select
                 classname='select'
@@ -117,6 +117,11 @@ class NewReleaseForm extends Component {
               >
               {this.state.options}
               </Select>
+            </FormItem>
+          </Col>
+          <Col span={2}>
+            <FormItem label='Desired release date'>
+              <DatePicker />
             </FormItem>
           </Col>
         </Row>
@@ -139,7 +144,7 @@ class NewReleaseForm extends Component {
                 dataSource={this.state.data}
                 showSearch
                 listStyle={{
-                  width: '48%',
+                  width: '45%',
                   height: 300
                 }}
                 notFoundContent='No studies added to the release yet'

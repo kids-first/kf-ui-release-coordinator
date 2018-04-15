@@ -12,7 +12,7 @@ class Releases extends Component {
 
   render() {
     return (
-      <Card>
+      <Card title='Kids First Data Releases'>
         <ReleaseTable />
       </Card>
     );
