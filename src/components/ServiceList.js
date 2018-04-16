@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Link, withRouter } from 'react-router-dom';
-import { Card, List, Avatar, Row, Button } from 'antd';
+import { List, Avatar } from 'antd';
 import StatusBadge from '../components/StatusBadge';
 
 

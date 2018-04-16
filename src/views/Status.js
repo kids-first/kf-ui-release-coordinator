@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { NavLink, Link } from 'react-router-dom';
-import { Alert, Button, Divider, Icon, Card, Row, Col } from 'antd';
-import Progress from '../components/Progress';
+import { Alert, Button, Divider, Icon, Card, Row } from 'antd';
 import ServiceList from '../components/ServiceList';
 
 

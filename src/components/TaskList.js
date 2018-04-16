@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import {
-  Avatar, Card, Divider, Button, List, Badge, Row,
-  Col, Spin, Timeline, Icon, Tag
-} from 'antd';
+import { Avatar, Card, List, Spin, Tag } from 'antd';
 
 
 class TaskList extends Component {

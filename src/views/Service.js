@@ -1,14 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import {
-  Avatar, Card, Divider, Button, List, Badge, Row,
-  Col, Spin, Timeline, Icon, Tag
-} from 'antd';
-import Progress from '../components/Progress';
-import Tasks from '../components/Tasks';
+import { Card, Divider, Row, Col, Spin, Tag } from 'antd';
 import TaskList from '../components/TaskList';
 import StatusBadge from '../components/StatusBadge';
-const ButtonGroup = Button.Group;
 
 
 class Service extends Component {

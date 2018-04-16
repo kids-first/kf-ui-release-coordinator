@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Link, withRouter } from 'react-router-dom';
-import { Alert, Card, List, Avatar, Row, Col, Button } from 'antd';
+import { Alert, Card, Row } from 'antd';
 import WrappedNewServiceForm from '../forms/NewService';
 
 

@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import {
-  Avatar, Card, Divider, Button, List, Badge, Row,
-  Col, Spin, Timeline, Icon
+import { Card, Divider, Button, Row, Col, Spin, Timeline, Icon
 } from 'antd';
 import Progress from '../components/Progress';
 import Tasks from '../components/Tasks';
@@ -46,8 +44,8 @@ class Release extends Component {
 
   getData() {
     if (!this.mounted ||
-        this.state.release.state == 'staged' ||
-        this.state.release.state == 'published') {
+        this.state.release.state === 'staged' ||
+        this.state.release.state === 'published') {
       return
     }
     let api = process.env.REACT_APP_COORDINATOR_API;
@@ -61,14 +59,14 @@ class Release extends Component {
 
   render() {
     console.log(this.state);
-    let disabled = (this.state.publishing || this.state.release.state != 'staged') ? 'disabled' : '';
+    let disabled = (this.state.publishing || this.state.release.state !== 'staged') ? 'disabled' : '';
 
     let style = {
       marginTop: '24px',
       marginBottom: '24px',
     };
 
-    if (this.state.release.state == 'published') {
+    if (this.state.release.state === 'published') {
       style.backgroundColor = '#efffe8';
       style.padding = 20;
       style.marginTop = '4px';
@@ -111,14 +109,14 @@ class Release extends Component {
             <Button
               size='large'
               type='primary'
-              disabled={this.state.release.state != 'staged'}>
+              disabled={this.state.release.state !== 'staged'}>
               <Icon type='search'/>Preview in Portal
             </Button>
             <Button
               size='large'
               type='danger'
-              disabled={this.state.release.state == 'published'
-                        || this.state.release.state == 'publishing'}>
+              disabled={this.state.release.state === 'published'
+                        || this.state.release.state === 'publishing'}>
               <Icon type='close-circle'/>Cancel
             </Button>
           </ButtonGroup>
@@ -136,7 +134,7 @@ class Release extends Component {
             <h2>Event History</h2>
             <Timeline>
               <Timeline.Item color='blue' dot={<Icon type="right" style={{ fontSize: '18px' }}/>}>Release Scheduled</Timeline.Item>
-              {(this.state.release.state == 'running' || this.state.release.state == 'staged' || this.state.release.state == 'publishing' || this.state.release.state == 'published') && (
+              {(this.state.release.state === 'running' || this.state.release.state === 'staged' || this.state.release.state === 'publishing' || this.state.release.state === 'published') && (
                 <div>
                 <Timeline.Item color='green'>Release Tagger accepted task</Timeline.Item>
                 <Timeline.Item color='green'>Cavatica Sync accepted task</Timeline.Item>
@@ -147,7 +145,7 @@ class Release extends Component {
                 <Timeline.Item color='green'>Portal ETL started task</Timeline.Item>
                 </div>
               )}
-              {(this.state.release.state == 'staged' || this.state.release.state == 'publishing' || this.state.release.state == 'published') && (
+              {(this.state.release.state === 'staged' || this.state.release.state === 'publishing' || this.state.release.state === 'published') && (
                 <div>
                 <Timeline.Item color='green'>Release Tagger finished task</Timeline.Item>
                 <Timeline.Item color='green'>Cavatica Sync finished task</Timeline.Item>
@@ -155,7 +153,7 @@ class Release extends Component {
                 <Timeline.Item color='blue' dot={<Icon type="right" style={{ fontSize: '18px' }}/>}>All tasks were finished. Wait for review</Timeline.Item>
                 </div>
               )}
-              {(this.state.release.state == 'publishing' || this.state.release.state == 'published') & (
+              {(this.state.release.state === 'publishing' || this.state.release.state === 'published') & (
                 <div>
                 <Timeline.Item color='blue' dot={<Icon type="right" style={{ fontSize: '18px' }}/>}>Positive review recieved. Publishing release</Timeline.Item>
                 <Timeline.Item color='green'>Release Tagger started publishing</Timeline.Item>
@@ -163,7 +161,7 @@ class Release extends Component {
                 <Timeline.Item color='green'>Portal ETL started publishing</Timeline.Item>
                 </div>
               )}
-              {(this.state.release.state == 'published') && (
+              {(this.state.release.state === 'published') && (
                 <div>
                 <Timeline.Item color='blue' dot={<Icon type="right" style={{ fontSize: '18px' }}/>}>Positive review recieved. Publishing release</Timeline.Item>
                 <Timeline.Item color='green'>Release Tagger published</Timeline.Item>

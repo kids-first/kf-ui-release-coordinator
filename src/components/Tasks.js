@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Avatar, List, Icon} from 'antd';
+import { Avatar, List } from 'antd';
 
 class Tasks extends Component {
 

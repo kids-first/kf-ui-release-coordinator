@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
 import axios from 'axios';
-import { Alert, Col, Input, Button, DatePicker, Form, Row, Icon } from 'antd';
+import { Alert, Col, Input, Button, Form, Row, Icon } from 'antd';
 const FormItem = Form.Item;
 
 class NewServiceForm extends Component {

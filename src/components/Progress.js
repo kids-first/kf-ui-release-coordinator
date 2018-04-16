@@ -1,16 +1,10 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import { Steps, Icon} from 'antd';
 const { Step } = Steps;
 
 class Progress extends Component {
-
-  constructor(props) {
-    super(props);
-  }
-
   isLoading(desired) {
-    if (this.props.release.state == desired) {
+    if (this.props.release.state === desired) {
       return <Icon type='loading'/>
     }
   }
@@ -18,20 +12,20 @@ class Progress extends Component {
   render() {
     var current = -1;
 
-    if (this.props.release.state == 'pending') {
+    if (this.props.release.state === 'pending') {
       current = 0;
-    } else if (this.props.release.state == 'running') {
+    } else if (this.props.release.state === 'running') {
       current = 1;
-    } else if (this.props.release.state == 'staged') {
+    } else if (this.props.release.state === 'staged') {
       current = 2;
-    } else if (this.props.release.state == 'publishing') {
+    } else if (this.props.release.state === 'publishing') {
       current = 3;
-    } else if (this.props.release.state == 'published') {
+    } else if (this.props.release.state === 'published') {
       current = 5;
     }
 
     var s = '';
-    if (current == 1 || current == 2) {
+    if (current === 1 || current === 2) {
       s = 'process';
     } else {
       s = 'wait';

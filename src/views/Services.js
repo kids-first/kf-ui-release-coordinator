@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Link, withRouter } from 'react-router-dom';
-import { Card, List, Avatar, Row, Button, Divider } from 'antd';
+import { withRouter } from 'react-router-dom';
+import { Card, Row, Button, Divider } from 'antd';
 import ServiceList from '../components/ServiceList';
 
 

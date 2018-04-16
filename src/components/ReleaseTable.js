@@ -23,7 +23,7 @@ class ReleaseTable extends Component {
         dataIndex: 'tags',
         key: 'tags',
         render: tags => {
-          if(tags.length == 0) {
+          if(tags.length === 0) {
             return
           }
           return(
@@ -46,7 +46,6 @@ class ReleaseTable extends Component {
         dataIndex: 'created_at',
         key: 'created_at',
         render: time => {
-          let dt = Date(time);
           return (<div><TimeAgo date={time} /></div>)
         }
     }];
