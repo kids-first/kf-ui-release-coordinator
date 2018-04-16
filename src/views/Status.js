@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { NavLink, Link } from 'react-router-dom';
 import { Alert, Button, Divider, Icon, Card, Row, Col } from 'antd';
 import Progress from '../components/Progress';
 import ServiceList from '../components/ServiceList';
@@ -20,14 +21,23 @@ class Status extends Component {
         <Divider />
 
         <Row>
-          <Button
-            size='large'
-            type='primary'>
-            <Icon type='calendar' />Plan a Release
-          </Button>
-          <Divider />
+          <Button.Group size='large'>
+            <Button
+              href="/planner"
+              type='primary'>
+              <Icon type='calendar' />Plan a Release
+            </Button>
+            <Button
+              href="/service/new"
+              type='default'>
+              <Icon type='tool' />Register a Task Service
+            </Button>
+          </Button.Group>
+        </Row>
+        <Divider />
+        <Row>
           <h2>Task Service Status</h2>
-            <ServiceList />
+          <ServiceList />
         </Row>
       </Card>
     );
