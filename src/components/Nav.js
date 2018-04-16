@@ -17,7 +17,7 @@ class Nav extends Component {
 					</Menu.Item>
 					<Menu.Item key="2">
             <NavLink to="/planner">
-						<Icon type="schedule" />
+						<Icon type="calendar" />
 						<span>Planner</span>
             </NavLink>
 					</Menu.Item>

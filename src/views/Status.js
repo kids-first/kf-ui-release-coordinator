@@ -23,7 +23,7 @@ class Status extends Component {
           <Button
             size='large'
             type='primary'>
-            <Icon type='check-circle' />Plan a Release
+            <Icon type='calendar' />Plan a Release
           </Button>
           <Divider />
           <h2>Task Service Status</h2>
