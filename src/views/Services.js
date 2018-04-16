@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Link, withRouter } from 'react-router-dom';
-import { Card, List, Avatar, Row, Button } from 'antd';
+import { Card, List, Avatar, Row, Button, Divider } from 'antd';
+import ServiceList from '../components/ServiceList';
 
 
 class Services extends Component {
@@ -32,19 +33,8 @@ class Services extends Component {
             onClick={() => this.props.history.push(`/service/new`)}
             >Register New Service</Button>
         </Row>
-        <List
-         itemLayout="horizontal"
-         dataSource={this.state.data}
-         renderItem={item => (
-           <List.Item>
-             <List.Item.Meta
-               avatar={<Avatar icon="tool"/>}
-               title={<Link to={`/services/${item.kf_id}`}>{item.name}</Link>}
-               description={item.description}
-             />
-          </List.Item>
-        )}
-        />
+        <Divider />
+        <ServiceList />
       </Card>
     );
   }

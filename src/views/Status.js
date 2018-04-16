@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Alert, Button, Divider, Icon, Card, Row, Col } from 'antd';
 import Progress from '../components/Progress';
-import Tasks from '../components/Tasks';
+import ServiceList from '../components/ServiceList';
 
 
 class Status extends Component {
@@ -27,7 +27,7 @@ class Status extends Component {
           </Button>
           <Divider />
           <h2>Task Service Status</h2>
-          <Tasks />
+            <ServiceList />
         </Row>
       </Card>
     );

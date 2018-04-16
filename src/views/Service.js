@@ -7,6 +7,7 @@ import {
 import Progress from '../components/Progress';
 import Tasks from '../components/Tasks';
 import TaskList from '../components/TaskList';
+import StatusBadge from '../components/StatusBadge';
 const ButtonGroup = Button.Group;
 
 
@@ -34,16 +35,6 @@ class Service extends Component {
       return (<Spin tip='loading...'><Card style={{height: 300}}></Card></Spin>)
     }
 
-    const health = this.state.service.health_status === 'ok' ? (
-      <Tag color="#87d068"
-        style={{fontSize: "22pt", padding: "10px", height: "38pt"}}
-      >Status: <Icon type="check-circle" /></Tag>
-    ) : (
-      <Tag color="#f50"
-        style={{fontSize: "22pt", padding: "10px", height: "38pt"}}
-      >Status: <Icon type="warning" /></Tag>
-    );
-
     return (
       <Card title={`Task Service - ${this.state.service.name}`}>
         <Row type="flex" justify="space-between">
@@ -54,7 +45,7 @@ class Service extends Component {
             <h5>Endpoint: <em>{this.state.service.url}</em></h5>
           </Col>
           <Col>
-            {health}
+            <StatusBadge healthStatus={this.state.service.health_status} />
           </Col>
         </Row>
         <Row>
