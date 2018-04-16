@@ -7,6 +7,7 @@ import Planner from '../views/Planner';
 import Release from '../views/Release';
 import Releases from '../views/Releases';
 import Services from '../views/Services';
+import Service from '../views/Service';
 import NewService from '../views/NewService';
 const { Content } = Layout;
 
@@ -25,7 +26,8 @@ class Root extends Component {
                   <Route exact path="/releases" component={Releases} />
                   <Route exact path="/releases/:releaseId" component={Release} />
                   <Route exact path="/services" component={Services} />
-                  <Route exact path="/services/new" component={NewService} />
+                  <Route exact path="/service/new" component={NewService} />
+                  <Route exact path="/services/:serviceId" component={Service} />
                 </Content>
               </Layout>
             </Layout>

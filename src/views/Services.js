@@ -29,7 +29,7 @@ class Services extends Component {
       <Card title='Kids First Data Release Task Services'>
         <Row>
           <Button type="primary" size="large"
-            onClick={() => this.props.history.push(`/services/new`)}
+            onClick={() => this.props.history.push(`/service/new`)}
             >Register New Service</Button>
         </Row>
         <List
@@ -39,7 +39,7 @@ class Services extends Component {
            <List.Item>
              <List.Item.Meta
                avatar={<Avatar icon="tool"/>}
-               title={<a href="https://ant.design">{item.name}</a>}
+               title={<Link to={`/services/${item.kf_id}`}>{item.name}</Link>}
                description={item.description}
              />
           </List.Item>
