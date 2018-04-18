@@ -5,8 +5,9 @@ Kids First Release Coordinator
 
 ## Development
 
-Set the `DATASERVICE_API` and `DATASERVICE_API` variables in your environment
-so that the dashboard may find the correct apis, then run:
+Set the `REACT_APP_DATASERVICE_API` and `REACT_APP_COORDINATOR_API` variables
+in your `.env` so that the dashboard may find the correct apis, then run:
 ```
+yarn
 yarn start
 ```
