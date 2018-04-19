@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Card, Divider, Row, Col, Spin, Tag } from 'antd';
 import TaskList from '../components/TaskList';
 import StatusBadge from '../components/StatusBadge';
+import Events from '../components/Events';
 
 
 class Service extends Component {
@@ -11,17 +12,23 @@ class Service extends Component {
 
     this.state = {
       loading: true,
-      service: {}
+      service: {},
+      events: []
     };
   }
 
   componentWillMount() {
     let api = process.env.REACT_APP_COORDINATOR_API;
-    axios.get(`${api}/task-services/${this.props.match.params.serviceId}`)
-      .then(resp => {
-        let data = resp.data;
-        this.setState({service: data, loading: false});
-      });
+    axios.all([axios.get(`${api}/task-services/${this.props.match.params.serviceId}`),
+               axios.get(`${api}/events?task_service=${this.props.match.params.serviceId}`)])
+         .then(axios.spread((service, events) => {
+            this.setState({
+              service: service.data,
+              events: events.data.results,
+              loading: false
+            });
+         }))
+         .catch(error => console.log(error));
   }
 
   render() {
@@ -52,9 +59,13 @@ class Service extends Component {
         <Divider style={{margin: 0, marginBottom: '24px'}}/>
 
         <Row justify='space-around' type='flex'>
-          <h3>Recent Tasks</h3>
-          <Col span={24}>
+          <Col span={10}>
+            <h3>Recent Tasks</h3>
             <TaskList serviceId={this.state.service.kf_id} />
+          </Col>
+          <Col span={10}>
+            <h3>Recent Events</h3>
+            <Events events={this.state.events} />
           </Col>
         </Row>
       </Card>

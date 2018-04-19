@@ -1,9 +1,36 @@
 import React, { Component } from 'react';
-import { Alert, Button, Divider, Icon, Card, Row } from 'antd';
+import axios from 'axios';
+import { Alert, Button, Col, Divider, Icon, Card, Row } from 'antd';
 import ServiceList from '../components/ServiceList';
+import Events from '../components/Events';
 
 
 class Status extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      events: []
+    };
+  }
+
+  componentWillMount() {
+    this.getData();
+  }
+
+  getData() {
+    let api = process.env.REACT_APP_COORDINATOR_API;
+    axios.get(`${api}/events?limit=5`)
+         .then((events) => {
+            this.setState({
+              events: events.data.results,
+            });
+            this.timer = setTimeout(() => this.getData(), 1000);
+         })
+         .catch(error => console.log(error));
+  }
+
   render() {
     return (
       <Card>
@@ -32,10 +59,18 @@ class Status extends Component {
             </Button>
           </Button.Group>
         </Row>
+
         <Divider />
-        <Row>
-          <h2>Task Service Status</h2>
-          <ServiceList />
+
+        <Row justify='space-around' type='flex'>
+          <Col span={10}>
+            <h2>Task Service Status</h2>
+            <ServiceList />
+          </Col>
+          <Col span={10}>
+            <h2>Recent Release Events</h2>
+            <Events events={this.state.events} />
+          </Col>
         </Row>
       </Card>
     );
