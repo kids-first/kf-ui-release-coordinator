@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
 import axios from 'axios';
-import { Alert, Col, Input, Button, DatePicker, Form, Row, Select, Transfer } from 'antd';
+import { Alert, Col, Input, Button, Form, Row, Select, Transfer } from 'antd';
 const FormItem = Form.Item;
 const Option = Select.Option;
 
@@ -96,7 +96,7 @@ class NewReleaseForm extends Component {
     return (
       <Form onSubmit={this.handleSubmit}>
         <Row gutter={8} type='flex' justify='space-around'>
-          <Col span={10}>
+          <Col span={12}>
             <FormItem label="Release Title">
               {getFieldDecorator('title', {
                 rules: [{ required: true, message: 'Please provide a title!' }],
@@ -105,7 +105,7 @@ class NewReleaseForm extends Component {
               )}
             </FormItem>
           </Col>
-          <Col span={10}>
+          <Col span={12}>
             <FormItem label='Tags'>
               <Select
                 classname='select'
@@ -117,11 +117,6 @@ class NewReleaseForm extends Component {
               >
               {this.state.options}
               </Select>
-            </FormItem>
-          </Col>
-          <Col span={2}>
-            <FormItem label='Desired release date'>
-              <DatePicker />
             </FormItem>
           </Col>
         </Row>
