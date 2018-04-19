@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Card, Divider, Button, Row, Col, Spin, Timeline, Icon
+import { Card, Divider, Button, Row, Col, Spin, Timeline, Icon, Tag
 } from 'antd';
 import Progress from '../components/Progress';
-import Tasks from '../components/Tasks';
+import TaskList from '../components/TaskList';
 const ButtonGroup = Button.Group;
 
 
@@ -79,9 +79,11 @@ class Release extends Component {
     return (
       <Card title={`Release ${this.props.match.params.releaseId} - ${this.state.release.name}`}>
         <Row>
-          <h2>{this.state.release.name}</h2>
-          <h3>{this.state.release.kf_id}</h3>
-          <h3>Created At: {Date(this.state.release.created_at)}</h3>
+          <Col>
+            <h3 style={{display: "inline"}}>{this.state.release.name} </h3>
+              <Tag>{this.state.release.kf_id}</Tag>
+            <h5>Created At: {Date(this.state.release.created_at)}</h5>
+          </Col>
 
           <span>Release Notes:</span>
           <p>
@@ -127,7 +129,7 @@ class Release extends Component {
         <Row justify='space-around' type='flex'>
           <Col span={12}>
             <h2>Task Status</h2>
-            <Tasks />
+            <TaskList releaseId={this.state.release.kf_id} />
           </Col>
 
           <Col span={10}>

@@ -15,7 +15,9 @@ class TaskList extends Component {
 
   componentWillMount() {
     let api = process.env.REACT_APP_COORDINATOR_API;
-    axios.get(`${api}/task-services/${this.props.serviceId}`)
+    let _id = this.props.serviceId ? this.props.serviceId : this.props.releaseId;
+    let resource = this.props.serviceId ? '/task-services/' : '/releases/';
+    axios.get(`${api}${resource}${_id}`)
       .then(resp => {
         let data = resp.data.tasks;
         this.setState({tasks: data, loading: false});
@@ -25,10 +27,6 @@ class TaskList extends Component {
   whatIcon(state) {
     var icon = '';
     switch (state) {
-      case 'pending':
-      case 'waiting':
-        icon = 'ellipsis';
-        break;
       case 'running':
       case 'publishing':
         icon = 'loading';
@@ -42,6 +40,9 @@ class TaskList extends Component {
       case 'published':
         icon = 'check';
         break;
+      default:
+        icon = 'ellipsis';
+        break;
     }
     return icon;
   }
@@ -49,10 +50,6 @@ class TaskList extends Component {
   whatColor(state) {
     var color = '';
     switch (state) {
-      case 'pending':
-      case 'waiting':
-        color = null;
-        break;
       case 'running':
       case 'publishing':
         color = 'orange';
@@ -65,6 +62,9 @@ class TaskList extends Component {
         break;
       case 'published':
         color = 'green';
+        break;
+      default:
+        color = null;
         break;
     }
     return color;
@@ -86,7 +86,7 @@ class TaskList extends Component {
                avatar={<Avatar
                         style={{ backgroundColor: this.whatColor(item.state)}}
                         icon={this.whatIcon(item.state)}/>}
-               title={item.kf_id}
+               title={`${item.service_name}: ${item.kf_id}`}
                description={item.created_at}
              />
              <div>

@@ -43,6 +43,7 @@ class Service extends Component {
           </Col>
         </Row>
         <Row>
+          <h5>Description:</h5>
           <p>
             {this.state.service.description}
           </p>
