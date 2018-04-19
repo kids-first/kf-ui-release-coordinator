@@ -10,14 +10,14 @@ class ReleaseTable extends Component {
   constructor(props) {
     super(props);
     const columns = [{
+        title: 'Name',
+        dataIndex: 'name',
+        key: 'name',
+    }, {
         title: 'Report',
         dataIndex: 'kf_id',
         key: 'viewButton',
         render: id => <Link to={`/releases/${id}`}><Button size='small' icon='profile' type='primary'>{id}</Button></Link>
-    }, {
-        title: 'Name',
-        dataIndex: 'name',
-        key: 'name',
     }, {
         title: 'Tags',
         dataIndex: 'tags',
@@ -67,13 +67,11 @@ class ReleaseTable extends Component {
   render() {
 
     return (
-      <Card>
-        <Table
-          loading={this.state.loading}
-          columns={this.state.columns}
-          dataSource={this.state.data}
-        />
-      </Card>
+      <Table
+        loading={this.state.loading}
+        columns={this.state.columns}
+        dataSource={this.state.data}
+      />
     );
   }
 }
