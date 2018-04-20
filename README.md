@@ -1,4 +1,6 @@
-![Data Service](public/kf_releasecoordinator.png)
+<p align="center">
+  <img src="public/kf_releasecoordinator.png" alt="Release Coordinator">
+</p>
 
 Kids First Release Coordinator
 ==============================
