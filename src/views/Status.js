@@ -15,11 +15,21 @@ class Status extends Component {
     };
   }
 
-  componentWillMount() {
-    this.getData();
+  componentDidMount() {
+    this.mounted = true;
+    this.timer = setTimeout(() => this.getData(), 1000);
+  }
+
+
+  componentWillUnmount() {
+    this.mounted = false
+    clearTimeout(this.timer);
   }
 
   getData() {
+    if (!this.mounted) {
+      return
+    }
     let api = process.env.REACT_APP_COORDINATOR_API;
     axios.get(`${api}/events?limit=5`)
          .then((events) => {
