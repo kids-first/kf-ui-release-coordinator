@@ -25,6 +25,16 @@ class Services extends Component {
       });
   }
 
+  onChange(state) {
+    console.log(state);
+    let api = process.env.REACT_APP_COORDINATOR_API;
+    axios.post(`${api}/task-services`, )
+      .then(resp => {
+        let data = resp.data.results;
+        this.setState({data: data, loading: false});
+      });
+  }
+
   render() {
     return (
       <Card title='Kids First Data Release Task Services'>
