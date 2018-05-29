@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Link, withRouter } from 'react-router-dom';
-import { List, Avatar } from 'antd';
+import { List, Avatar, Col, Row, Icon, Switch } from 'antd';
 import StatusBadge from '../components/StatusBadge';
 
 
@@ -17,11 +17,24 @@ class ServiceList extends Component {
   }
 
   componentWillMount() {
+    this.getData();
+  }
+
+  getData() {
     let api = process.env.REACT_APP_COORDINATOR_API;
     axios.get(`${api}/task-services`)
       .then(resp => {
         let data = resp.data.results;
         this.setState({data: data, loading: false});
+      });
+  }
+
+  onChange(kf_id, state) {
+    let api = process.env.REACT_APP_COORDINATOR_API;
+    this.setState({loading: true});
+    axios.patch(`${api}/task-services/${kf_id}`, {enabled: state})
+      .then(resp => {
+        this.getData();
       });
   }
 
@@ -37,7 +50,21 @@ class ServiceList extends Component {
              title={<Link to={`/services/${item.kf_id}`}>{item.name}</Link>}
              description={item.description}
            />
-           <StatusBadge healthStatus={item.health_status} />
+           <Row type="flex" align="middle" gutter={16}>
+             <Col>
+              <b>Enabled: </b>
+              <Switch
+                checkedChildren={<Icon type="check" />}
+                unCheckedChildren={<Icon type="cross" />}
+                checked={item.enabled}
+                loading={this.state.loading}
+                onChange={(enabled) => this.onChange(item.kf_id, enabled)}
+                />
+             </Col>
+             <Col>
+               <StatusBadge healthStatus={item.health_status} />
+             </Col>
+           </Row>
         </List.Item>
       )}
       />

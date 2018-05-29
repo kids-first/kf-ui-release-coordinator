@@ -31,7 +31,7 @@ class NewReleaseForm extends Component {
 
   componentDidMount() {
     let api = process.env.REACT_APP_DATASERVICE_API;
-    axios.get(`${api}/studies?size=100`)
+    axios.get(`${api}/studies?limit=100`)
       .then(resp => {
         let studies = resp.data.results.map((s, i) => ({
           key: s.kf_id,
