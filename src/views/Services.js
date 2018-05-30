@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { withRouter } from 'react-router-dom';
 import { Card, Row, Button, Divider } from 'antd';
+import { coordinatorApi } from '../globalConfig';
 import ServiceList from '../components/ServiceList';
 
 
@@ -17,8 +18,7 @@ class Services extends Component {
   }
 
   componentWillMount() {
-    let api = process.env.REACT_APP_COORDINATOR_API;
-    axios.get(`${api}/task-services`)
+    axios.get(`${coordinatorApi}/task-services`)
       .then(resp => {
         let data = resp.data.results;
         this.setState({data: data, loading: false});
@@ -27,8 +27,7 @@ class Services extends Component {
 
   onChange(state) {
     console.log(state);
-    let api = process.env.REACT_APP_COORDINATOR_API;
-    axios.post(`${api}/task-services`, )
+    axios.post(`${coordinatorApi}/task-services`, )
       .then(resp => {
         let data = resp.data.results;
         this.setState({data: data, loading: false});

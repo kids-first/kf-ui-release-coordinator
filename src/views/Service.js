@@ -4,6 +4,7 @@ import { Card, Divider, Row, Col, Spin, Tag } from 'antd';
 import TaskList from '../components/TaskList';
 import StatusBadge from '../components/StatusBadge';
 import Events from '../components/Events';
+import { coordinatorApi } from '../globalConfig';
 
 
 class Service extends Component {
@@ -18,9 +19,8 @@ class Service extends Component {
   }
 
   componentWillMount() {
-    let api = process.env.REACT_APP_COORDINATOR_API;
-    axios.all([axios.get(`${api}/task-services/${this.props.match.params.serviceId}`),
-               axios.get(`${api}/events?task_service=${this.props.match.params.serviceId}`)])
+    axios.all([axios.get(`${coordinatorApi}/task-services/${this.props.match.params.serviceId}`),
+               axios.get(`${coordinatorApi}/events?task_service=${this.props.match.params.serviceId}`)])
          .then(axios.spread((service, events) => {
             this.setState({
               service: service.data,

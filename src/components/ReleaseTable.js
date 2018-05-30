@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link, withRouter } from 'react-router-dom';
 import { Button, Table, Icon, Popover, Tag } from 'antd';
 import TimeAgo from 'react-timeago'
+import { coordinatorApi } from '../globalConfig';
 
 
 class ReleaseTable extends Component {
@@ -56,8 +57,7 @@ class ReleaseTable extends Component {
   }
 
   componentWillMount() {
-    let api = process.env.REACT_APP_COORDINATOR_API;
-    axios.get(`${api}/releases`)
+    axios.get(`${coordinatorApi}/releases`)
       .then(resp => {
         let data = resp.data.results;
         this.setState({data: data, loading: false});

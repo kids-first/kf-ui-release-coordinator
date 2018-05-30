@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
 import axios from 'axios';
 import { Alert, Col, Input, Button, Form, Row, Icon } from 'antd';
+import { coordinatorApi } from '../globalConfig';
 const FormItem = Form.Item;
 
 class NewServiceForm extends Component {
@@ -17,7 +18,6 @@ class NewServiceForm extends Component {
   }
 
   handleSubmit = (e) => {
-    let api = process.env.REACT_APP_COORDINATOR_API;
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
@@ -27,7 +27,7 @@ class NewServiceForm extends Component {
           url: 'http://'+values.url
         };
         this.setState({loading: true});
-        axios.post(`${api}/task-services`, service)
+        axios.post(`${coordinatorApi}/task-services`, service)
           .then(resp => {
             this.props.history.push(`/services/${resp.data.kf_id}`);
           })

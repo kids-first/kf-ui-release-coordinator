@@ -5,6 +5,7 @@ import { Card, Divider, Button, Row, Col, Spin, Timeline, Icon, Tag
 import Progress from '../components/Progress';
 import TaskList from '../components/TaskList';
 import Events from '../components/Events';
+import { coordinatorApi } from '../globalConfig';
 const ButtonGroup = Button.Group;
 
 
@@ -33,11 +34,10 @@ class Release extends Component {
   }
 
   publish() {
-    let api = process.env.REACT_APP_COORDINATOR_API;
     let release = this.state.release;
     release.state = 'publishing';
     this.setState({publishing: true});
-    axios.post(`${api}/releases/${this.props.match.params.releaseId}/publish`)
+    axios.post(`${coordinatorApi}/releases/${this.props.match.params.releaseId}/publish`)
       .then(resp => {
         this.setState({publishing: false});
         this.timer = setTimeout(() => this.getData(), 1000);
@@ -50,9 +50,8 @@ class Release extends Component {
         this.state.release.state === 'published') {
       return
     }
-    let api = process.env.REACT_APP_COORDINATOR_API;
-    axios.all([axios.get(`${api}/releases/${this.props.match.params.releaseId}`),
-               axios.get(`${api}/events?release=${this.props.match.params.releaseId}`)])
+    axios.all([axios.get(`${coordinatorApi}/releases/${this.props.match.params.releaseId}`),
+               axios.get(`${coordinatorApi}/events?release=${this.props.match.params.releaseId}`)])
          .then(axios.spread((release, events) => {
             this.setState({
               release: release.data,

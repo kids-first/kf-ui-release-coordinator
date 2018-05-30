@@ -3,6 +3,8 @@ import axios from 'axios';
 import { Alert, Button, Col, Divider, Icon, Card, Row } from 'antd';
 import ServiceList from '../components/ServiceList';
 import Events from '../components/Events';
+import { coordinatorApi } from '../globalConfig';
+import { UserContext } from '../contexts';
 
 
 class Status extends Component {
@@ -30,8 +32,7 @@ class Status extends Component {
     if (!this.mounted) {
       return
     }
-    let api = process.env.REACT_APP_COORDINATOR_API;
-    axios.get(`${api}/events?limit=5`)
+    axios.get(`${coordinatorApi}/events?limit=5`)
          .then((events) => {
             this.setState({
               events: events.data.results,
@@ -55,20 +56,32 @@ class Status extends Component {
 
         <Divider />
 
-        <Row>
-          <Button.Group size='large'>
+        <UserContext.Consumer>
+        {user => (
+        <Card title={`Hello ${user.loggedIn}!`}>
+          <Row gutter={16} justify="space-between" type="flex">
+            <Button.Group size='large'>
+              <Button
+                href="/planner"
+                type='primary'>
+                <Icon type='calendar' />Plan a Release
+              </Button>
+              <Button
+                href="/service/new"
+                type='default'>
+                <Icon type='tool' />Register a Task Service
+              </Button>
+            </Button.Group>
             <Button
-              href="/planner"
-              type='primary'>
-              <Icon type='calendar' />Plan a Release
+              href="/logout"
+              size='large'
+              type='dashed'>
+              <Icon type='logout' />Logout
             </Button>
-            <Button
-              href="/service/new"
-              type='default'>
-              <Icon type='tool' />Register a Task Service
-            </Button>
-          </Button.Group>
-        </Row>
+          </Row>
+        </Card>
+        )}
+        </UserContext.Consumer>
 
         <Divider />
 
