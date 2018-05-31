@@ -14,7 +14,7 @@ import Service from '../views/Service';
 import NewService from '../views/NewService';
 import UserCard from '../components/UserCard';
 import { UserContext } from '../contexts';
-import { googleAppId, egoApi } from '../globalConfig';
+import { egoApi } from '../globalConfig';
 const { Content } = Layout;
 
 class Root extends Component {
@@ -30,7 +30,7 @@ class Root extends Component {
           const user = {
             ...jwtData.context,
           };
-          this.setState({ egoToken: resp.data, loggedIn: true, user: user });
+          this.setState({ egoToken: resp.data, loggedIn: true, user: user.user });
         })
         .catch(err => {
           this.setState({ loggedIn: false });
@@ -69,7 +69,7 @@ class Root extends Component {
             </Layout>
             ) : (
               <Login />
-            )};
+            )}
           </Row>
         </div>
         </UserContext.Provider>

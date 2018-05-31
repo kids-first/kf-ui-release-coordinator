@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
 import { UserContext } from '../contexts';
-import { List, Col, Row, Icon, Switch } from 'antd';
+import { Icon } from 'antd';
 import { googleAppId } from '../globalConfig';
 
 
 class LoginNoProps extends Component {
-
-  constructor(props) {
-    super(props)
-  }
 
   componentDidMount() {
     try {

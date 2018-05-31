@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Alert, Button, Col, Divider, Icon, Card, Row } from 'antd';
+import { Alert, Col, Divider, Card, Row } from 'antd';
 import ServiceList from '../components/ServiceList';
 import Events from '../components/Events';
 import { coordinatorApi } from '../globalConfig';
-import { UserContext } from '../contexts';
 
 
 class Status extends Component {
