@@ -1,24 +1,18 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import { Alert, Button, Col, Divider, Icon, Card, Row } from 'antd';
 import { UserContext } from '../contexts';
+import { List, Col, Row, Icon, Switch } from 'antd';
 import { googleAppId } from '../globalConfig';
 
 
-class Login extends Component {
+class LoginNoProps extends Component {
 
   constructor(props) {
     super(props)
-    this.state = {
-      user: {},
-      loggedIn: false,
-      token: null
-    }
   }
 
   componentDidMount() {
     try {
-      window.gapi.load('auth2', () => {
+      global.gapi.load('auth2', () => {
         global.gapi.auth2.init({
           client_id: googleAppId
         });
@@ -31,7 +25,7 @@ class Login extends Component {
           theme: 'light',
           onsuccess: googleUser => {
             const { id_token } = googleUser.getAuthResponse();
-            this.onLogin(id_token);
+            this.props.onLogin(id_token);
           },
           onfailure: error => console.log('login fail', error),
         });
@@ -41,19 +35,21 @@ class Login extends Component {
     }
   }
 
-  onLogin(token) {
-    this.props.googleToken = token;
-
-    this.props.history.push('/status');
-  }
-
   render() {
     return (
-      <UserContext.Provider value={this.state}>
-        <div id="googleSignin">Hello</div>
-      </UserContext.Provider>
-    );
+      <div>
+        <Icon type="loading" style={{ fontSize: 32 }} />
+        <div id="googleSignin" onClick={() => this.login()}></div>
+      </div>
+    )
   }
 }
 
-export default Login;
+
+export default Login => (
+  <UserContext.Consumer>
+    {user => <LoginNoProps {...Login} onLogin={user.onLogin} />}
+  </UserContext.Consumer>
+);
+
+// export default Login

@@ -56,35 +56,6 @@ class Status extends Component {
 
         <Divider />
 
-        <UserContext.Consumer>
-        {user => (
-        <Card title={`Hello ${user.loggedIn}!`}>
-          <Row gutter={16} justify="space-between" type="flex">
-            <Button.Group size='large'>
-              <Button
-                href="/planner"
-                type='primary'>
-                <Icon type='calendar' />Plan a Release
-              </Button>
-              <Button
-                href="/service/new"
-                type='default'>
-                <Icon type='tool' />Register a Task Service
-              </Button>
-            </Button.Group>
-            <Button
-              href="/logout"
-              size='large'
-              type='dashed'>
-              <Icon type='logout' />Logout
-            </Button>
-          </Row>
-        </Card>
-        )}
-        </UserContext.Consumer>
-
-        <Divider />
-
         <Row justify='space-around' type='flex'>
           <Col span={10}>
             <h2>Task Service Status</h2>

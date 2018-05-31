@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Card, Divider, Button, Row, Col, Spin, Timeline, Icon, Tag
+import { Card, Divider, Button, Row, Col, Spin, Icon, Tag
 } from 'antd';
 import Progress from '../components/Progress';
 import TaskList from '../components/TaskList';
