@@ -129,7 +129,8 @@ class Release extends Component {
           <Col>
             <h3 style={{display: "inline"}}>{this.state.release.name} </h3>
               <Tag>{this.state.release.kf_id}</Tag>
-            <h5>Created At: {Date(this.state.release.created_at)}</h5>
+            <h5><Icon type="calendar" /> Created At: <em>{Date(this.state.release.created_at)}</em></h5>
+            <h5><Icon type="user" /> Author: <em>{this.state.release.author}</em></h5>
           </Col>
 
           <span>Release Notes:</span>
