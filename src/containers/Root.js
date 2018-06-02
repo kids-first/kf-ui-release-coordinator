@@ -11,6 +11,7 @@ import Release from '../views/Release';
 import Releases from '../views/Releases';
 import Services from '../views/Services';
 import Service from '../views/Service';
+import Profile from '../views/Profile';
 import NewService from '../views/NewService';
 import UserCard from '../components/UserCard';
 import { UserContext } from '../contexts';
@@ -59,6 +60,7 @@ class Root extends Component {
                 <Content style={{ minHeight: '100%', margin: '24px 16px 0' }}>
                   <Route exact path="/" component={Status} />
                   <Route path="/planner" component={Planner} />
+                  <Route exact path="/profile" component={Profile} />
                   <Route exact path="/releases" component={Releases} />
                   <Route exact path="/releases/:releaseId" component={Release} />
                   <Route exact path="/services" component={Services} />
