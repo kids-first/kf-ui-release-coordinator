@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Card, Divider, Row, Col, Spin, Tag } from 'antd';
+import { Card, Divider, Icon, Row, Col, Spin, Tag } from 'antd';
 import TaskList from '../components/TaskList';
 import StatusBadge from '../components/StatusBadge';
 import Events from '../components/Events';
@@ -42,8 +42,9 @@ class Service extends Component {
           <Col>
             <h3 style={{display: "inline"}}>{this.state.service.name} </h3>
               <Tag>{this.state.service.kf_id}</Tag>
-            <h5>Created At: {Date(this.state.service.created_at)}</h5>
-            <h5>Endpoint: <em>{this.state.service.url}</em></h5>
+            <h5><Icon type='calendar' /> Created At: {Date(this.state.service.created_at)}</h5>
+            <h5><Icon type='link' /> Endpoint: <em>{this.state.service.url}</em></h5>
+            <h5><Icon type='user' /> Author: <em>{this.state.service.author}</em></h5>
           </Col>
           <Col>
             <StatusBadge healthStatus={this.state.service.health_status} />
