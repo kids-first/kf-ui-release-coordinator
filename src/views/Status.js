@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Alert, Col, Divider, Card, Row } from 'antd';
+import { Alert, Col, Divider, Card, Row, Icon, Tooltip } from 'antd';
 import ServiceList from '../components/ServiceList';
 import Events from '../components/Events';
 import { coordinatorApi } from '../globalConfig';
@@ -57,11 +57,19 @@ class Status extends Component {
 
         <Row justify='space-around' type='flex'>
           <Col span={10}>
-            <h2>Task Service Status</h2>
+            <h2>Task Service Status <span />
+            <Tooltip title="Current state of Task Services">
+              <Icon type='info-circle-o' />
+            </Tooltip>
+            </h2>
             <ServiceList />
           </Col>
           <Col span={10}>
-            <h2>Recent Release Events</h2>
+            <h2>Recent Release Events <span />
+            <Tooltip title="Latest events reported to the Coordinator">
+              <Icon type='info-circle-o' />
+            </Tooltip>
+            </h2>
             <Events events={this.state.events} />
           </Col>
         </Row>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Card, Divider, Button, Row, Col, Spin, Icon, Tag
+import { Card, Divider, Button, Row, Col, Spin, Icon, Tag, Tooltip
 } from 'antd';
 import Progress from '../components/Progress';
 import TaskList from '../components/TaskList';
@@ -127,7 +127,7 @@ class Release extends Component {
       <Card title={`Release ${this.props.match.params.releaseId} - ${this.state.release.name}`}>
         <Row>
           <Col>
-            <h3 style={{display: "inline"}}>{this.state.release.name} </h3>
+            <h3 style={{display: "inline"}}><Icon type='tag' />{this.state.release.name} </h3>
               <Tag>{this.state.release.kf_id}</Tag>
             <h5><Icon type="calendar" /> Created At: <em>{Date(this.state.release.created_at)}</em></h5>
             <h5><Icon type="user" /> Author: <em>{this.state.release.author}</em></h5>
@@ -176,12 +176,20 @@ class Release extends Component {
 
         <Row justify='space-around' type='flex'>
           <Col span={10}>
-            <h2>Task Status</h2>
+            <h2>Task Status <span /> 
+            <Tooltip title="Current states of tasks involved in this release">
+              <Icon type='info-circle-o' />
+            </Tooltip>
+            </h2>
             <TaskList releaseId={this.state.release.kf_id} />
           </Col>
 
           <Col span={10}>
-        <h2>Event History</h2>
+        <h2>Event History <span />
+        <Tooltip title="Events reported relating to this release tagged with relevant task service and task ids">
+          <Icon type='info-circle-o' />
+        </Tooltip>
+        </h2>
             <Events events={this.state.events} />
           </Col>
         </Row>
