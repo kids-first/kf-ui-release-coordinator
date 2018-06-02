@@ -3,6 +3,7 @@ import { withRouter } from "react-router-dom";
 import axios from 'axios';
 import { Alert, Col, Input, Button, Form, Row, Select, Transfer } from 'antd';
 import { dataserviceApi, coordinatorApi } from '../globalConfig';
+import { UserContext } from '../contexts';
 const FormItem = Form.Item;
 const Option = Select.Option;
 
@@ -51,10 +52,14 @@ class NewReleaseForm extends Component {
           name: values.title,
           description: values.description,
           studies: this.state.targetKeys,
-          tags: this.state.tags.map(tag => tag.label)
+          tags: this.state.tags.map(tag => tag.label),
+          author: this.props.user.name
         };
+        const token = this.props.egoToken;
+        const header = {headers: {Authorization: 'Bearer '+token}};
+
         this.setState({loading: true});
-        axios.post(`${coordinatorApi}/releases`, release)
+        axios.post(`${coordinatorApi}/releases`, release, header)
           .then(resp => {
             this.props.history.push(`/releases/${resp.data.kf_id}`);
           })
@@ -164,6 +169,15 @@ class NewReleaseForm extends Component {
   }
 }
 
-const WrappedNewReleaseForm = Form.create()(NewReleaseForm);
+function ReleaseProps(props) {
+  return (
+    <UserContext.Consumer>
+      {user => <NewReleaseForm {...props}
+        user={user.user} egoToken={user.egoToken}/>}
+    </UserContext.Consumer>
+  )
+};
+
+const WrappedNewReleaseForm = Form.create()(ReleaseProps);
 
 export default withRouter(WrappedNewReleaseForm);
