@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
 import axios from 'axios';
 import { Alert, Col, Input, Button, Form, Row, Icon } from 'antd';
+import { coordinatorApi } from '../globalConfig';
+import { UserContext } from '../contexts';
 const FormItem = Form.Item;
 
 class NewServiceForm extends Component {
@@ -17,17 +19,20 @@ class NewServiceForm extends Component {
   }
 
   handleSubmit = (e) => {
-    let api = process.env.REACT_APP_COORDINATOR_API;
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
         let service = {
           name: values.name,
           description: values.description,
+          author: this.props.user.name,
           url: 'http://'+values.url
         };
         this.setState({loading: true});
-        axios.post(`${api}/task-services`, service)
+        const token = this.props.egoToken;
+        const header = {headers: {Authorization: 'Bearer '+token}};
+
+        axios.post(`${coordinatorApi}/task-services`, service, header)
           .then(resp => {
             this.props.history.push(`/services/${resp.data.kf_id}`);
           })
@@ -89,6 +94,16 @@ class NewServiceForm extends Component {
   }
 }
 
-const WrappedNewServiceForm = Form.create()(NewServiceForm);
+function ServiceProps(props) {
+  return (
+    <UserContext.Consumer>
+      {user => <NewServiceForm {...props}
+        egoToken={user.egoToken}
+        user={user.user} />}
+    </UserContext.Consumer>
+  )
+};
+
+const WrappedNewServiceForm = Form.create()(ServiceProps);
 
 export default withRouter(WrappedNewServiceForm);

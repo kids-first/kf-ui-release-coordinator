@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Avatar, Card, List, Spin, Tag } from 'antd';
+import { coordinatorApi } from '../globalConfig';
 
 
 class TaskList extends Component {
@@ -14,10 +15,9 @@ class TaskList extends Component {
   }
 
   componentWillMount() {
-    let api = process.env.REACT_APP_COORDINATOR_API;
     let _id = this.props.serviceId ? this.props.serviceId : this.props.releaseId;
     let resource = this.props.serviceId ? '/task-services/' : '/releases/';
-    axios.get(`${api}${resource}${_id}`)
+    axios.get(`${coordinatorApi}${resource}${_id}`)
       .then(resp => {
         let data = resp.data.tasks;
         this.setState({tasks: data, loading: false});

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Alert, Button, Col, Divider, Icon, Card, Row } from 'antd';
+import { Alert, Col, Divider, Card, Row, Icon, Tooltip } from 'antd';
 import ServiceList from '../components/ServiceList';
 import Events from '../components/Events';
+import { coordinatorApi } from '../globalConfig';
 
 
 class Status extends Component {
@@ -30,8 +31,7 @@ class Status extends Component {
     if (!this.mounted) {
       return
     }
-    let api = process.env.REACT_APP_COORDINATOR_API;
-    axios.get(`${api}/events?limit=5`)
+    axios.get(`${coordinatorApi}/events?limit=5`)
          .then((events) => {
             this.setState({
               events: events.data.results,
@@ -55,30 +55,21 @@ class Status extends Component {
 
         <Divider />
 
-        <Row>
-          <Button.Group size='large'>
-            <Button
-              href="/planner"
-              type='primary'>
-              <Icon type='calendar' />Plan a Release
-            </Button>
-            <Button
-              href="/service/new"
-              type='default'>
-              <Icon type='tool' />Register a Task Service
-            </Button>
-          </Button.Group>
-        </Row>
-
-        <Divider />
-
         <Row justify='space-around' type='flex'>
           <Col span={10}>
-            <h2>Task Service Status</h2>
+            <h2>Task Service Status <span />
+            <Tooltip title="Current state of Task Services">
+              <Icon type='info-circle-o' />
+            </Tooltip>
+            </h2>
             <ServiceList />
           </Col>
           <Col span={10}>
-            <h2>Recent Release Events</h2>
+            <h2>Recent Release Events <span />
+            <Tooltip title="Latest events reported to the Coordinator">
+              <Icon type='info-circle-o' />
+            </Tooltip>
+            </h2>
             <Events events={this.state.events} />
           </Col>
         </Row>

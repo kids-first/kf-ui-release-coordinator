@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link, withRouter } from 'react-router-dom';
 import { Button, Table, Icon, Popover, Tag } from 'antd';
 import TimeAgo from 'react-timeago'
+import { coordinatorApi } from '../globalConfig';
 
 
 class ReleaseTable extends Component {
@@ -19,16 +20,13 @@ class ReleaseTable extends Component {
         key: 'viewButton',
         render: id => <Link to={`/releases/${id}`}><Button size='small' icon='profile' type='primary'>{id}</Button></Link>
     }, {
-        title: 'Tags',
-        dataIndex: 'tags',
-        key: 'tags',
-        render: tags => {
-          if(tags.length === 0) {
-            return
-          }
+        title: 'Author',
+        dataIndex: 'author',
+        key: 'author',
+        render: author => {
           return(
             <div>
-              {tags.map((tag, i) => <Tag key={i}>{tag}</Tag>)}
+              {author}
             </div>
           )
         }
@@ -56,8 +54,7 @@ class ReleaseTable extends Component {
   }
 
   componentWillMount() {
-    let api = process.env.REACT_APP_COORDINATOR_API;
-    axios.get(`${api}/releases`)
+    axios.get(`${coordinatorApi}/releases`)
       .then(resp => {
         let data = resp.data.results;
         this.setState({data: data, loading: false});

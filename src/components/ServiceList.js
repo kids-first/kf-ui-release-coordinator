@@ -3,6 +3,8 @@ import axios from 'axios';
 import { Link, withRouter } from 'react-router-dom';
 import { List, Avatar, Col, Row, Icon, Switch } from 'antd';
 import StatusBadge from '../components/StatusBadge';
+import { UserContext } from '../contexts';
+import { coordinatorApi } from '../globalConfig';
 
 
 class ServiceList extends Component {
@@ -21,8 +23,7 @@ class ServiceList extends Component {
   }
 
   getData() {
-    let api = process.env.REACT_APP_COORDINATOR_API;
-    axios.get(`${api}/task-services`)
+    axios.get(`${coordinatorApi}/task-services`)
       .then(resp => {
         let data = resp.data.results;
         this.setState({data: data, loading: false});
@@ -30,9 +31,11 @@ class ServiceList extends Component {
   }
 
   onChange(kf_id, state) {
-    let api = process.env.REACT_APP_COORDINATOR_API;
     this.setState({loading: true});
-    axios.patch(`${api}/task-services/${kf_id}`, {enabled: state})
+    const token = this.props.egoToken;
+    const header = {headers: {Authorization: 'Bearer '+token}};
+    axios.patch(`${coordinatorApi}/task-services/${kf_id}`,
+                {enabled: state}, header)
       .then(resp => {
         this.getData();
       });
@@ -72,4 +75,14 @@ class ServiceList extends Component {
   }
 }
 
-export default withRouter(ServiceList);
+function ServiceListProps(props) {
+  return (
+    <UserContext.Consumer>
+      {user => <ServiceList {...props}
+        egoToken={user.egoToken}
+        user={user.user} />}
+    </UserContext.Consumer>
+  )
+};
+
+export default withRouter(ServiceListProps);

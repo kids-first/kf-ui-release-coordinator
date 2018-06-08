@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Alert, Card, Row } from 'antd';
 import WrappedNewServiceForm from '../forms/NewService';
+import { coordinatorApi } from '../globalConfig';
 
 
 class Services extends Component {
@@ -16,8 +17,7 @@ class Services extends Component {
   }
 
   componentWillMount() {
-    let api = process.env.REACT_APP_COORDINATOR_API;
-    axios.get(`${api}/task-services`)
+    axios.get(`${coordinatorApi}/task-services`)
       .then(resp => {
         let data = resp.data.results;
         this.setState({data: data, loading: false});
