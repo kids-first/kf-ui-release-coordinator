@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { UserContext } from '../contexts';
-import { Icon } from 'antd';
+import { Row, Col, Layout, Card } from 'antd';
 import { googleAppId } from '../globalConfig';
+import brand from '../brand.svg';
 
 
 class LoginNoProps extends Component {
@@ -33,10 +34,17 @@ class LoginNoProps extends Component {
 
   render() {
     return (
-      <div>
-        <Icon type="loading" style={{ fontSize: 32 }} />
-        <div id="googleSignin" onClick={() => this.login()}></div>
-      </div>
+      <Layout style={{height:"100vh", background: "#2b388f"}}> 
+        <Row type="flex" justify="space-around" align="middle" style={{height: "100vh", background: "#2b388f"}}>
+          <Col>
+            <Card bordered={false} cover={<img src={brand} alt="Kids First logo" style={{padding: "10px", background: "#e83a9c"}}/>}>
+            <Card.Meta title="Kids First Release Coordinator" />
+            <br />
+            <div id="googleSignin" onClick={() => this.login()}></div>
+            </Card>
+          </Col>
+        </Row>
+      </Layout>
     )
   }
 }
