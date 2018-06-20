@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
 import axios from 'axios';
 import { Alert, Col, Input, Button, Form, Row, Select, Transfer } from 'antd';
-import { dataserviceApi, coordinatorApi } from '../globalConfig';
+import { coordinatorApi } from '../globalConfig';
 import { UserContext } from '../contexts';
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -32,7 +32,7 @@ class NewReleaseForm extends Component {
   }
 
   componentDidMount() {
-    axios.get(`${dataserviceApi}/studies?limit=100`)
+    axios.get(`${coordinatorApi}/studies`)
       .then(resp => {
         let studies = resp.data.results.map((s, i) => ({
           key: s.kf_id,
