@@ -6,7 +6,7 @@ const { Sider } = Layout;
 class Nav extends Component {
   render() {
     return (
-			<Sider trigger={null} width={300}>
+			<Sider trigger={null} width={300} breakpoint='lg' collapsible={true}>
 				<img alt='release coordinator' src='/kf_releasecoordinator.png' width='300px' style={{backgroundColor: '#fff', marginBottom: '-4px'}}/>
 				<Menu theme="dark" mode="inline" defaultSelectedKeys={['2']}>
 					<Menu.Item key="1">
