@@ -133,6 +133,13 @@ class Release extends Component {
             <h5><Icon type="user" /> Author: <em>{this.state.release.author}</em></h5>
           </Col>
 
+          <span>Studies in this Release:</span>
+          <br />
+          {this.state.release.studies.map((r, i) => (
+            <Tag key={i}>{r}</Tag>
+          ))}
+          <br />
+
           <span>Release Notes:</span>
           <p>
             {this.state.release.description}
