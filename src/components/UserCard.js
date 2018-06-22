@@ -19,25 +19,6 @@ class UserCard extends Component {
               return <Tag key={i} color={object == 'USER' ? 'gold' : 'blue'}>{object}</Tag>;
             })}
             </Col>
-            <Col>
-              <Button.Group size='default'>
-                <Button
-                  href="/planner"
-                  type='primary'>
-                  <Icon type='calendar' />Plan a Release
-                </Button>
-                <Button
-                  href="/service/new"
-                  type='default'>
-                  <Icon type='tool' />Register a Task Service
-                </Button>
-              <Button
-                href="/logout"
-                type='dashed'>
-                <Icon type='logout' />Logout
-              </Button>
-              </Button.Group>
-            </Col>
           </Row>
           </Header>
       )}

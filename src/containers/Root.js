@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import { BrowserRouter as Router, Route} from "react-router-dom";
-import { Layout, Row } from 'antd';
+import { Layout, Row, Col } from 'antd';
 import Nav from '../components/Nav';
 import Login from '../views/Login';
 import Status from '../views/Status';
@@ -58,6 +58,8 @@ class Root extends Component {
               <Layout>
                 <UserCard />
                 <Content style={{ minHeight: '100%', margin: '24px 16px 0' }}>
+                <Row justify='center' type='flex'>
+                <Col xl={24} xxl={18}>
                   <Route exact path="/" component={Status} />
                   <Route path="/planner" component={Planner} />
                   <Route exact path="/profile" component={Profile} />
@@ -66,6 +68,8 @@ class Root extends Component {
                   <Route exact path="/services" component={Services} />
                   <Route exact path="/service/new" component={NewService} />
                   <Route exact path="/services/:serviceId" component={Service} />
+                </Col>
+                </Row>
                 </Content>
               </Layout>
             </Layout>
