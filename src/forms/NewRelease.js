@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
 import axios from 'axios';
-import { Alert, Col, Input, Button, Form, Row, Select, Transfer } from 'antd';
+import { Alert, Col, Input, Tag, Button, Form, Row, Select, Transfer, Table } from 'antd';
+import TimeAgo from 'react-timeago'
 import { coordinatorApi } from '../globalConfig';
 import { UserContext } from '../contexts';
 const FormItem = Form.Item;
@@ -21,13 +22,33 @@ class NewReleaseForm extends Component {
       'Redacted'
     ].map((el, i) => <Option key={i}>{el}</Option>);
 
+    const columns = [{
+        title: 'Id',
+        dataIndex: 'kf_id',
+        key: 'viewButton',
+        render: id => <Tag size='small' icon='profile' type='primary'>{id}</Tag>,
+        width: '10%'
+    }, {
+        title: 'Name',
+        dataIndex: 'name',
+        key: 'name',
+    }, {
+        title: 'Created At',
+        dataIndex: 'created_at',
+        key: 'created_at',
+        render: time => {
+          return (<div><TimeAgo date={time} /></div>)
+        }
+    }];
+
     this.state = {
       data: [],
-			targetKeys: [],
+      selectedRowKeys: [],
       loading: true,
       tags: [],
       options: options,
-      error: ''
+      error: '',
+      columns: columns
 		}
   }
 
@@ -36,10 +57,11 @@ class NewReleaseForm extends Component {
       .then(resp => {
         let studies = resp.data.results.map((s, i) => ({
           key: s.kf_id,
-          title: s.kf_id,
-          description: `${s.name}`,
-          chosen: false
+          kf_id: s.kf_id,
+          name: `${s.name}`,
+          created_at: s.created_at
         }));
+
         this.setState({data: studies, loading: false, error: '', tags: []});
       });
   }
@@ -51,7 +73,7 @@ class NewReleaseForm extends Component {
         let release = {
           name: values.title,
           description: values.description,
-          studies: this.state.targetKeys,
+          studies: this.state.selectedRowKeys,
           tags: this.state.tags.map(tag => tag.label),
           author: this.props.user.name
         };
@@ -74,33 +96,26 @@ class NewReleaseForm extends Component {
 	filterOption = (inputValue, option) => {
     return option.description.indexOf(inputValue) > -1;
   }
-
-	handleChange = (targetKeys) => {
-    this.setState({ targetKeys });
-  }
   
 	handleTags = (tags) => {
     this.setState({ tags: tags });
   }
 
-  renderItem = (item) => {
-    const customLabel = (
-      <span>
-        {item.title} - {item.description}
-      </span>
-    );
-
-    return {
-      label: customLabel,
-      value: item.title,
-    };
+  onSelectChange = (selectedRowKeys) => {
+    this.setState({ selectedRowKeys });
   }
+
   render() {
     const { getFieldDecorator } = this.props.form;
+    const { loading, selectedRowKeys } = this.state;
+    const rowSelection = {
+      selectedRowKeys,
+      onChange: this.onSelectChange,
+    };
     return (
       <Form onSubmit={this.handleSubmit}>
         <Row gutter={8} type='flex' justify='space-around'>
-          <Col span={12}>
+          <Col span={24}>
             <FormItem label="Release Title">
               {getFieldDecorator('title', {
                 rules: [{ required: true, message: 'Please provide a title!' }],
@@ -109,7 +124,9 @@ class NewReleaseForm extends Component {
               )}
             </FormItem>
           </Col>
-          <Col span={12}>
+        </Row>
+        <Row gutter={8} type='flex' justify='space-around'>
+          <Col span={24}>
             <FormItem label='Tags'>
               <Select
                 classname='select'
@@ -138,20 +155,13 @@ class NewReleaseForm extends Component {
         <Row type='flex' justify='space-around'>
           <Col span={24}>
             <FormItem label="Studies">
-              <Transfer
-                className='picker'
+              <Table
+                title={() => 'Select Studies for Release'}
+                loading={this.state.loading}
+                columns={this.state.columns}
                 dataSource={this.state.data}
-                showSearch
-                listStyle={{
-                  width: '45%',
-                  height: 300
-                }}
-                notFoundContent='No studies added to the release yet'
-                titles={['Available Studies', 'Studies Added to Release']}
-                filterOption={this.filterOption}
-                targetKeys={this.state.targetKeys}
-                onChange={this.handleChange}
-                render={this.renderItem}
+                rowSelection={rowSelection} 
+                size="small"
               />
             </FormItem>
           </Col>
