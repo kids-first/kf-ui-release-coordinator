@@ -97,10 +97,6 @@ class NewReleaseForm extends Component {
     return option.description.indexOf(inputValue) > -1;
   }
   
-	handleTags = (tags) => {
-    this.setState({ tags: tags });
-  }
-
   onSelectChange = (selectedRowKeys) => {
     this.setState({ selectedRowKeys });
   }
@@ -122,22 +118,6 @@ class NewReleaseForm extends Component {
               })(
                 <Input placeholder="Title" />
               )}
-            </FormItem>
-          </Col>
-        </Row>
-        <Row gutter={8} type='flex' justify='space-around'>
-          <Col span={24}>
-            <FormItem label='Tags'>
-              <Select
-                classname='select'
-                mode="tags"
-                placeholder="tags"
-                defaultValue={[]}
-                onChange={this.handleTags}
-                labelInValue
-              >
-              {this.state.options}
-              </Select>
             </FormItem>
           </Col>
         </Row>
