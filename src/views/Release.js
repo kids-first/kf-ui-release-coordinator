@@ -6,6 +6,7 @@ import Progress from '../components/Progress';
 import TaskList from '../components/TaskList';
 import Events from '../components/Events';
 import { coordinatorApi } from '../globalConfig';
+import { UserContext } from '../contexts';
 const ButtonGroup = Button.Group;
 
 
@@ -17,7 +18,8 @@ class Release extends Component {
       loading: true,
       release: {},
       events: [],
-      publishing: false
+      publishing: false,
+      canceling: false
     };
     this.getData();
     this.mounted = false
@@ -34,19 +36,34 @@ class Release extends Component {
   }
 
   publish() {
+    const token = this.props.egoToken;
+    const header = {headers: {Authorization: 'Bearer '+token}};
     let release = this.state.release;
     release.state = 'publishing';
     this.setState({publishing: true});
-    axios.post(`${coordinatorApi}/releases/${this.props.match.params.releaseId}/publish`)
+    axios.post(`${coordinatorApi}/releases/${this.props.match.params.releaseId}/publish`, {}, header)
       .then(resp => {
         this.setState({publishing: false});
         this.timer = setTimeout(() => this.getData(), 1000);
       });
   }
 
+  cancel() {
+    const token = this.props.egoToken;
+    const header = {headers: {Authorization: 'Bearer '+token}};
+    let release = this.state.release;
+    release.state = 'canceling';
+    this.setState({canceling: true});
+    axios.delete(`${coordinatorApi}/releases/${this.props.match.params.releaseId}`, header)
+      .then(resp => {
+        this.setState({canceling: false});
+      });
+  }
+
   getData() {
     if (!this.mounted ||
         this.state.release.state === 'staged' ||
+        this.state.release.state === 'canceled' ||
         this.state.release.state === 'published') {
       return
     }
@@ -119,6 +136,14 @@ class Release extends Component {
       style.marginBottom = '4px';
     }
 
+    if (this.state.release.state === 'canceled'
+        || this.state.release.state === 'failed') {
+      style.backgroundColor = '#f8a4a833';
+      style.padding = 20;
+      style.marginTop = '4px';
+      style.marginBottom = '4px';
+    }
+
     if (this.state.loading) {
       return (<Spin tip='loading...'><Card style={{height: 300}}></Card></Spin>)
     }
@@ -147,9 +172,13 @@ class Release extends Component {
         </Row>
         <Divider style={{margin: 0, marginTop: '24px'}}/>
         <Row justify='center' type='flex' style={style}>
-          <Col span={22} >
-            <Progress release={this.state.release}/>
-          </Col>
+          {this.state.release.state !== 'canceled' && this.state.release.state !== 'failed' ? (
+            <Col span={22} >
+              <Progress release={this.state.release}/>
+            </Col>
+          ) : (
+            <h2><Icon type="warning"/> {this.state.release.state}</h2>
+          )}
         </Row>
 
         <Divider style={{margin: 0, marginBottom: '24px'}}/>
@@ -172,8 +201,12 @@ class Release extends Component {
             <Button
               size='large'
               type='danger'
+              onClick={() => this.cancel()}
+              loading={this.state.canceling}
               disabled={this.state.release.state === 'published'
-                        || this.state.release.state === 'publishing'}>
+                        || this.state.release.state === 'publishing'
+                        || this.state.release.state === 'canceled'
+                        || this.state.release.state === 'failed'}>
               <Icon type='close-circle'/>Cancel
             </Button>
           </ButtonGroup>
@@ -205,4 +238,13 @@ class Release extends Component {
   }
 }
 
-export default Release;
+function ReleaseProps(props) {
+  return (
+    <UserContext.Consumer>
+      {user => <Release{...props}
+        user={user.user} egoToken={user.egoToken}/>}
+    </UserContext.Consumer>
+  )
+};
+
+export default ReleaseProps;
