@@ -16,10 +16,10 @@ class TaskList extends Component {
 
   componentWillMount() {
     let _id = this.props.serviceId ? this.props.serviceId : this.props.releaseId;
-    let resource = this.props.serviceId ? '/task-services/' : '/releases/';
+    let resource = this.props.serviceId ? '/tasks?task_service=' : '/releases/';
     axios.get(`${coordinatorApi}${resource}${_id}`)
       .then(resp => {
-        let data = resp.data.tasks;
+        let data = resp.data.results;
         this.setState({tasks: data, loading: false});
       });
   }
