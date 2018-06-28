@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Layout, Menu, Icon } from 'antd';
-const { Sider } = Layout;
+import brand from '../brand.svg';
+const { Sider, Footer } = Layout;
 
 class Nav extends Component {
   render() {
     return (
 			<Sider trigger={null} width={300} breakpoint='lg' collapsible={true}>
-				<img alt='release coordinator' src='/kf_releasecoordinator.png' width='300px' style={{backgroundColor: '#fff', marginBottom: '-4px'}}/>
+				<img alt='release coordinator' src={brand} width='100%' style={{marginBottom: '-4px', padding: '20px'}}/>
 				<Menu theme="dark" mode="inline" defaultSelectedKeys={['2']}>
 					<Menu.Item key="1">
             <NavLink to="/profile">
