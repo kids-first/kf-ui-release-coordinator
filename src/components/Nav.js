@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Layout, Menu, Icon } from 'antd';
 import brand from '../brand.svg';
-const { Sider, Footer } = Layout;
+const { Sider } = Layout;
 
 class Nav extends Component {
   render() {

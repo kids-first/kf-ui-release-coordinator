@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { UserContext } from '../contexts';
-import { Row, Col, Layout, Card } from 'antd';
+import { Row, Col, Layout } from 'antd';
 import { googleAppId } from '../globalConfig';
 import brand from '../brand.svg';
 

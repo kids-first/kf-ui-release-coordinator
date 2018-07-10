@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
 import axios from 'axios';
-import { Alert, Col, Input, Tag, Button, Form, Row, Select, Transfer, Table } from 'antd';
+import { Alert, Col, Input, Tag, Button, Form, Row, Select, Table } from 'antd';
 import TimeAgo from 'react-timeago'
 import { coordinatorApi } from '../globalConfig';
 import { UserContext } from '../contexts';
@@ -103,7 +103,7 @@ class NewReleaseForm extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { loading, selectedRowKeys } = this.state;
+    const { selectedRowKeys } = this.state;
     const rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,

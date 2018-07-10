@@ -16,7 +16,7 @@ class TaskList extends Component {
 
   componentWillMount() {
     let _id = this.props.serviceId ? this.props.serviceId : this.props.releaseId;
-    let resource = this.props.serviceId ? '/tasks?task_service=' : '/tasks?release_id=';
+    let resource = this.props.serviceId ? '/tasks?task_service=' : '/tasks?release=';
     axios.get(`${coordinatorApi}${resource}${_id}`)
       .then(resp => {
         let data = resp.data.results;
