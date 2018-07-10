@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Avatar, Button, Col, Layout, Tag, Icon, Row } from 'antd';
+import { Avatar, Col, Layout, Tag, Row } from 'antd';
 import { UserContext } from '../contexts';
 const { Header } = Layout;
 
@@ -16,7 +16,7 @@ class UserCard extends Component {
              style={{verticalAlign: 'middle', marginRight: 16}} size="large" />
             {user.user.name} <span></span>
             {user.user.roles.map(function(object, i){
-              return <Tag key={i} color={object == 'USER' ? 'gold' : 'blue'}>{object}</Tag>;
+              return <Tag key={i} color={object === 'USER' ? 'gold' : 'blue'}>{object}</Tag>;
             })}
             </Col>
           </Row>

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
 import axios from 'axios';
-import { Alert, Card, Col, Icon, Input, Button, Row, Tag } from 'antd';
-import { dataserviceApi, coordinatorApi } from '../globalConfig';
+import { Card, Icon, Tag } from 'antd';
+import { dataserviceApi } from '../globalConfig';
 import { UserContext } from '../contexts';
 
 class Profile extends Component {

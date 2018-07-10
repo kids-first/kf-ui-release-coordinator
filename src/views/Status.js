@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { Alert, Avatar, Button, Col, Divider, Card, Row, Icon, Tooltip } from 'antd';
+import { Alert, Avatar, Button, Col, Card, Row, Icon, Tooltip } from 'antd';
 import ServiceList from '../components/ServiceList';
 import Events from '../components/Events';
 import { coordinatorApi } from '../globalConfig';
