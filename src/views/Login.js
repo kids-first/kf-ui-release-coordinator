@@ -37,11 +37,14 @@ class LoginNoProps extends Component {
       <Layout style={{height:"100vh", background: "#2b388f"}}> 
         <Row type="flex" justify="space-around" align="middle" style={{height: "100vh", background: "#2b388f"}}>
           <Col>
-            <Card bordered={false} cover={<img src={brand} alt="Kids First logo" style={{padding: "10px", background: "#e83a9c"}}/>}>
-            <Card.Meta title="Kids First Release Coordinator" />
+            <center>
+              <img src={brand} alt="Kids First logo" />
+            </center>
+            <h1 style={{color: '#fff'}}>Kids First Release Coordinator</h1>
             <br />
-            <div id="googleSignin"></div>
-            </Card>
+            <center>
+              <div id="googleSignin"></div>
+            </center>
           </Col>
         </Row>
       </Layout>
