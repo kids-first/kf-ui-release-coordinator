@@ -40,7 +40,7 @@ class LoginNoProps extends Component {
             <Card bordered={false} cover={<img src={brand} alt="Kids First logo" style={{padding: "10px", background: "#e83a9c"}}/>}>
             <Card.Meta title="Kids First Release Coordinator" />
             <br />
-            <div id="googleSignin" onClick={() => this.login()}></div>
+            <div id="googleSignin"></div>
             </Card>
           </Col>
         </Row>
