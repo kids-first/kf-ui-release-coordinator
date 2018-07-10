@@ -18,8 +18,8 @@ class Nav extends Component {
 					</Menu.Item>
 					<Menu.Item key="2">
             <NavLink to="/">
-              <Icon type="heart" />
-              <span>Status</span>
+              <Icon type="home" />
+              <span>Home</span>
             </NavLink>
 					</Menu.Item>
 					<Menu.Item key="3">
