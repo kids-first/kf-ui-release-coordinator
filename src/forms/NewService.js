@@ -26,7 +26,7 @@ class NewServiceForm extends Component {
           name: values.name,
           description: values.description,
           author: this.props.user.name,
-          url: 'http://'+values.url
+          url: values.url
         };
         this.setState({loading: true});
         const token = this.props.egoToken;
@@ -62,9 +62,11 @@ class NewServiceForm extends Component {
             <FormItem label="Service endpoint">
               {getFieldDecorator('url', {
                 rules: [{ required: true,
-                          message: 'Please provide an endpoint url!' }]
+                          message: 'Please provide an endpoint url!' },
+                        { pattern: '^https?://',
+                          message: 'Must begin with http(s)://'}]
               })(
-                <Input addonBefore="http://"
+                <Input
                   addonAfter={<Icon type="link" />} />
               )}
             </FormItem>
