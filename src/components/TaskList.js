@@ -10,17 +10,33 @@ class TaskList extends Component {
 
     this.state = {
       loading: true,
+      releaseId: props.releaseId,
+      serviceId: props.serivceId,
       tasks: []
     };
   }
 
-  componentWillMount() {
-    let _id = this.props.serviceId ? this.props.serviceId : this.props.releaseId;
-    let resource = this.props.serviceId ? '/tasks?task_service=' : '/tasks?release=';
+  componentDidMount() {
+    this.getData();
+  }
+
+  shouldComponentUpdate(nextProps) {
+    if (nextProps !== this.props) {
+      this.getData();
+      return true
+    } else {
+      return false
+    }
+  }
+
+  getData() {
+    let _id = this.state.serviceId ? this.state.serviceId : this.state.releaseId;
+    let resource = this.state.serviceId ? '/tasks?task_service=' : '/tasks?release=';
     axios.get(`${coordinatorApi}${resource}${_id}`)
       .then(resp => {
         let data = resp.data.results;
         this.setState({tasks: data, loading: false});
+        this.forceUpdate();
       });
   }
 
