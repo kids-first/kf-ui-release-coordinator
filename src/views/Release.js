@@ -27,7 +27,8 @@ class Release extends Component {
 
   componentDidMount() {
     this.mounted = true;
-    this.timer = setTimeout(() => this.getData(), 1000);
+    this.getData();
+    this.timer = setTimeout(() => this.getData(), 3000);
   }
 
   componentWillUnmount() {
@@ -44,7 +45,7 @@ class Release extends Component {
     axios.post(`${coordinatorApi}/releases/${this.props.match.params.releaseId}/publish`, {}, header)
       .then(resp => {
         this.setState({publishing: false});
-        this.timer = setTimeout(() => this.getData(), 1000);
+        this.timer = setTimeout(() => this.getData(), 3000);
       });
   }
 
@@ -57,6 +58,7 @@ class Release extends Component {
     axios.delete(`${coordinatorApi}/releases/${this.props.match.params.releaseId}`, header)
       .then(resp => {
         this.setState({canceling: false});
+        this.getData();
       });
   }
 
@@ -75,7 +77,7 @@ class Release extends Component {
               events: events.data.results.reverse(),
               loading: false
             });
-            this.timer = setTimeout(() => this.getData(), 1000);
+            this.timer = setTimeout(() => this.getData(), 3000);
          }))
          .catch(error => console.log(error));
   }

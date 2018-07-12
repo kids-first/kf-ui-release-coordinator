@@ -25,22 +25,6 @@ class Events extends Component {
   whatIcon(ev) {
     var icon = 'info';
 
-    if (ev.message.includes('release started')) {
-      icon = 'calendar';
-    } else if (ev.message.includes('initializing new')) {
-      icon = 'ellipsis';
-    } else if (ev.message.includes('was accepted')) {
-      icon = 'check';
-    } else if (ev.message.includes('starting work')) {
-      icon = 'calendar';
-    } else if (ev.message.includes('has started')) {
-      icon = 'caret-right';
-    } else if (ev.message.includes('has begun publishing')) {
-      icon = 'caret-right';
-    } else if (ev.message.includes('publishing release')) {
-      icon = 'calendar';
-    }
-
     return icon
   }
 
