@@ -10,8 +10,8 @@ class TaskList extends Component {
 
     this.state = {
       loading: true,
-      releaseId: props.releaseId,
-      serviceId: props.serivceId,
+      releaseId: props.releaseId | null,
+      serviceId: props.serivceId | null,
       tasks: []
     };
   }
@@ -30,8 +30,8 @@ class TaskList extends Component {
   }
 
   getData() {
-    let _id = this.state.serviceId ? this.state.serviceId : this.state.releaseId;
-    let resource = this.state.serviceId ? '/tasks?task_service=' : '/tasks?release=';
+    let _id = this.props.serviceId ? this.props.serviceId : this.props.releaseId;
+    let resource = this.props.serviceId ? '/tasks?task_service=' : '/tasks?release=';
     axios.get(`${coordinatorApi}${resource}${_id}`)
       .then(resp => {
         let data = resp.data.results;
