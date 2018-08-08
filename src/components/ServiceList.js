@@ -23,7 +23,7 @@ class ServiceList extends Component {
   }
 
   getData() {
-    axios.get(`${coordinatorApi}/task-services`)
+    axios.get(`${coordinatorApi}/task-services?${this.props.filters}`)
       .then(resp => {
         let data = resp.data.results;
         this.setState({data: data, loading: false});
@@ -54,6 +54,7 @@ class ServiceList extends Component {
              description={item.description}
            />
            <Row type="flex" align="middle" gutter={16}>
+             {this.props.noswitch &
              <Col>
               <b>Enabled: </b>
               <Switch
@@ -64,6 +65,7 @@ class ServiceList extends Component {
                 onChange={(enabled) => this.onChange(item.kf_id, enabled)}
                 />
              </Col>
+             }
              <Col>
                <StatusBadge healthStatus={item.health_status} />
              </Col>
