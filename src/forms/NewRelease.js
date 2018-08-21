@@ -5,6 +5,7 @@ import { Alert, Col, Input, Tag, Button, Form, Row, Select, Table } from 'antd';
 import TimeAgo from 'react-timeago'
 import { coordinatorApi } from '../globalConfig';
 import { UserContext } from '../contexts';
+import ServiceList from '../components/ServiceList';
 const FormItem = Form.Item;
 const Option = Select.Option;
 
@@ -145,6 +146,10 @@ class NewReleaseForm extends Component {
               />
             </FormItem>
           </Col>
+        </Row>
+        <Row>
+          <h3>Services to be run for this release</h3>
+          <ServiceList filters='enabled=True' noswitch/>
         </Row>
         {this.state.error && (
           <Alert type='error' message={this.state.error} />
