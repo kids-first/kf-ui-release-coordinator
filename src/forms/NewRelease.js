@@ -34,9 +34,22 @@ class NewReleaseForm extends Component {
         dataIndex: 'name',
         key: 'name',
     }, {
+        title: 'Latest Version',
+        dataIndex: 'version',
+        key: 'version',
+        align: 'center',
+        render: version => {
+          return(
+            <div>
+              {version ? version : 'not released yet'}
+            </div>
+          )
+        }
+    }, {
         title: 'Created At',
         dataIndex: 'created_at',
         key: 'created_at',
+        align: 'right',
         render: time => {
           return (<div><TimeAgo date={time} /></div>)
         }
@@ -60,6 +73,7 @@ class NewReleaseForm extends Component {
           key: s.kf_id,
           kf_id: s.kf_id,
           name: `${s.name}`,
+          version: `${s.version}`,
           created_at: s.created_at
         }));
 
