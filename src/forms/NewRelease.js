@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
 import axios from 'axios';
-import { Alert, Col, Input, Tag, Button, Form, Row, Select, Table } from 'antd';
+import { Alert, Col, Input, Tag, Button, Form, Row, Icon,
+  Checkbox, Select, Table } from 'antd';
 import TimeAgo from 'react-timeago'
 import { coordinatorApi } from '../globalConfig';
 import { UserContext } from '../contexts';
@@ -90,6 +91,7 @@ class NewReleaseForm extends Component {
           description: values.description,
           studies: this.state.selectedRowKeys,
           tags: this.state.tags.map(tag => tag.label),
+          is_major: values.isMajor,
           author: this.props.user.name
         };
         const token = this.props.egoToken;
@@ -143,6 +145,21 @@ class NewReleaseForm extends Component {
                 rules: [{ required: false, message: 'Please provide a title!' }],
               })(
                 <Input.TextArea placeholder="Provide release notes here" />
+              )}
+            </FormItem>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={24}>
+            <FormItem>
+              <Alert message='Major releases involve all publicly released studies and data shape changes'
+                type='warning'
+                showIcon />
+              {getFieldDecorator('isMajor', {
+                valuePropName: 'isMajor',
+                initialValue: false,
+              })(
+                <Checkbox>This is a major release</Checkbox>
               )}
             </FormItem>
           </Col>
