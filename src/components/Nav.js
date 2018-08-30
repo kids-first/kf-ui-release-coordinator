@@ -35,6 +35,12 @@ class Nav extends Component {
             </NavLink>
 					</Menu.Item>
 					<Menu.Item key="5">
+            <NavLink to="/studies">
+              <Icon type="file-text" />
+              <span>Studies</span>
+            </NavLink>
+					</Menu.Item>
+					<Menu.Item key="6">
             <NavLink to="/services">
               <Icon type="tool" />
               <span>Services</span>

@@ -151,11 +151,16 @@ class Release extends Component {
     }
 
     return (
-      <Card title={`Release ${this.props.match.params.releaseId} - ${this.state.release.name}`}>
+      <Card title={`Release ${this.props.match.params.releaseId} - ${this.state.release.version} - ${this.state.release.name}`}>
         <Row>
           <Col>
-            <h3 style={{display: "inline"}}><Icon type='tag' />{this.state.release.name} </h3>
-              <Tag>{this.state.release.kf_id}</Tag>
+            <h2>{this.state.release.name}</h2>
+            <h3 >
+              <Icon type='tag' /> {this.state.release.version}
+            </h3>
+            <h3>
+              <Icon type='tag' /> <Tag>{this.state.release.kf_id}</Tag>
+            </h3>
             <h5><Icon type="calendar" /> Created At: <em>{Date(this.state.release.created_at)}</em></h5>
             <h5><Icon type="user" /> Author: <em>{this.state.release.author}</em></h5>
           </Col>

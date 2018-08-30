@@ -18,6 +18,7 @@ class ReleaseTable extends Component {
         title: 'Report',
         dataIndex: 'kf_id',
         key: 'viewButton',
+        align: 'center',
         render: id => <Link to={`/releases/${id}`}><Button size='small' icon='profile' type='primary'>{id}</Button></Link>
     }, {
         title: 'Author',
@@ -31,14 +32,21 @@ class ReleaseTable extends Component {
           )
         }
     }, {
+        title: 'Version',
+        dataIndex: 'version',
+        key: 'version',
+        align: 'center',
+    }, {
         title: '# Studies',
         dataIndex: 'studies',
         key: 'studies',
+        align: 'center',
         render: studies => <Popover content={studies.join(", ")} title='Studies'>{studies.length} Studies <Icon type='search' /></Popover>
     }, {
         title: 'State',
         dataIndex: 'state',
         key: 'state',
+        align: 'center',
     }, {
         title: 'Created At',
         dataIndex: 'created_at',
