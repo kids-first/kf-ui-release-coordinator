@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Card, Divider, Button, Row, Col, Spin, Icon, Tag, Tooltip
 } from 'antd';
+import ReactMarkdown from 'react-markdown';
 import Progress from '../components/Progress';
 import TaskList from '../components/TaskList';
 import Events from '../components/Events';
@@ -173,9 +174,7 @@ class Release extends Component {
           <br />
 
           <span>Release Notes:</span>
-          <p>
-            {this.state.release.description}
-          </p>
+          <ReactMarkdown source={this.state.release.description} />
         </Row>
         <Divider style={{margin: 0, marginTop: '24px'}}/>
         <Row justify='center' type='flex' style={style}>
