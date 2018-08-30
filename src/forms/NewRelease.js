@@ -5,7 +5,14 @@ import { Alert, Col, Input, Tag, Button, Form, Row, Icon,
   Checkbox, Select, Table } from 'antd';
 import TimeAgo from 'react-timeago'
 import { coordinatorApi } from '../globalConfig';
+// Editor library
+import { Editor } from 'react-draft-wysiwyg';
+import { EditorState, convertToRaw  } from 'draft-js';
+import draftToMarkdown from 'draftjs-to-markdown';
+import '../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+// State stuff
 import { UserContext } from '../contexts';
+
 import ServiceList from '../components/ServiceList';
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -63,6 +70,7 @@ class NewReleaseForm extends Component {
       tags: [],
       options: options,
       error: '',
+      editorState: EditorState.createEmpty(),
       columns: columns
 		}
   }
@@ -85,10 +93,13 @@ class NewReleaseForm extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
+      const rawContentState = convertToRaw(this.state.editorState.getCurrentContent());
+      const markdownNotes = draftToMarkdown(rawContentState);
+
       if (!err) {
         let release = {
           name: values.title,
-          description: values.description,
+          description: markdownNotes,
           studies: this.state.selectedRowKeys,
           tags: this.state.tags.map(tag => tag.label),
           is_major: values.isMajor,
@@ -118,9 +129,25 @@ class NewReleaseForm extends Component {
     this.setState({ selectedRowKeys });
   }
 
+  onEditorStateChange: Function = (editorState) => {
+    this.setState({
+      editorState,
+    });
+  };
+
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { selectedRowKeys } = this.state;
+    const { selectedRowKeys, editorState } = this.state;
+    const editorStyle = {
+        cursor: 'text',
+        maxWidth: '100%',
+        height: 'auto',
+        minHeight: '128px',
+        verticalAlign: 'bottom',
+        transition: 'all .3s, height 0s',
+        overflow: 'auto',
+        resize: 'vertical',
+    }
     const rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,
@@ -144,7 +171,30 @@ class NewReleaseForm extends Component {
               {getFieldDecorator('description', {
                 rules: [{ required: false, message: 'Please provide a title!' }],
               })(
-                <Input.TextArea placeholder="Provide release notes here" />
+                <Editor
+                  wrapperClassName="wrapper-class"
+                  editorClassName="ant-input"
+                  editorStyle={editorStyle}
+                  editorState={editorState}
+                  onEditorStateChange={this.onEditorStateChange}
+                  toolbar={{
+                    options: ['inline', 'blockType', 'list', 'link', 'emoji', 'image', 'history'],
+                    inline: {
+                      inDropdown: false,
+                      options: ['bold', 'italic']
+                    },
+                    blockType: {
+                      inDropdown: true,
+                      options: ['Normal', 'H1', 'H2', 'H3', 'H4', 'Blockquote', 'Code'],
+                    },
+                    emoji: {
+                      emojis: [
+                        '😀','😋', '😦', '👍', '👎', '👌','👻', '🐛','🔥', '🎉', '🎊', '🎁',
+                        '📦', '📊', '📈', '🔇', '🔈', '📅', '✅', '❎', '💯', '❤️'
+                      ],
+                    },
+                  }}
+                />
               )}
             </FormItem>
           </Col>
