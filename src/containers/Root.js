@@ -10,6 +10,7 @@ import Planner from '../views/Planner';
 import Release from '../views/Release';
 import Releases from '../views/Releases';
 import Studies from '../views/Studies';
+import Study from '../views/Study';
 import Services from '../views/Services';
 import Service from '../views/Service';
 import Profile from '../views/Profile';
@@ -67,6 +68,7 @@ class Root extends Component {
                   <Route exact path="/releases" component={Releases} />
                   <Route exact path="/releases/:releaseId" component={Release} />
                   <Route exact path="/studies" component={Studies} />
+                  <Route exact path="/studies/:studyId" component={Study} />
                   <Route exact path="/services" component={Services} />
                   <Route exact path="/service/new" component={NewService} />
                   <Route exact path="/services/:serviceId" component={Service} />
