@@ -65,7 +65,7 @@ class StudyTable extends Component {
   }
 
   fetchStudies() {
-    axios.get(`${coordinatorApi}/studies`)
+    axios.get(`${coordinatorApi}/studies?limit=100`)
       .then(resp => {
         let data = resp.data.results;
         console.log(data);
