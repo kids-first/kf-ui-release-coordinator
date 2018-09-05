@@ -76,7 +76,7 @@ class NewReleaseForm extends Component {
   }
 
   componentDidMount() {
-    axios.get(`${coordinatorApi}/studies`)
+    axios.get(`${coordinatorApi}/studies?limit=100`)
       .then(resp => {
         let studies = resp.data.results.map((s, i) => ({
           key: s.kf_id,
