@@ -62,7 +62,7 @@ class ReleaseTable extends Component {
   }
 
   componentWillMount() {
-    axios.get(`${coordinatorApi}/releases`)
+    axios.get(`${coordinatorApi}/releases?limit=100`)
       .then(resp => {
         let data = resp.data.results;
         this.setState({data: data, loading: false});
