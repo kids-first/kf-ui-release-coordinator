@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Card, Divider, Button, Row, Col, Spin, Icon, Tag, Tooltip
-} from 'antd';
+import { Card, Divider, Row, Col, Spin, Icon, Tag, Tooltip } from 'antd';
+import { Button } from 'kf-uikit';
 import ReactMarkdown from 'react-markdown';
 import Progress from '../components/Progress';
 import TaskList from '../components/TaskList';
@@ -9,7 +9,6 @@ import Events from '../components/Events';
 import ReleaseTimeline from '../components/ReleaseTimeline';
 import { coordinatorApi } from '../globalConfig';
 import { UserContext } from '../contexts';
-const ButtonGroup = Button.Group;
 
 
 class Release extends Component {
@@ -203,32 +202,30 @@ class Release extends Component {
         <Divider style={{margin: 0, marginBottom: '24px'}}/>
 
         <Row gutter={16} type='flex' justify='space-around'>
-          <ButtonGroup>
-            <Button
-              size='large'
-              type='primary'
-              onClick={() => this.publish()}
-              disabled={disabled}>
-              <Icon type='check-circle'/>Publish
-            </Button>
-            <Button
-              size='large'
-              type='primary'
-              disabled={this.state.release.state !== 'staged'}>
-              <Icon type='search'/>Preview in Portal
-            </Button>
-            <Button
-              size='large'
-              type='danger'
-              onClick={() => this.cancel()}
-              loading={this.state.canceling}
-              disabled={this.state.release.state === 'published'
-                        || this.state.release.state === 'publishing'
-                        || this.state.release.state === 'canceled'
-                        || this.state.release.state === 'failed'}>
-              <Icon type='close-circle'/>Cancel
-            </Button>
-          </ButtonGroup>
+          <Button
+            size='large'
+            color='primary'
+            onClick={() => this.publish()}
+            disabled={disabled}>
+            <Icon type='check-circle'/>Publish
+          </Button>
+          <Button
+            size='large'
+            color='primary'
+            disabled={this.state.release.state !== 'staged'}>
+            <Icon type='search'/>Preview in Portal
+          </Button>
+          <Button
+            size='large'
+            color='info'
+            onClick={() => this.cancel()}
+            loading={this.state.canceling}
+            disabled={this.state.release.state === 'published'
+                      || this.state.release.state === 'publishing'
+                      || this.state.release.state === 'canceled'
+                      || this.state.release.state === 'failed'}>
+            <Icon type='close-circle'/>Cancel
+          </Button>
         </Row>
 
         <Divider />

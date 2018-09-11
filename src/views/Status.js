@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { Avatar, Button, Col, Card, Row, Icon, Tooltip } from 'antd';
 import TimeAgo from 'react-timeago'
 import { VictoryChart, VictoryScatter, VictoryAxis, VictoryLegend } from 'victory';
+import { Avatar, Col, Card, Row, Icon, Tooltip } from 'antd';
 import ServiceList from '../components/ServiceList';
 import Events from '../components/Events';
+import { Button } from 'kf-uikit';
 import { coordinatorApi } from '../globalConfig';
 import PublishHistory from '../components/PublishHistory';
 
@@ -162,7 +163,7 @@ class Status extends Component {
         <Row gutter={8} type='flex' style={{margin: '8px 0'}}>
           <Col span={8}>
             <Card style={{height: '230px'}}
-              actions={[<Link to="/service/new"><Button size='large' type='primary'>Register</Button></Link>]}>
+              actions={[<Link to="/service/new"><Button size='large' color='primary'>Register</Button></Link>]}>
               <Meta
                   avatar={<Avatar icon="tool" />}
                   title="Register a Task Service"
@@ -172,7 +173,7 @@ class Status extends Component {
           </Col>
           <Col span={8}>
             <Card style={{height: '230px'}}
-              actions={[<Link to="/planner"><Button style={{width: '100%'}} size='large' type='primary'>Plan</Button></Link>]}>
+              actions={[<Link to="/planner"><Button style={{width: '100%'}} size='large' color='primary'>Plan</Button></Link>]}>
               <Meta
                   avatar={<Avatar icon="calendar" />}
                   title="Plan a Release"
@@ -182,7 +183,7 @@ class Status extends Component {
           </Col>
           <Col span={8}>
             <Card style={{height: '230px'}}
-              actions={[<Link to="/releases"><Button size='large' type='primary'>View</Button></Link>]}>
+              actions={[<Link to="/releases"><Button size='large' color='primary'>View</Button></Link>]}>
               <Meta
                   avatar={<Avatar icon="tag" />}
                   title="View Past Releases"

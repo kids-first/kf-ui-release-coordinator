@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
 import axios from 'axios';
-import { Alert, Col, Input, Tag, Button, Form, Row,
+import { Alert, Col, Input, Tag, Form, Row,
   Checkbox, Select, Table, Modal } from 'antd';
+import { Button } from 'kf-uikit';
 import TimeAgo from 'react-timeago'
 import { compareSemVer } from '../utils';
 import { coordinatorApi } from '../globalConfig';

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
-import { BrowserRouter as Router, Route} from "react-router-dom";
+import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
 import { Layout, Row, Col } from 'antd';
-import Nav from '../components/Nav';
+import { Header, Button } from 'kf-uikit';
 import Login from '../views/Login';
 import Status from '../views/Status';
 import Planner from '../views/Planner';
@@ -15,7 +15,6 @@ import Services from '../views/Services';
 import Service from '../views/Service';
 import Profile from '../views/Profile';
 import NewService from '../views/NewService';
-import UserCard from '../components/UserCard';
 import { UserContext } from '../contexts';
 import { egoApi } from '../globalConfig';
 const { Content } = Layout;
@@ -55,10 +54,18 @@ class Root extends Component {
         <div>
           <Row justify='center' type='flex'>
             { this.state.loggedIn ? (
-            <Layout style={{height:"100vh"}}> 
-              <Nav />
+            <Layout style={{minHeight:"100vh"}}> 
+              <Header
+                buttons={[
+                  <NavLink to="/profile"><Button outline>Profile</Button></NavLink>,
+                  <NavLink to="/"><Button outline>Status</Button></NavLink>,
+                  <NavLink to="/planner"><Button outline>Planner</Button></NavLink>,
+                  <NavLink to="/releases"><Button outline>Relases</Button></NavLink>,
+                  <NavLink to="/studies"><Button outline>Studies</Button></NavLink>,
+                  <NavLink to="/services"><Button outline>Services</Button></NavLink>,
+                ]}
+              />
               <Layout>
-                <UserCard />
                 <Content style={{ minHeight: '100%', margin: '24px 16px 0' }}>
                 <Row justify='center' type='flex'>
                 <Col xl={24} xxl={18}>

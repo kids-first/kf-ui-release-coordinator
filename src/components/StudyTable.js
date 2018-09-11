@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Link, withRouter } from 'react-router-dom';
-import { Button, Divider, Table, Icon, Row } from 'antd';
+import { Divider, Table, Icon, Row } from 'antd';
+import { Button } from 'kf-uikit';
 import { coordinatorApi } from '../globalConfig';
 import { compareSemVer } from '../utils';
 
@@ -20,7 +21,7 @@ class StudyTable extends Component {
         dataIndex: 'kf_id',
         key: 'viewButton',
         align: 'center',
-        render: id => <Link to={`/studies/${id}`}><Button size='small' icon='profile' type='primary'>{id}</Button></Link>
+        render: id => <Link to={`/studies/${id}`}><Button size='small' icon='profile' color='primary'>{id}</Button></Link>
     }, {
         title: 'Visible',
         dataIndex: 'visible',
