@@ -4,6 +4,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { Button, Divider, Table, Icon, Popover, Row } from 'antd';
 import TimeAgo from 'react-timeago'
 import { coordinatorApi } from '../globalConfig';
+import { compareSemVer } from '../utils';
 
 
 class StudyTable extends Component {
@@ -14,6 +15,7 @@ class StudyTable extends Component {
         title: 'Name',
         dataIndex: 'name',
         key: 'name',
+        sorter: (a, b) => a.name.localeCompare(b.name),
     }, {
         title: 'Report',
         dataIndex: 'kf_id',
@@ -37,6 +39,7 @@ class StudyTable extends Component {
         dataIndex: 'version',
         key: 'version',
         align: 'center',
+        sorter: (a, b) => compareSemVer(a.version, b.version),
         render: version => {
           return(
             <div>
@@ -91,6 +94,7 @@ class StudyTable extends Component {
         <Divider />
         <Row>
           <Table
+            pagination={{pageSize: 30}}
             loading={this.state.loading}
             columns={this.state.columns}
             dataSource={this.state.data}
