@@ -36,7 +36,8 @@ class NewReleaseForm extends Component {
         dataIndex: 'kf_id',
         key: 'viewButton',
         render: id => <Tag size='small' icon='profile' type='primary'>{id}</Tag>,
-        width: '10%'
+        width: 100,
+        fixed: 'left',
     }, {
         title: 'Name',
         dataIndex: 'name',
@@ -46,6 +47,7 @@ class NewReleaseForm extends Component {
         dataIndex: 'version',
         key: 'version',
         align: 'center',
+        width: 150,
         render: version => {
           return(
             <div>
@@ -58,6 +60,7 @@ class NewReleaseForm extends Component {
         dataIndex: 'created_at',
         key: 'created_at',
         align: 'right',
+        width: 100,
         render: time => {
           return (<div><TimeAgo date={time} /></div>)
         }
@@ -91,6 +94,7 @@ class NewReleaseForm extends Component {
   }
 
   handleSubmit = (e) => {
+    console.log('SEND');
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       const rawContentState = convertToRaw(this.state.editorState.getCurrentContent());
@@ -223,6 +227,7 @@ class NewReleaseForm extends Component {
                 columns={this.state.columns}
                 dataSource={this.state.data}
                 rowSelection={rowSelection} 
+                scroll={{x: 600, y: 300}}
                 size="small"
               />
             </FormItem>
