@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Alert, Col, Input, Tag, Button, Form, Row, Icon,
   Checkbox, Select, Table } from 'antd';
 import TimeAgo from 'react-timeago'
+import { compareSemVer } from '../utils';
 import { coordinatorApi } from '../globalConfig';
 // Editor library
 import { Editor } from 'react-draft-wysiwyg';
@@ -42,12 +43,15 @@ class NewReleaseForm extends Component {
         title: 'Name',
         dataIndex: 'name',
         key: 'name',
+        sorter: (a, b) => a.name.localeCompare(b.name),
     }, {
         title: 'Latest Version',
         dataIndex: 'version',
         key: 'version',
         align: 'center',
-        width: 150,
+        width: '150px',
+        sorter: (a, b) => compareSemVer(a.version, b.version),
+        defaultSortOrder: 'descend',
         render: version => {
           return(
             <div>
@@ -60,7 +64,7 @@ class NewReleaseForm extends Component {
         dataIndex: 'created_at',
         key: 'created_at',
         align: 'right',
-        width: 100,
+        width: '150px',
         render: time => {
           return (<div><TimeAgo date={time} /></div>)
         }
@@ -223,6 +227,7 @@ class NewReleaseForm extends Component {
             <FormItem label="Studies">
               <Table
                 title={() => 'Select Studies for Release'}
+                pagination={{pageSize: 30}}
                 loading={this.state.loading}
                 columns={this.state.columns}
                 dataSource={this.state.data}

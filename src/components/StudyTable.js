@@ -27,6 +27,7 @@ class StudyTable extends Component {
         dataIndex: 'visible',
         key: 'visible',
         align: 'center',
+        width: '100px',
         render: visible=> {
           return(
             <div>
@@ -40,6 +41,7 @@ class StudyTable extends Component {
         key: 'version',
         align: 'center',
         sorter: (a, b) => compareSemVer(a.version, b.version),
+        width: '150px',
         render: version => {
           return(
             <div>
