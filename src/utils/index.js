@@ -1,4 +1,10 @@
 const compareSemVer = (a, b) => {
+    if (a === null) {
+      return -1;
+    } else if (b === null) {
+       return 1;
+    }
+
     if (a === b) {
        return 0;
     }
