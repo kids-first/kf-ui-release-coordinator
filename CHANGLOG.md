@@ -1,3 +1,19 @@
+# Kids First Release Coordinator UI Release 1.1.1
+
+## Features
+
+### Summary
+
+Feature Emojis: ✨x2 ♻️x1 
+Feature Labels: [feature](https://api.github.com/repos/kids-first/kf-ui-release-coordinator/labels/feature) x2 [bug](https://api.github.com/repos/kids-first/kf-ui-release-coordinator/labels/bug) x1 [refactor](https://api.github.com/repos/kids-first/kf-ui-release-coordinator/labels/refactor) x1
+
+### New features and changes
+
+- (#60) ✨ Add confirmation dialog for new releases - @dankolbman
+- (#59) ♻️ Clean up table sorting - @dankolbman
+- (#58) ✨ Allow tables to be sorted - @dankolbman
+
+
 # Kids First Release Coordinator UI Release 1.1.0
 
 ## Features
