@@ -1,6 +1,10 @@
 <p align="center">
   <img src="public/kf_releasecoordinator.png" alt="Release Coordinator">
 </p>
+<p align="center">
+  <a herf="https://github.com/kids-first/kf-ui-release-coordinator/blob/master/LICENSE"><img src="https://img.shields.io/github/license/kids-first/kf-ui-release-coordinator.svg?style=for-the-badge"></a>
+  <a href="https://circleci.com/gh/kids-first/kf-ui-release-coordinator"><img src="https://img.shields.io/circleci/project/github/kids-first/kf-ui-release-coordinator/master.svg?style=for-the-badge"></a>
+</p>
 
 Kids First Release Coordinator
 ==============================

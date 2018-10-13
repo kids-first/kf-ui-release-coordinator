@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Alert, Avatar, Button, Col, Card, Row, Icon, Tooltip } from 'antd';
-import TimeAgo from 'react-timeago'
 import {
   VictoryChart,
   VictoryAxis,
