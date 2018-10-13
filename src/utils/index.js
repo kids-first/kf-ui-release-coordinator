@@ -17,12 +17,12 @@ const compareSemVer = (a, b) => {
     // loop while the components are equal
     for (var i = 0; i < len; i++) {
         // A bigger than B
-        if (parseInt(a_components[i]) > parseInt(b_components[i])) {
+        if (parseInt(a_components[i], 10) > parseInt(b_components[i], 10)) {
             return 1;
         }
 
         // B bigger than A
-        if (parseInt(a_components[i]) < parseInt(b_components[i])) {
+        if (parseInt(a_components[i], 10) < parseInt(b_components[i], 10)) {
             return -1;
         }
     }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
 import axios from 'axios';
-import { Alert, Col, Input, Tag, Button, Form, Row, Icon,
+import { Alert, Col, Input, Tag, Button, Form, Row,
   Checkbox, Select, Table, Modal } from 'antd';
 import TimeAgo from 'react-timeago'
 import { compareSemVer } from '../utils';

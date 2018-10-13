@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { Alert, Avatar, Button, Col, Card, Row, Icon, Tooltip } from 'antd';
+import { Avatar, Button, Col, Card, Row, Icon, Tooltip } from 'antd';
 import TimeAgo from 'react-timeago'
-import { VictoryChart, VictoryScatter, VictoryAxis, VictoryLine, VictoryLegend } from 'victory';
+import { VictoryChart, VictoryScatter, VictoryAxis, VictoryLegend } from 'victory';
 import ServiceList from '../components/ServiceList';
 import Events from '../components/Events';
 import { coordinatorApi } from '../globalConfig';
@@ -131,7 +131,7 @@ class Status extends Component {
                     }}
                   />
 
-               <VictoryLegend x={125} y={50}
+               <VictoryLegend
                   orientation="horizontal"
                   centerTitle
                   x={0}

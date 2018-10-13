@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Button, Card, Divider, Icon, Row, Col, Spin, Tag, Steps } from 'antd';
-import TaskList from '../components/TaskList';
+import { Card, Divider, Icon, Row, Col, Spin, Tag, Steps } from 'antd';
 import { coordinatorApi } from '../globalConfig';
 import { UserContext } from '../contexts';
 
@@ -40,7 +39,7 @@ class Study extends Component {
     }
 
     const releases = this.state.releases.map((release, i) => (
-          <Step title={`${release.version} - ${release.kf_id} ${i == 0 ? '- latest' : ''}`}
+          <Step title={`${release.version} - ${release.kf_id} ${i === 0 ? '- latest' : ''}`}
             key={i}
             description={Date(release.created_at)}/>
     ));
@@ -92,4 +91,4 @@ function StudyProps(props) {
   )
 };
 
-export default Study;
+export default StudyProps;

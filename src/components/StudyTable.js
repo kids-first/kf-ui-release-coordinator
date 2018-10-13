@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Link, withRouter } from 'react-router-dom';
-import { Button, Divider, Table, Icon, Popover, Row } from 'antd';
-import TimeAgo from 'react-timeago'
+import { Button, Divider, Table, Icon, Row } from 'antd';
 import { coordinatorApi } from '../globalConfig';
 import { compareSemVer } from '../utils';
 
@@ -60,7 +59,6 @@ class StudyTable extends Component {
     this.setState({loading: true});
     axios.post(`${coordinatorApi}/studies/sync`)
       .then(resp => {
-        let data = resp.data;
         this.fetchStudies();
       });
   }
