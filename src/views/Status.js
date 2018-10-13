@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { Alert, Avatar, Button, Col, Card, Row, Icon, Tooltip } from 'antd';
+import { Alert, Avatar, Button, Col, Card, Tag, Row, Icon, Tooltip } from 'antd';
+import TimeAgo from 'react-timeago'
 import ServiceList from '../components/ServiceList';
 import Events from '../components/Events';
 import { coordinatorApi } from '../globalConfig';
@@ -14,12 +15,14 @@ class Status extends Component {
     super(props);
 
     this.state = {
-      events: []
+      events: [],
+      latest: {},
     };
   }
 
   componentDidMount() {
     this.mounted = true;
+    this.getLatest();
     this.timer = setTimeout(() => this.getData(), 1000);
   }
 
@@ -27,6 +30,16 @@ class Status extends Component {
   componentWillUnmount() {
     this.mounted = false
     clearTimeout(this.timer);
+  }
+
+  getLatest() {
+    axios.get(`${coordinatorApi}/releases?state=published&limit=1`)
+         .then((releases) => {
+            this.setState({
+              latest: releases.data.results[0],
+            });
+         })
+         .catch(error => console.log(error));
   }
 
   getData() {
@@ -44,16 +57,35 @@ class Status extends Component {
   }
 
   render() {
+    const cardStyle = {
+      textAlign: 'center',
+    };
     return (
       <div>
         <Row gutter={8} style={{margin: '8px 0'}}>
-        <Col>
-          <Alert
-            message="System Status"
-            description="Ready to create new release"
-            type="success"
-            showIcon
-          />
+        <Col span={12}>
+          <Card style={cardStyle}>
+            <h3>Latest Publication</h3>
+            {this.state.latest ? (
+              <div>
+                <h1>{this.state.latest.version}</h1>
+                <h4><TimeAgo date={this.state.latest.created_at}/></h4>
+                <Link to={`/releases/${this.state.latest.kf_id}`}>
+                  <Button size='small' icon='profile' type='primary'>
+                    {this.state.latest.kf_id}
+                  </Button>
+                </Link>
+              </div>
+            ) : (
+              <h2>No Releases Published Yet</h2>
+            )}
+          </Card>
+        </Col>
+        <Col span={12}>
+          <Card style={cardStyle}>
+            <h4>Release At</h4>
+            <h2>4 Oct</h2>
+          </Card>
         </Col>
         </Row>
         <Row gutter={8} type='flex' style={{margin: '8px 0'}}>
