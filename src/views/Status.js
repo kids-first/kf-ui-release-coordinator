@@ -2,9 +2,12 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Alert, Avatar, Button, Col, Card, Row, Icon, Tooltip } from 'antd';
+import TimeAgo from 'react-timeago'
+import { VictoryChart, VictoryScatter, VictoryAxis, VictoryLine, VictoryLegend } from 'victory';
 import ServiceList from '../components/ServiceList';
 import Events from '../components/Events';
 import { coordinatorApi } from '../globalConfig';
+import PublishHistory from '../components/PublishHistory';
 
 const { Meta } = Card;
 
@@ -14,12 +17,15 @@ class Status extends Component {
     super(props);
 
     this.state = {
-      events: []
+      events: [],
+      latestPublish: {},
+      latest: [],
     };
   }
 
   componentDidMount() {
     this.mounted = true;
+    this.getLatest();
     this.timer = setTimeout(() => this.getData(), 1000);
   }
 
@@ -27,6 +33,24 @@ class Status extends Component {
   componentWillUnmount() {
     this.mounted = false
     clearTimeout(this.timer);
+  }
+
+  getLatest() {
+    axios.get(`${coordinatorApi}/releases?state=published&limit=1`)
+         .then((releases) => {
+            this.setState({
+              latestPublish: releases.data.results.length > 0 ? releases.data.results[0] : {},
+            });
+         })
+         .catch(error => console.log(error));
+
+    axios.get(`${coordinatorApi}/releases?limit=8`)
+         .then((releases) => {
+            this.setState({
+              latest: releases.data.results,
+            });
+         })
+         .catch(error => console.log(error));
   }
 
   getData() {
@@ -44,17 +68,97 @@ class Status extends Component {
   }
 
   render() {
+    const cardStyle = {
+      textAlign: 'center',
+    };
+    const latestPublish =  this.state.latestPublish;
+    const latestData = this.state.latest ? this.state.latest.map((r) => (
+      {x: r.kf_id, y: 0, size:5, label: r.version, state: r.state}
+    )) : null;
+
+    const stateColors = {
+      'waiting': '#f5f7b7',
+      'initialized': '#f5f7b7',
+      'running': '#caf7b7',
+      'staged': '#66fc25',
+      'publishing': '#91d5ff',
+      'published': '#1890ff',
+      'canceled': '#dbdbdb',
+      'failed': '#fc4a3a',
+    };
     return (
       <div>
-        <Row gutter={8} style={{margin: '8px 0'}}>
-        <Col>
-          <Alert
-            message="System Status"
-            description="Ready to create new release"
-            type="success"
-            showIcon
-          />
-        </Col>
+        <Row gutter={8} type='flex' style={{margin: '8px 0'}}>
+          <Col span={24}>
+            <Card style={cardStyle}>
+              <h3>Latest Publication</h3>
+              {latestPublish ? (
+                <div>
+                  <h1>{latestPublish.version}</h1>
+                  <h4><TimeAgo date={latestPublish.created_at}/></h4>
+                  <Link to={`/releases/${latestPublish.kf_id}`}>
+                    <Button size='small' icon='profile' type='primary'>
+                      {latestPublish.kf_id}
+                    </Button>
+                  </Link>
+                </div>
+              ) : (
+                <h2>No Releases Published Yet</h2>
+              )}
+            </Card>
+          </Col>
+        </Row>
+				{latestData.length > 0 && (
+        <Row gutter={8} type='flex' style={{margin: '8px 0'}}>
+          <Col span={24}>
+            <Card title='Latest Releases'>
+              <VictoryChart
+								height={70}
+								padding={{top: 20, bottom: 20, left: 50, right: 50}}
+              >
+                <VictoryAxis independentAxis style={{tickLabels: {fontSize: 6, padding: 10}}}/>
+                <VictoryScatter
+                    data={latestData.reverse()}
+                    style={{
+                      data: {
+                        fill: (d) => stateColors[d.state],
+                        strokeWidth: 3
+                      },
+											labels: {
+												padding: 10,
+                        fontSize: 14
+											}
+                    }}
+                  />
+
+               <VictoryLegend x={125} y={50}
+                  orientation="horizontal"
+                  centerTitle
+                  x={0}
+                  y={0}
+                  gutter={0}
+                  style={{
+                    border: { stroke: "none" },
+                    title: { fontSize: 8 },
+                    labels: { fontSize: 6 },
+                  }}
+                  borderPadding={0}
+                  padding={{ top: 0, bottom: 0 }}
+                  data={Object.keys(stateColors).map((v) => (
+                        {name: v, symbol: { fill: stateColors[v] }}
+                  ))}
+                />
+              </VictoryChart>
+            </Card>
+          </Col>
+        </Row>
+				)}
+        <Row gutter={8} type='flex' style={{margin: '8px 0'}}>
+          <Col span={24}>
+            <Card title='Publish History'>
+              <PublishHistory />
+            </Card>
+          </Col>
         </Row>
         <Row gutter={8} type='flex' style={{margin: '8px 0'}}>
           <Col span={8}>
