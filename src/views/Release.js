@@ -6,6 +6,7 @@ import ReactMarkdown from 'react-markdown';
 import Progress from '../components/Progress';
 import TaskList from '../components/TaskList';
 import Events from '../components/Events';
+import ReleaseTimeline from '../components/ReleaseTimeline';
 import { coordinatorApi } from '../globalConfig';
 import { UserContext } from '../contexts';
 const ButtonGroup = Button.Group;
@@ -186,6 +187,18 @@ class Release extends Component {
             <h2><Icon type="warning"/> {this.state.release.state}</h2>
           )}
         </Row>
+
+        <Divider style={{margin: 0, marginBottom: '24px'}}/>
+
+        <Row gutter={16} type='flex' justify='space-around'>
+          <Col span={24}>
+            <center><h3>Release Timeline</h3></center>
+            <ReleaseTimeline
+              releaseId={this.state.release.kf_id}
+              releaseState={this.state.release.state} />
+          </Col>
+        </Row>
+
 
         <Divider style={{margin: 0, marginBottom: '24px'}}/>
 

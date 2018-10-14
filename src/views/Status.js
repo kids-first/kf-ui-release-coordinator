@@ -77,9 +77,8 @@ class Status extends Component {
     )) : null;
 
     const stateColors = {
-      'waiting': '#f5f7b7',
-      'initialized': '#f5f7b7',
-      'running': '#caf7b7',
+      'initialized': '#fce220',
+      'running': '#fa8c16',
       'staged': '#66fc25',
       'publishing': '#91d5ff',
       'published': '#1890ff',
