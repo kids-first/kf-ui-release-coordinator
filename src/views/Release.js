@@ -8,6 +8,7 @@ import TaskList from '../components/TaskList';
 import Events from '../components/Events';
 import ReleaseTimeline from '../components/ReleaseTimeline';
 import MarkdownEditor from '../components/MarkdownEditor';
+import ReleaseReportSummary from '../components/ReleaseReportSummary';
 import { coordinatorApi } from '../globalConfig';
 import { UserContext } from '../contexts';
 
@@ -199,6 +200,14 @@ class Release extends Component {
           )}
         </Row>
 
+        <Divider style={{margin: 0, marginTop: '24px', marginBottom: '24px'}}/>
+
+        {['staged', 'publishing', 'published', 'canceled', 'failed'].includes(this.state.release.state) && (
+          <ReleaseReportSummary
+                releaseId={this.state.release.kf_id}
+                releaseState={this.state.release.state} />
+        )}
+
         <Divider style={{margin: 0, marginTop: '24px'}}/>
 
         <h1>Release Notes</h1>
@@ -222,6 +231,7 @@ class Release extends Component {
         </Row>
 
         <Divider style={{margin: 0, marginBottom: '24px'}}/>
+
 
         <Row gutter={16} type='flex' justify='space-around'>
           <Button
