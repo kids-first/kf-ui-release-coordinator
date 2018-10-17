@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
-import { Layout, Row, Col } from 'antd';
+import { Layout, Icon } from 'antd';
 import { Header, Button } from 'kf-uikit';
 import Login from '../views/Login';
 import Status from '../views/Status';
@@ -56,12 +56,16 @@ class Root extends Component {
             <Layout style={{minHeight:"100vh"}}> 
               <Header
                 buttons={[
-                  <NavLink to="/profile"><Button outline>Profile</Button></NavLink>,
                   <NavLink to="/"><Button outline>Status</Button></NavLink>,
                   <NavLink to="/planner"><Button outline>Planner</Button></NavLink>,
                   <NavLink to="/releases"><Button outline>Releases</Button></NavLink>,
                   <NavLink to="/studies"><Button outline>Studies</Button></NavLink>,
                   <NavLink to="/services"><Button outline>Services</Button></NavLink>,
+                  <NavLink to="/profile">
+                    <Button outline color='secondary'>
+                      {this.state.user.name} <Icon type='user' />
+                    </Button>
+                  </NavLink>,
                 ]}
               />
               <Layout>

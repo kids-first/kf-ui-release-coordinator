@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
-import { Card, Row, Divider } from 'antd';
-import { Button } from 'kf-uikit';
+import { Row, Divider } from 'antd';
+import { Button, Card } from 'kf-uikit';
 import { coordinatorApi } from '../globalConfig';
 import ServiceList from '../components/ServiceList';
 

@@ -3,7 +3,6 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import TimeAgo from 'react-timeago'
 import { VictoryChart, VictoryScatter, VictoryAxis, VictoryLegend } from 'victory';
-import { Avatar, Icon, Tooltip } from 'antd';
 import ServiceList from '../components/ServiceList';
 import Events from '../components/Events';
 import { Button, Card } from 'kf-uikit';
@@ -68,10 +67,6 @@ class Status extends Component {
   }
 
   render() {
-    const cardStyle = {
-      textAlign: 'center',
-      width: '100%',
-    };
     const latestPublish =  this.state.latestPublish;
     const latestData = this.state.latest ? this.state.latest.map((r) => (
       {x: r.kf_id, y: 0, size:5, label: r.version, state: r.state}

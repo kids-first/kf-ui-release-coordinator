@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card } from 'antd';
+import { Card } from 'kf-uikit';
 import StudyTable from '../components/StudyTable';
 
 

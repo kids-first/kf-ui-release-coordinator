@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Card, Divider, Row, Col, Spin, Icon, Tag, Tooltip } from 'antd';
-import { Button } from 'kf-uikit';
+import { Divider, Row, Col, Spin, Icon, Tag, Tooltip } from 'antd';
+import { Button, Card } from 'kf-uikit';
 import ReactMarkdown from 'react-markdown';
 import Progress from '../components/Progress';
 import TaskList from '../components/TaskList';

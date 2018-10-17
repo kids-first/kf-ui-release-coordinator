@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, Divider, Icon} from 'antd';
-import { Button } from 'kf-uikit';
+import { Divider, Icon} from 'antd';
+import { Button, Card } from 'kf-uikit';
 import ReleaseTable from '../components/ReleaseTable';
 
 

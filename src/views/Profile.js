@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
 import axios from 'axios';
-import { Card, Icon, Tag } from 'antd';
+import { Tag } from 'antd';
+import { Card } from 'kf-uikit';
 import { dataserviceApi } from '../globalConfig';
 import { UserContext } from '../contexts';
 
@@ -36,9 +37,7 @@ class Profile extends Component {
       <Tag key={i} color='green'>{t}</Tag>
     ));
     return (
-        <Card>
-          <h3><Icon type='user' /> {this.props.user.name}</h3>
-
+        <Card title={this.props.user.name}>
           <h5>Roles: {roles}</h5>
           <h5>Groups: {groups}</h5>
         </Card>
