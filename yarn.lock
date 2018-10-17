@@ -4535,7 +4535,7 @@ jwt-decode@^2.2.0:
 
 "kf-uikit@https://s3.amazonaws.com/kf-uikit-qa-bucket/branch/master/kf-uikit/kf-uikit.tar.gz":
   version "0.0.0"
-  resolved "https://s3.amazonaws.com/kf-uikit-qa-bucket/branch/master/kf-uikit/kf-uikit.tar.gz#83231a019009e2dfb7eeaec990ce3a44aa922a97"
+  resolved "https://s3.amazonaws.com/kf-uikit-qa-bucket/branch/master/kf-uikit/kf-uikit.tar.gz#b1325d7d1a6e36cb9c11966f04f460e81c4b258b"
   dependencies:
     chroma-js "^1.3.7"
     classnames "^2.2.6"

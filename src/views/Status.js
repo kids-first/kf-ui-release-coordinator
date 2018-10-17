@@ -3,14 +3,13 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import TimeAgo from 'react-timeago'
 import { VictoryChart, VictoryScatter, VictoryAxis, VictoryLegend } from 'victory';
-import { Avatar, Col, Card, Row, Icon, Tooltip } from 'antd';
+import { Avatar, Icon, Tooltip } from 'antd';
 import ServiceList from '../components/ServiceList';
 import Events from '../components/Events';
-import { Button } from 'kf-uikit';
+import { Button, Card } from 'kf-uikit';
 import { coordinatorApi } from '../globalConfig';
 import PublishHistory from '../components/PublishHistory';
 
-const { Meta } = Card;
 
 class Status extends Component {
 
@@ -71,6 +70,7 @@ class Status extends Component {
   render() {
     const cardStyle = {
       textAlign: 'center',
+      width: '100%',
     };
     const latestPublish =  this.state.latestPublish;
     const latestData = this.state.latest ? this.state.latest.map((r) => (
@@ -88,132 +88,93 @@ class Status extends Component {
     };
     return (
       <div>
-        <Row gutter={8} type='flex' style={{margin: '8px 0'}}>
-          <Col span={24}>
-            <Card style={cardStyle}>
-              <h3>Latest Publication</h3>
-              {latestPublish ? (
-                <div>
-                  <h1>{latestPublish.version}</h1>
-                  <h4><TimeAgo date={latestPublish.created_at}/></h4>
-                  <Link to={`/releases/${latestPublish.kf_id}`}>
-                    <Button size='small' icon='profile' type='primary'>
-                      {latestPublish.kf_id}
-                    </Button>
-                  </Link>
-                </div>
-              ) : (
-                <h2>No Releases Published Yet</h2>
-              )}
-            </Card>
-          </Col>
-        </Row>
+        <Card title='Latest Publication' style={{maxWidth: '100%'}}>
+          {latestPublish ? (
+            <center>
+              <h2 style={{margin: 0}}>{latestPublish.name}</h2>
+              <h1 style={{margin: 0}}>{latestPublish.version}</h1>
+              <h4 style={{margin: 0}}><TimeAgo date={latestPublish.created_at}/></h4>
+              <Link to={`/releases/${latestPublish.kf_id}`}>
+                <Button size='small' icon='profile' type='primary'>
+                  {latestPublish.kf_id}
+                </Button>
+              </Link>
+            </center>
+          ) : (
+            <h2>No Releases Published Yet</h2>
+          )}
+        </Card>
 				{latestData.length > 0 && (
-        <Row gutter={8} type='flex' style={{margin: '8px 0'}}>
-          <Col span={24}>
-            <Card title='Latest Releases'>
-              <VictoryChart
-								height={70}
-								padding={{top: 20, bottom: 20, left: 50, right: 50}}
-              >
-                <VictoryAxis independentAxis style={{tickLabels: {fontSize: 6, padding: 10}}}/>
-                <VictoryScatter
-                    data={latestData.reverse()}
-                    style={{
-                      data: {
-                        fill: (d) => stateColors[d.state],
-                        strokeWidth: 3
-                      },
-											labels: {
-												padding: 10,
-                        fontSize: 14
-											}
-                    }}
-                  />
-
-               <VictoryLegend
-                  orientation="horizontal"
-                  centerTitle
-                  x={0}
-                  y={0}
-                  gutter={0}
+          <Card title='Latest Releases'>
+            <VictoryChart
+              height={70}
+              padding={{top: 20, bottom: 20, left: 50, right: 50}}
+            >
+              <VictoryAxis independentAxis style={{tickLabels: {fontSize: 6, padding: 10}}}/>
+              <VictoryScatter
+                  data={latestData.reverse()}
                   style={{
-                    border: { stroke: "none" },
-                    title: { fontSize: 8 },
-                    labels: { fontSize: 6 },
+                    data: {
+                      fill: (d) => stateColors[d.state],
+                      strokeWidth: 3
+                    },
+                    labels: {
+                      padding: 10,
+                      fontSize: 14
+                    }
                   }}
-                  borderPadding={0}
-                  padding={{ top: 0, bottom: 0 }}
-                  data={Object.keys(stateColors).map((v) => (
-                        {name: v, symbol: { fill: stateColors[v] }}
-                  ))}
                 />
-              </VictoryChart>
-            </Card>
-          </Col>
-        </Row>
+
+             <VictoryLegend
+                orientation="horizontal"
+                centerTitle
+                x={0}
+                y={0}
+                gutter={0}
+                style={{
+                  border: { stroke: "none" },
+                  title: { fontSize: 8 },
+                  labels: { fontSize: 6 },
+                }}
+                borderPadding={0}
+                padding={{ top: 0, bottom: 0 }}
+                data={Object.keys(stateColors).map((v) => (
+                      {name: v, symbol: { fill: stateColors[v] }}
+                ))}
+              />
+            </VictoryChart>
+          </Card>
 				)}
-        <Row gutter={8} type='flex' style={{margin: '8px 0'}}>
-          <Col span={24}>
-            <Card title='Publish History'>
-              <PublishHistory />
-            </Card>
-          </Col>
-        </Row>
-        <Row gutter={8} type='flex' style={{margin: '8px 0'}}>
-          <Col span={8}>
-            <Card style={{height: '230px'}}
-              actions={[<Link to="/service/new"><Button size='large' color='primary'>Register</Button></Link>]}>
-              <Meta
-                  avatar={<Avatar icon="tool" />}
-                  title="Register a Task Service"
-                  description="Task Services follow a common HTTP API spec to process work for a release. Register an API endpoint for a task service below."
-              />
-            </Card>
-          </Col>
-          <Col span={8}>
-            <Card style={{height: '230px'}}
-              actions={[<Link to="/planner"><Button style={{width: '100%'}} size='large' color='primary'>Plan</Button></Link>]}>
-              <Meta
-                  avatar={<Avatar icon="calendar" />}
-                  title="Plan a Release"
-                  description="Select studies to be released and submit for review and processing."
-              />
-            </Card>
-          </Col>
-          <Col span={8}>
-            <Card style={{height: '230px'}}
-              actions={[<Link to="/releases"><Button size='large' color='primary'>View</Button></Link>]}>
-              <Meta
-                  avatar={<Avatar icon="tag" />}
-                  title="View Past Releases"
-                  description="View a history and status of past releases."
-              />
-            </Card>
-          </Col>
-        </Row>
-        <Row gutter={8} type='flex' style={{margin: '8px 0'}}>
-          <Col span={12}>
-            <Card>
-              <h2>Task Service Status <span />
-              <Tooltip title="Current state of Task Services">
-                <Icon type='info-circle-o' />
-              </Tooltip>
-              </h2>
-              <ServiceList />
-            </Card>
-          </Col>
-          <Col span={12}>
-            <Card>
-              <h2>Recent Release Events <span />
-              <Tooltip title="Latest events reported to the Coordinator">
-                <Icon type='info-circle-o' />
-              </Tooltip>
-              </h2>
-              <Events events={this.state.events} />
-            </Card>
-          </Col>
-        </Row>
+        <Card title='Publish History'>
+          <PublishHistory />
+        </Card>
+
+        <section className='flex justify-around'>
+          <Card title='Register a Task Service' className='max-w-sm'>
+            <p>
+            Task Services follow a common HTTP API spec to process work for a release. Register an API endpoint for a task service below.
+            </p>
+            <center><Link to="/service/new"><Button size='small' color='secondary'>Register</Button></Link></center>
+          </Card>
+          <Card title='Plan a Release' className='max-w-sm'>
+            <p>
+            Select studies to be released and submit for review and processing.
+            </p>
+            <center><Link to="/planner"><Button size='small' color='secondary'>Plan</Button></Link></center>
+          </Card>
+          <Card title='View Past Releases' className='max-w-sm'>
+            <p>
+            View a history and status of past releases.
+            </p>
+            <center><Link to="/releases"><Button size='small' color='secondary'>View</Button></Link></center>
+          </Card>
+        </section>
+        <Card title='Task Service Status'>
+          <ServiceList />
+        </Card>
+        <Card title='Recent Release Events'>
+          <Events events={this.state.events} />
+        </Card>
       </div>
     );
   }

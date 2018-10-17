@@ -52,7 +52,6 @@ class Root extends Component {
       <Router>
         <UserContext.Provider value={this.state}>
         <div>
-          <Row justify='center' type='flex'>
             { this.state.loggedIn ? (
             <Layout style={{minHeight:"100vh"}}> 
               <Header
@@ -60,15 +59,13 @@ class Root extends Component {
                   <NavLink to="/profile"><Button outline>Profile</Button></NavLink>,
                   <NavLink to="/"><Button outline>Status</Button></NavLink>,
                   <NavLink to="/planner"><Button outline>Planner</Button></NavLink>,
-                  <NavLink to="/releases"><Button outline>Relases</Button></NavLink>,
+                  <NavLink to="/releases"><Button outline>Releases</Button></NavLink>,
                   <NavLink to="/studies"><Button outline>Studies</Button></NavLink>,
                   <NavLink to="/services"><Button outline>Services</Button></NavLink>,
                 ]}
               />
               <Layout>
-                <Content style={{ minHeight: '100%', margin: '24px 16px 0' }}>
-                <Row justify='center' type='flex'>
-                <Col xl={24} xxl={18}>
+                <Content style={{ minHeight: '100%', margin: '16px 16px 0' }}>
                   <Route exact path="/" component={Status} />
                   <Route path="/planner" component={Planner} />
                   <Route exact path="/profile" component={Profile} />
@@ -79,15 +76,12 @@ class Root extends Component {
                   <Route exact path="/services" component={Services} />
                   <Route exact path="/service/new" component={NewService} />
                   <Route exact path="/services/:serviceId" component={Service} />
-                </Col>
-                </Row>
                 </Content>
               </Layout>
             </Layout>
             ) : (
               <Login />
             )}
-          </Row>
         </div>
         </UserContext.Provider>
       </Router>
