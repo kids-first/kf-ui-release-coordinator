@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Link, withRouter } from 'react-router-dom';
-import { List, Avatar, Col, Row, Icon, Switch } from 'antd';
+import { List, Avatar, Icon, Switch } from 'antd';
 import StatusBadge from '../components/StatusBadge';
 import { UserContext } from '../contexts';
 import { coordinatorApi } from '../globalConfig';
@@ -42,19 +42,26 @@ class ServiceList extends Component {
   }
 
   render() {
+
+    const statusColors = {
+      'ok': '#87d068',
+      'bad': '#f50',
+    };
+
     return (
       <List
        itemLayout="horizontal"
        dataSource={this.state.data}
        renderItem={item => (
          <List.Item>
-           <List.Item.Meta
-             avatar={<Avatar icon="tool"/>}
-             title={<Link to={`/services/${item.kf_id}`}>{item.name}</Link>}
-             description={item.description}
-           />
-           <Row type="flex" align="middle" gutter={16}>
-             <Col>
+           <div className='w-full'>
+             <Avatar
+               icon={item.health_status === 'ok' ? 'check' : 'warning'}
+               style={{backgroundColor: statusColors[item.health_status], marginRight: '5px'}}/>
+             <Link to={`/services/${item.kf_id}`}>{item.name}</Link> - 
+             {item.description}
+           </div>
+           <div className='w-48'>
               <b>Enabled: </b>
               <Switch
                 checkedChildren={<Icon type="check" />}
@@ -63,11 +70,7 @@ class ServiceList extends Component {
                 loading={this.state.loading}
                 onChange={(enabled) => this.onChange(item.kf_id, enabled)}
                 />
-             </Col>
-             <Col>
-               <StatusBadge healthStatus={item.health_status} />
-             </Col>
-           </Row>
+           </div>
         </List.Item>
       )}
       />
