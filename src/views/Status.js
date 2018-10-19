@@ -144,24 +144,24 @@ class Status extends Component {
           <PublishHistory />
         </Card>
 
-        <section className='flex justify-around'>
-          <Card title='Register a Task Service' className='max-w-sm'>
+        <section className='flex justify-around' style={{minHeight: '200px'}}>
+          <Card title='Register a Task Service' className='max-w-sm relative min-h-full'>
             <p>
             Task Services follow a common HTTP API spec to process work for a release. Register an API endpoint for a task service below.
             </p>
-            <center><Link to="/service/new"><Button size='small' color='secondary'>Register</Button></Link></center>
+            <center className='absolute w-full p-4' style={{bottom: 0}}><Link to="/service/new"><Button color='primary'>Register</Button></Link></center>
           </Card>
-          <Card title='Plan a Release' className='max-w-sm'>
+          <Card title='Plan a Release' className='max-w-sm relative  min-h-full'>
             <p>
             Select studies to be released and submit for review and processing.
             </p>
-            <center><Link to="/planner"><Button size='small' color='secondary'>Plan</Button></Link></center>
+            <center className='absolute w-full p-4' style={{bottom: 0}}><Link to="/planner"><Button color='primary'>Plan</Button></Link></center>
           </Card>
-          <Card title='View Past Releases' className='max-w-sm'>
+          <Card title='View Past Releases' className='max-w-sm relative min-h-full'>
             <p>
             View a history and status of past releases.
             </p>
-            <center><Link to="/releases"><Button size='small' color='secondary'>View</Button></Link></center>
+            <center className='absolute w-full p-4' style={{bottom:0}}><Link to="/releases"><Button color='primary'>View</Button></Link></center>
           </Card>
         </section>
         <Card title='Task Service Status'>
