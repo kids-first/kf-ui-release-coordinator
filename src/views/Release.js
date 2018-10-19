@@ -153,29 +153,20 @@ class Release extends Component {
 
     return (
       <Card title={`Release ${this.props.match.params.releaseId} - ${this.state.release.version} - ${this.state.release.name}`}>
-        <Row>
-          <Col>
-            <h2>{this.state.release.name}</h2>
-            <h3 >
-              <Icon type='tag' /> {this.state.release.version}
-            </h3>
-            <h3>
-              <Icon type='tag' /> <Tag>{this.state.release.kf_id}</Tag>
-            </h3>
-            <h5><Icon type="calendar" /> Created At: <em>{Date(this.state.release.created_at)}</em></h5>
-            <h5><Icon type="user" /> Author: <em>{this.state.release.author}</em></h5>
-          </Col>
+        <Icon type='tag' /> <Tag>{this.state.release.version}</Tag>
+        <Icon type='tag' /> <Tag>{this.state.release.kf_id}</Tag>
+        <h5 style={{margin: 0}}><Icon type="calendar" /> Created At: <em>{Date(this.state.release.created_at)}</em></h5>
+        <h5 style={{margin: 0}}><Icon type="user" /> Author: <em>{this.state.release.author}</em></h5>
+        <span>Studies in this Release:</span>
+        <br />
+        {this.state.release.studies.map((r, i) => (
+          <Tag key={i}>{r}</Tag>
+        ))}
 
-          <span>Studies in this Release:</span>
-          <br />
-          {this.state.release.studies.map((r, i) => (
-            <Tag key={i}>{r}</Tag>
-          ))}
-          <br />
+        <h1>Release Notes</h1>
+        <hr />
+        <ReactMarkdown source={this.state.release.description} />
 
-          <span>Release Notes:</span>
-          <ReactMarkdown source={this.state.release.description} />
-        </Row>
         <Divider style={{margin: 0, marginTop: '24px'}}/>
         <Row justify='center' type='flex' style={style}>
           {this.state.release.state !== 'canceled' && this.state.release.state !== 'failed' ? (
