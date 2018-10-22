@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Link, withRouter } from 'react-router-dom';
-import { Button, Table, Icon, Popover } from 'antd';
+import { Table, Icon, Popover } from 'antd';
+import { Button } from 'kf-uikit';
 import TimeAgo from 'react-timeago'
 import { coordinatorApi } from '../globalConfig';
 import { compareSemVer } from '../utils';

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
 import axios from 'axios';
-import { Alert, Col, Input, Button, Form, Row, Icon } from 'antd';
+import { Alert, Col, Input, Form, Row, Icon } from 'antd';
+import { Button } from 'kf-uikit';
 import { coordinatorApi } from '../globalConfig';
 import { UserContext } from '../contexts';
 const FormItem = Form.Item;
@@ -87,7 +88,7 @@ class NewServiceForm extends Component {
           <Alert type='error' message={this.state.error} />
         )}
         <FormItem>
-          <Button type="primary" loading={this.state.loading} htmlType="submit">
+          <Button color="primary" loading={this.state.loading} type="submit">
             Register
           </Button>
         </FormItem>

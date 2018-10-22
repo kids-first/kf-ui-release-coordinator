@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Card, Divider, Button, Row, Col, Spin, Icon, Tag, Tooltip
-} from 'antd';
+import { Divider, Row, Col, Spin, Icon, Tag, Tooltip } from 'antd';
+import { Button, Card } from 'kf-uikit';
 import ReactMarkdown from 'react-markdown';
 import Progress from '../components/Progress';
 import TaskList from '../components/TaskList';
@@ -9,7 +9,6 @@ import Events from '../components/Events';
 import ReleaseTimeline from '../components/ReleaseTimeline';
 import { coordinatorApi } from '../globalConfig';
 import { UserContext } from '../contexts';
-const ButtonGroup = Button.Group;
 
 
 class Release extends Component {
@@ -154,29 +153,20 @@ class Release extends Component {
 
     return (
       <Card title={`Release ${this.props.match.params.releaseId} - ${this.state.release.version} - ${this.state.release.name}`}>
-        <Row>
-          <Col>
-            <h2>{this.state.release.name}</h2>
-            <h3 >
-              <Icon type='tag' /> {this.state.release.version}
-            </h3>
-            <h3>
-              <Icon type='tag' /> <Tag>{this.state.release.kf_id}</Tag>
-            </h3>
-            <h5><Icon type="calendar" /> Created At: <em>{Date(this.state.release.created_at)}</em></h5>
-            <h5><Icon type="user" /> Author: <em>{this.state.release.author}</em></h5>
-          </Col>
+        <Icon type='tag' /> <Tag>{this.state.release.version}</Tag>
+        <Icon type='tag' /> <Tag>{this.state.release.kf_id}</Tag>
+        <h5 style={{margin: 0}}><Icon type="calendar" /> Created At: <em>{Date(this.state.release.created_at)}</em></h5>
+        <h5 style={{margin: 0}}><Icon type="user" /> Author: <em>{this.state.release.author}</em></h5>
+        <span>Studies in this Release:</span>
+        <br />
+        {this.state.release.studies.map((r, i) => (
+          <Tag key={i}>{r}</Tag>
+        ))}
 
-          <span>Studies in this Release:</span>
-          <br />
-          {this.state.release.studies.map((r, i) => (
-            <Tag key={i}>{r}</Tag>
-          ))}
-          <br />
+        <h1>Release Notes</h1>
+        <hr />
+        <ReactMarkdown source={this.state.release.description} />
 
-          <span>Release Notes:</span>
-          <ReactMarkdown source={this.state.release.description} />
-        </Row>
         <Divider style={{margin: 0, marginTop: '24px'}}/>
         <Row justify='center' type='flex' style={style}>
           {this.state.release.state !== 'canceled' && this.state.release.state !== 'failed' ? (
@@ -203,32 +193,30 @@ class Release extends Component {
         <Divider style={{margin: 0, marginBottom: '24px'}}/>
 
         <Row gutter={16} type='flex' justify='space-around'>
-          <ButtonGroup>
-            <Button
-              size='large'
-              type='primary'
-              onClick={() => this.publish()}
-              disabled={disabled}>
-              <Icon type='check-circle'/>Publish
-            </Button>
-            <Button
-              size='large'
-              type='primary'
-              disabled={this.state.release.state !== 'staged'}>
-              <Icon type='search'/>Preview in Portal
-            </Button>
-            <Button
-              size='large'
-              type='danger'
-              onClick={() => this.cancel()}
-              loading={this.state.canceling}
-              disabled={this.state.release.state === 'published'
-                        || this.state.release.state === 'publishing'
-                        || this.state.release.state === 'canceled'
-                        || this.state.release.state === 'failed'}>
-              <Icon type='close-circle'/>Cancel
-            </Button>
-          </ButtonGroup>
+          <Button
+            size='large'
+            color='primary'
+            onClick={() => this.publish()}
+            disabled={disabled}>
+            <Icon type='check-circle'/>Publish
+          </Button>
+          <Button
+            size='large'
+            color='primary'
+            disabled={this.state.release.state !== 'staged'}>
+            <Icon type='search'/>Preview in Portal
+          </Button>
+          <Button
+            size='large'
+            color='info'
+            onClick={() => this.cancel()}
+            loading={this.state.canceling}
+            disabled={this.state.release.state === 'published'
+                      || this.state.release.state === 'publishing'
+                      || this.state.release.state === 'canceled'
+                      || this.state.release.state === 'failed'}>
+            <Icon type='close-circle'/>Cancel
+          </Button>
         </Row>
 
         <Divider />

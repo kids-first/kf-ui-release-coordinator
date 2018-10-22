@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Card, Divider, Icon, Row, Col, Spin, Tag, Steps } from 'antd';
+import { Divider, Icon, Row, Col, Spin, Tag, Steps } from 'antd';
+import { Card } from 'kf-uikit';
 import { coordinatorApi } from '../globalConfig';
 import { UserContext } from '../contexts';
 

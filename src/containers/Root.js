@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
-import { BrowserRouter as Router, Route} from "react-router-dom";
-import { Layout, Row, Col } from 'antd';
-import Nav from '../components/Nav';
+import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
+import { Layout, Icon } from 'antd';
+import { Header, Button } from 'kf-uikit';
 import Login from '../views/Login';
 import Status from '../views/Status';
 import Planner from '../views/Planner';
@@ -15,7 +15,6 @@ import Services from '../views/Services';
 import Service from '../views/Service';
 import Profile from '../views/Profile';
 import NewService from '../views/NewService';
-import UserCard from '../components/UserCard';
 import { UserContext } from '../contexts';
 import { egoApi } from '../globalConfig';
 const { Content } = Layout;
@@ -53,15 +52,23 @@ class Root extends Component {
       <Router>
         <UserContext.Provider value={this.state}>
         <div>
-          <Row justify='center' type='flex'>
             { this.state.loggedIn ? (
-            <Layout style={{height:"100vh"}}> 
-              <Nav />
-              <Layout>
-                <UserCard />
-                <Content style={{ minHeight: '100%', margin: '24px 16px 0' }}>
-                <Row justify='center' type='flex'>
-                <Col xl={24} xxl={18}>
+            <Layout style={{minHeight:"100vh"}}> 
+              <Header
+                buttons={[
+                  <NavLink to="/"><Button outline>Status</Button></NavLink>,
+                  <NavLink to="/planner"><Button outline>Planner</Button></NavLink>,
+                  <NavLink to="/releases"><Button outline>Releases</Button></NavLink>,
+                  <NavLink to="/studies"><Button outline>Studies</Button></NavLink>,
+                  <NavLink to="/services"><Button outline>Services</Button></NavLink>,
+                  <NavLink to="/profile">
+                    <Button outline color='secondary'>
+                      {this.state.user.name} <Icon type='user' />
+                    </Button>
+                  </NavLink>,
+                ]}
+              />
+                <Content style={{ minHeight: '100%', width: '100%', maxWidth: '1080px', margin: 'auto' }}>
                   <Route exact path="/" component={Status} />
                   <Route path="/planner" component={Planner} />
                   <Route exact path="/profile" component={Profile} />
@@ -72,15 +79,11 @@ class Root extends Component {
                   <Route exact path="/services" component={Services} />
                   <Route exact path="/service/new" component={NewService} />
                   <Route exact path="/services/:serviceId" component={Service} />
-                </Col>
-                </Row>
                 </Content>
-              </Layout>
             </Layout>
             ) : (
               <Login />
             )}
-          </Row>
         </div>
         </UserContext.Provider>
       </Router>
