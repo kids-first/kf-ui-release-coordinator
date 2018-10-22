@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Divider, Row, Col, Spin, Icon, Tag, Tooltip } from 'antd';
 import { Button, Card } from 'kf-uikit';
-import ReactMarkdown from 'react-markdown';
 import Progress from '../components/Progress';
 import TaskList from '../components/TaskList';
 import Events from '../components/Events';
 import ReleaseTimeline from '../components/ReleaseTimeline';
+import MarkdownEditor from '../components/MarkdownEditor';
 import { coordinatorApi } from '../globalConfig';
 import { UserContext } from '../contexts';
 
@@ -125,7 +125,7 @@ class Release extends Component {
   }
 
   render() {
-    let disabled = (this.state.publishing || this.state.release.state !== 'staged') ? 'disabled' : '';
+    let disabled = (this.state.publishing || this.state.release.state !== 'staged') ? true : false;
 
     let style = {
       marginTop: '24px',
@@ -163,11 +163,8 @@ class Release extends Component {
           <Tag key={i}>{r}</Tag>
         ))}
 
-        <h1>Release Notes</h1>
-        <hr />
-        <ReactMarkdown source={this.state.release.description} />
+        <Divider style={{margin: 0, marginBottom: '24px', marginTop: '24px'}}/>
 
-        <Divider style={{margin: 0, marginTop: '24px'}}/>
         <Row justify='center' type='flex' style={style}>
           {this.state.release.state !== 'canceled' && this.state.release.state !== 'failed' ? (
             <Col span={22} >
@@ -178,7 +175,15 @@ class Release extends Component {
           )}
         </Row>
 
-        <Divider style={{margin: 0, marginBottom: '24px'}}/>
+        <Divider style={{margin: 0, marginTop: '24px'}}/>
+
+        <h1>Release Notes</h1>
+        <MarkdownEditor
+          kfId={this.state.release.kf_id}
+          description={this.state.release.description}
+        />
+
+        <Divider style={{margin: 0, marginTop: '24px'}}/>
 
         <Row gutter={16} type='flex' justify='space-around'>
           <Col span={24}>
@@ -188,7 +193,6 @@ class Release extends Component {
               releaseState={this.state.release.state} />
           </Col>
         </Row>
-
 
         <Divider style={{margin: 0, marginBottom: '24px'}}/>
 
