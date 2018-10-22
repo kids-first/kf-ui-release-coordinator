@@ -8,45 +8,107 @@ import { coordinatorApi } from '../globalConfig';
 import { UserContext } from '../contexts';
 
 import { Editor } from 'react-draft-wysiwyg';
-import { EditorState, convertToRaw  } from 'draft-js';
+import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import draftToMarkdown from 'draftjs-to-markdown';
 import '../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 
+/**
+ * Displays a release description or note. If there is no description or note,
+ * a button prompting for one will be dislpayed, and will show a text area
+ * when clicked.
+ *
+ * The editor may either be type `release` or `release-note`. A release will
+ * always have a kfId and a description, though it may be blank. A blank
+ * description will be treated the same as an absent note.
+ * A note may not yet exist, but the button to add a new one will be displayed.
+ * Adding a new note will POST it to /release-notes and store the newly
+ * assigned kfId. Future changes to the note will PATCH the existing kfId.
+ **/
 class MarkdownEditor extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
+      releaseId: this.props.releaseId,
+      studyId: this.props.studyId,
+      noteId: this.props.noteId,
       description: this.props.description,
       loading: false,
       updating: false,
       toggling: false,
       saving: false,
-      editorState: EditorState.createEmpty(),
+      editorState: EditorState.createWithContent(
+          ContentState.createFromText(this.props.description || '')),
     };
   }
 
   /* Saves or creates the description or note */
   save() {
-    // PATCH description
-    const rawState = convertToRaw(this.state.editorState.getCurrentContent());
-    const mdText = draftToMarkdown(rawState);
+    this.setState({saving: true});
+
+    // PATCH the release description
+    if (this.props.type === 'release') {
+      this.updateRelease();
+    } else if (this.props.type === 'release-note') {
+      if (this.state.noteId === null) {
+        this.newNote();
+      } else {
+        this.updateNote();
+      }
+    }
 
     this.editToggle();
 
-    this.setState({saving: true, description: mdText});
+  }
 
-    const url = `${coordinatorApi}/${this.props.type}s/${this.props.kfId}`
-
+  /* POSTs a new note for a given study and release */
+  newNote() {
+    const rawState = convertToRaw(this.state.editorState.getCurrentContent());
+    const mdText = draftToMarkdown(rawState);
     const token = this.props.egoToken;
     const header = {headers: {Authorization: 'Bearer '+token}};
-    axios.patch(url, {description: mdText}, header)
+    const url = `${coordinatorApi}/release-notes`;
+    axios.post(url,
+        {
+          release: `${coordinatorApi}/releases/${this.state.releaseId}`,
+          study: `${coordinatorApi}/studies/${this.state.studyId}`,
+          description: mdText,
+          author: this.props.user.name
+        }, header)
       .then(resp => {
-        this.setState({saving: false});
+        console.log(resp);
+        this.setState({saving: false, description: mdText});
       })
       .catch(error => console.log(error));
+  }
 
+  /* PATCHes an existing note's description */
+  updateNote() {
+    const rawState = convertToRaw(this.state.editorState.getCurrentContent());
+    const mdText = draftToMarkdown(rawState);
+    const token = this.props.egoToken;
+    const header = {headers: {Authorization: 'Bearer '+token}};
+    const url = `${coordinatorApi}/release-notes/${this.state.noteId}`
+    axios.patch(url, {description: mdText}, header)
+      .then(resp => {
+        this.setState({saving: false, description: mdText});
+      })
+      .catch(error => console.log(error));
+  }
+
+  /* PATCHes an existing release's description */
+  updateRelease() {
+    const rawState = convertToRaw(this.state.editorState.getCurrentContent());
+    const mdText = draftToMarkdown(rawState);
+    const token = this.props.egoToken;
+    const header = {headers: {Authorization: 'Bearer '+token}};
+    const url = `${coordinatorApi}/releases/${this.state.releaseId}`
+    axios.patch(url, {description: mdText}, header)
+      .then(resp => {
+        this.setState({saving: false, description: mdText});
+      })
+      .catch(error => console.log(error));
   }
 
   /* Switches between viewing description and editor */
@@ -119,7 +181,13 @@ class MarkdownEditor extends Component {
           <center>
             <Button
               onClick={() => this.editToggle()}
-            ><Icon type='form' /> Add a release summary</Button>
+            ><Icon type='form' />
+            {this.props.type === 'release' ? (
+                ' Add a release summary'
+            ) : ( 
+              ` Add a new note for ${this.state.studyId}`
+            )}
+            </Button>
           </center>
         )
       }
@@ -186,13 +254,17 @@ class MarkdownEditor extends Component {
 }
 
 MarkdownEditor.propTypes = {
-  kfId: propTypes.string,
+  releaseId: propTypes.string,
+  studyId: propTypes.string,
+  noteId: propTypes.string,
   type: propTypes.oneOf(['release', 'release-note']),
   description: propTypes.string,
 }
 
 MarkdownEditor.defaultProps = {
-  kfId: null,
+  releaseId: null,
+  studyId: null,
+  noteId: null,
   type: 'release',
   description: null,
 }
