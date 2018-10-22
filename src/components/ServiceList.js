@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Link, withRouter } from 'react-router-dom';
 import { List, Avatar, Icon, Switch } from 'antd';
-import StatusBadge from '../components/StatusBadge';
 import { UserContext } from '../contexts';
 import { coordinatorApi } from '../globalConfig';
 
