@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Divider, Row, Col, Spin, Icon, Tag, Tooltip } from 'antd';
 import { Button, Card } from 'kf-uikit';
-import ReactMarkdown from 'react-markdown';
+import TimeAgo from 'react-timeago'
 import Progress from '../components/Progress';
 import TaskList from '../components/TaskList';
 import Events from '../components/Events';
 import ReleaseTimeline from '../components/ReleaseTimeline';
+import MarkdownEditor from '../components/MarkdownEditor';
 import { coordinatorApi } from '../globalConfig';
 import { UserContext } from '../contexts';
 
@@ -125,7 +126,11 @@ class Release extends Component {
   }
 
   render() {
-    let disabled = (this.state.publishing || this.state.release.state !== 'staged') ? 'disabled' : '';
+    if (this.state.loading) {
+      return (<Spin tip='loading...'><Card style={{height: 300}}></Card></Spin>)
+    }
+
+    let disabled = (this.state.publishing || this.state.release.state !== 'staged') ? true : false;
 
     let style = {
       marginTop: '24px',
@@ -147,9 +152,28 @@ class Release extends Component {
       style.marginBottom = '4px';
     }
 
-    if (this.state.loading) {
-      return (<Spin tip='loading...'><Card style={{height: 300}}></Card></Spin>)
-    }
+    const notesByStudy = new Map();
+    this.state.release.notes.forEach((note) => {
+        const key = note.study.slice(-11);
+        const collection = notesByStudy.get(key);
+        if (!collection) {
+            notesByStudy.set(key, [note]);
+        } else {
+            collection.push(note);
+        }
+    });
+
+    const notes = this.state.release.studies.map((study, i) => {
+      const notes = notesByStudy.get(study);
+      return (
+        <StudyNotes
+          key={i}
+          notes={notes}
+          studyId={study}
+          releaseId={this.state.release.kf_id}
+        />
+      )
+    });
 
     return (
       <Card title={`Release ${this.props.match.params.releaseId} - ${this.state.release.version} - ${this.state.release.name}`}>
@@ -163,11 +187,8 @@ class Release extends Component {
           <Tag key={i}>{r}</Tag>
         ))}
 
-        <h1>Release Notes</h1>
-        <hr />
-        <ReactMarkdown source={this.state.release.description} />
+        <Divider style={{margin: 0, marginBottom: '24px', marginTop: '24px'}}/>
 
-        <Divider style={{margin: 0, marginTop: '24px'}}/>
         <Row justify='center' type='flex' style={style}>
           {this.state.release.state !== 'canceled' && this.state.release.state !== 'failed' ? (
             <Col span={22} >
@@ -178,7 +199,18 @@ class Release extends Component {
           )}
         </Row>
 
-        <Divider style={{margin: 0, marginBottom: '24px'}}/>
+        <Divider style={{margin: 0, marginTop: '24px'}}/>
+
+        <h1>Release Notes</h1>
+        <MarkdownEditor
+          type='release'
+          releaseId={this.state.release.kf_id}
+          description={this.state.release.description}
+        />
+
+        {notes}
+
+        <Divider style={{margin: 0, marginTop: '24px'}}/>
 
         <Row gutter={16} type='flex' justify='space-around'>
           <Col span={24}>
@@ -188,7 +220,6 @@ class Release extends Component {
               releaseState={this.state.release.state} />
           </Col>
         </Row>
-
 
         <Divider style={{margin: 0, marginBottom: '24px'}}/>
 
@@ -244,6 +275,81 @@ class Release extends Component {
     );
   }
 }
+
+/**
+ * Grouping of notes for a single study
+ **/
+class StudyNotes extends Component {
+  
+  render() {
+
+    // If no notes, only offer option for a new note
+    if (!this.props.notes) {
+      return (
+        <div>
+          <hr className='p-0'/>
+          <h3 className='m-0'>Notes for {this.props.studyId}</h3>
+          <StudyNote
+            type='release-note'
+            studyId={this.props.studyId}
+            releaseId={this.props.releaseId}
+          />
+        </div>
+      )
+    }
+    const notes = this.props.notes.map((note, i) => (
+      <article>
+        <em>Note by {note.author} <TimeAgo date={note.created_at} /></em>
+        <hr />
+        <StudyNote
+          key={i}
+          type='release-note'
+          author={note.author}
+          createdAt={note.created_at}
+          studyId={note.study_id}
+          releaseId={note.release_id}
+          description={note.description}
+          noteId={note.kf_id}
+        />
+      </article>
+    ));
+
+    return (
+      <div>
+        <hr className='p-0'/>
+        <h3 className='m-0'>Notes for {this.props.studyId}</h3>
+        {notes}
+
+        <StudyNote
+          type='release-note'
+          studyId={this.props.studyId}
+          releaseId={this.props.releaseId}
+        />
+      </div>
+    )
+
+  }
+}
+
+/**
+ * A single study note
+ **/
+class StudyNote extends Component {
+  render() {
+    return (
+      <div>
+        <MarkdownEditor
+          type='release-note'
+          releaseId={this.props.releaseId}
+          studyId={this.props.studyId}
+          noteId={this.props.noteId}
+          description={this.props.description}
+        />
+      </div>
+    )
+  }
+}
+
 
 function ReleaseProps(props) {
   return (

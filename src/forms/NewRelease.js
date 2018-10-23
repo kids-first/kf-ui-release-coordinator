@@ -7,11 +7,6 @@ import { Button } from 'kf-uikit';
 import TimeAgo from 'react-timeago'
 import { compareSemVer } from '../utils';
 import { coordinatorApi } from '../globalConfig';
-// Editor library
-import { Editor } from 'react-draft-wysiwyg';
-import { EditorState, convertToRaw  } from 'draft-js';
-import draftToMarkdown from 'draftjs-to-markdown';
-import '../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 // State stuff
 import { UserContext } from '../contexts';
 
@@ -79,7 +74,6 @@ class NewReleaseForm extends Component {
       tags: [],
       options: options,
       error: '',
-      editorState: EditorState.createEmpty(),
       columns: columns
 		}
   }
@@ -102,13 +96,10 @@ class NewReleaseForm extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
-      const rawContentState = convertToRaw(this.state.editorState.getCurrentContent());
-      const markdownNotes = draftToMarkdown(rawContentState);
-
       if (err === null) {
         let release = {
           name: values.title,
-          description: markdownNotes,
+          description: '',
           studies: this.state.selectedRowKeys,
           tags: this.state.tags.map(tag => tag.label),
           is_major: values.isMajor,
@@ -129,8 +120,6 @@ class NewReleaseForm extends Component {
           This <b>will not</b> affect any public facing data until it is reviewed and published.
           </p>
         );
-        console.log(this.state.data);
-        console.log(studyByKfId);
         confirm({
           title: 'Submit release for processing',
           content: text,
@@ -170,25 +159,9 @@ class NewReleaseForm extends Component {
     this.setState({ selectedRowKeys });
   }
 
-  onEditorStateChange: Function = (editorState) => {
-    this.setState({
-      editorState,
-    });
-  };
-
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { selectedRowKeys, editorState } = this.state;
-    const editorStyle = {
-        cursor: 'text',
-        maxWidth: '100%',
-        height: 'auto',
-        minHeight: '128px',
-        verticalAlign: 'bottom',
-        transition: 'all .3s, height 0s',
-        overflow: 'auto',
-        resize: 'vertical',
-    }
+    const { selectedRowKeys } = this.state;
     const rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,
@@ -202,40 +175,6 @@ class NewReleaseForm extends Component {
                 rules: [{ required: true, message: 'Please provide a title!' }],
               })(
                 <Input placeholder="Title" />
-              )}
-            </FormItem>
-          </Col>
-        </Row>
-        <Row>
-          <Col span={24}>
-            <FormItem label="Release Notes">
-              {getFieldDecorator('description', {
-                rules: [{ required: false, message: 'Please provide a title!' }],
-              })(
-                <Editor
-                  wrapperClassName="wrapper-class"
-                  editorClassName="ant-input"
-                  editorStyle={editorStyle}
-                  editorState={editorState}
-                  onEditorStateChange={this.onEditorStateChange}
-                  toolbar={{
-                    options: ['inline', 'blockType', 'list', 'link', 'emoji', 'image', 'history'],
-                    inline: {
-                      inDropdown: false,
-                      options: ['bold', 'italic']
-                    },
-                    blockType: {
-                      inDropdown: true,
-                      options: ['Normal', 'H1', 'H2', 'H3', 'H4', 'Blockquote', 'Code'],
-                    },
-                    emoji: {
-                      emojis: [
-                        '😀','😋', '😦', '👍', '👎', '👌','👻', '🐛','🔥', '🎉', '🎊', '🎁',
-                        '📦', '📊', '📈', '🔇', '🔈', '📅', '✅', '❎', '💯', '❤️'
-                      ],
-                    },
-                  }}
-                />
               )}
             </FormItem>
           </Col>
