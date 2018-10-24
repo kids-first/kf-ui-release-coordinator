@@ -1,3 +1,22 @@
+# Kids First Release Coordinator UI Release 1.2.0
+
+## Features
+
+### Summary
+
+Feature Emojis: ✨x3 ♻️x1 🎨x1 🚨x1
+Feature Labels: [feature](https://api.github.com/repos/kids-first/kf-ui-release-coordinator/labels/feature) x4 [refactor](https://api.github.com/repos/kids-first/kf-ui-release-coordinator/labels/refactor) x3 [devops](https://api.github.com/repos/kids-first/kf-ui-release-coordinator/labels/devops) x1
+
+### New features and changes
+
+- (#70) ✨ Add report summary to release page - @dankolbman
+- (#81) ♻️ Add release description form to release page - @dankolbman
+- (#80) 🎨 Migration to Kids First design system - @dankolbman
+- (#69) ✨ Add release timeline to release pages - @dankolbman
+- (#68) 🚨 Linting and CI - @dankolbman
+- (#67) ✨ Status rehash - @dankolbman
+
+
 # Kids First Release Coordinator UI Release 1.1.1
 
 ## Features
