@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Row, Col, Card } from 'antd';
+import { Row, Col, Card, Table } from 'antd';
 import { reportsApi } from '../globalConfig';
 import { UserContext } from '../contexts';
 
@@ -13,7 +13,23 @@ class ReleaseReportSummary extends Component {
       loading: true,
       release: {},
       found: null,
-      report: {}
+      report: {},
+      columns: [{
+        title: 'Study',
+        dataIndex: 'study_id',
+      }, {
+        title: 'Participants',
+        dataIndex: 'participants',
+        align: 'center',
+      }, {
+        title: 'Biospecimens',
+        dataIndex: 'biospecimens',
+        align: 'center',
+      }, {
+        title: 'Genomic Files',
+        dataIndex: 'genomic-files',
+        align: 'center',
+      }],
     };
     this.getData();
     this.mounted = false
@@ -83,6 +99,19 @@ class ReleaseReportSummary extends Component {
               </center>
             </Card>
           </Col>
+        </Row>
+        <Row type='flex' justify='center'>
+          <hr />
+          <h3 className='mt-0 mb-4'>Study Summary</h3>
+        </Row>
+        <Row>
+          <Table
+            bordered={true}
+            pagination={false}
+            columns={this.state.columns}
+            dataSource={Object.values(this.state.report.study_summaries)}
+            size='middle'
+          />
         </Row>
       </div>
     );
