@@ -33,37 +33,41 @@ class NewReleaseForm extends Component {
         title: 'Id',
         dataIndex: 'kf_id',
         key: 'viewButton',
+        width: 150,
         render: id => <Tag size='small' icon='profile' type='primary'>{id}</Tag>,
-        width: 100,
-        fixed: 'left',
     }, {
         title: 'Name',
         dataIndex: 'name',
         key: 'name',
+        width: 400,
         sorter: (a, b) => a.name.localeCompare(b.name),
     }, {
-        title: 'Latest Version',
-        dataIndex: 'version',
-        key: 'version',
-        align: 'center',
-        width: '150px',
+        title: 'Last Published Date',
+        dataIndex: 'last_pub_date',
+        key: 'pub_date',
+        align: 'right',
+        width: 200,
+        render: date => {
+          return(
+            <div>
+              {date ? <TimeAgo date={date} /> : 'not published yet'}
+            </div>
+          )
+        }
+    }, {
+        title: 'Last Published Version',
+        dataIndex: 'last_pub_version',
+        key: 'last_pub_version',
+        align: 'right',
+        width: 200,
         sorter: (a, b) => compareSemVer(a.version, b.version),
         defaultSortOrder: 'descend',
         render: version => {
           return(
             <div>
-              {version ? version : 'not released yet'}
+              {version ? version : 'not published yet'}
             </div>
           )
-        }
-    }, {
-        title: 'Created At',
-        dataIndex: 'created_at',
-        key: 'created_at',
-        align: 'right',
-        width: '150px',
-        render: time => {
-          return (<div><TimeAgo date={time} /></div>)
         }
     }];
 
@@ -85,7 +89,8 @@ class NewReleaseForm extends Component {
           key: s.kf_id,
           kf_id: s.kf_id,
           name: `${s.name}`,
-          version: `${s.version}`,
+          last_pub_version: `${s.last_pub_version}`,
+          last_pub_date: `${s.last_pub_date}`,
           created_at: s.created_at
         }));
 
