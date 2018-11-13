@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link, withRouter } from 'react-router-dom';
 import { Divider, Table, Icon, Row } from 'antd';
 import { Button } from 'kf-uikit';
+import TimeAgo from 'react-timeago'
 import { coordinatorApi } from '../globalConfig';
 import { compareSemVer } from '../utils';
 
@@ -36,16 +37,30 @@ class StudyTable extends Component {
           )
         }
     }, {
-        title: 'Latest Version',
-        dataIndex: 'version',
-        key: 'version',
-        align: 'center',
+        title: 'Last Published Date',
+        dataIndex: 'last_pub_date',
+        key: 'pub_date',
+        align: 'right',
+        width: 200,
+        render: date => {
+          return(
+            <div>
+              {date ? <TimeAgo date={date} /> : 'not published yet'}
+            </div>
+          )
+        }
+    }, {
+        title: 'Last Published Version',
+        dataIndex: 'last_pub_version',
+        key: 'last_pub_version',
+        align: 'right',
+        width: 200,
         sorter: (a, b) => compareSemVer(a.version, b.version),
-        width: '150px',
+        defaultSortOrder: 'descend',
         render: version => {
           return(
             <div>
-              {version ? version : 'not released yet'}
+              {version ? version : 'not published yet'}
             </div>
           )
         }
