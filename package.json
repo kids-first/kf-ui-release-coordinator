@@ -9,7 +9,7 @@
     "draftjs-to-markdown": "^0.5.1",
     "gapi": "^0.0.3",
     "jwt-decode": "^2.2.0",
-    "kf-uikit": "https://s3.amazonaws.com/kf-uikit-qa-bucket/branch/master/kf-uikit/kf-uikit.tar.gz",
+    "kf-uikit": "https://s3.amazonaws.com/kf-uikit-prd-bucket/0.1.0/kf-uikit/kf-uikit.tar.gz",
     "react": "^16.4.0",
     "react-app-rewire-less": "2.1.1",
     "react-app-rewired": "^1.5.2",
