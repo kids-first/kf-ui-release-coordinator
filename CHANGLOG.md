@@ -1,3 +1,18 @@
+# Kf Ui Release Coordinator Release 1.2.1
+
+## Features
+
+### Summary
+
+Feature Emojis: ⬆️x1 🎨x1
+Feature Labels: [refactor](https://api.github.com/repos/kids-first/kf-ui-release-coordinator/labels/refactor) x1 [feature](https://api.github.com/repos/kids-first/kf-ui-release-coordinator/labels/feature) x1
+
+### New features and changes
+
+- (#86) ⬆️ Bump ui kit version - @dankolbman
+- (#85) 🎨 Add last published fields to study tables - @dankolbman
+
+
 # Kids First Release Coordinator UI Release 1.2.0
 
 ## Features
