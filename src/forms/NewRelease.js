@@ -217,7 +217,7 @@ class NewReleaseForm extends Component {
         </Row>
         <Row>
           <h3>Services to be run for this release</h3>
-          <ServiceList filters='enabled=True' noswitch/>
+          <ServiceList noswitch/>
         </Row>
         {this.state.error && (
           <Alert type='error' message={this.state.error} />
