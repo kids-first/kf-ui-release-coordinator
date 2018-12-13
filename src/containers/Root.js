@@ -16,7 +16,7 @@ import Service from '../views/Service';
 import Profile from '../views/Profile';
 import NewService from '../views/NewService';
 import { UserContext } from '../contexts';
-import { egoApi } from '../globalConfig';
+import { syslevel, egoApi } from '../globalConfig';
 const { Content } = Layout;
 
 class Root extends Component {
@@ -54,6 +54,14 @@ class Root extends Component {
         <div>
             { this.state.loggedIn ? (
             <Layout style={{minHeight:"100vh"}}> 
+              {syslevel !== 'prd' && (
+                <center>
+                  <h3 className={`m-0 text-white ${syslevel === 'qa' ? 'bg-orange' : 'bg-pink'}`}>
+                    FYI, you're currently in the <b>{syslevel}</b> environment.
+                    Anything you do here will not be made public!
+                  </h3>
+                </center>
+              )}
               <Header
                 buttons={[
                   <NavLink to="/"><Button outline>Status</Button></NavLink>,
