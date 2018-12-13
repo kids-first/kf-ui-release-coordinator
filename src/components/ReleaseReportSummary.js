@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import axios from 'axios';
-import { Row, Col, Card, Table } from 'antd';
+import { Row } from 'antd';
 import { reportsApi } from '../globalConfig';
 import { UserContext } from '../contexts';
+import { Stats } from 'kf-uikit';
 
 
 class ReleaseReportSummary extends Component {
@@ -14,22 +15,6 @@ class ReleaseReportSummary extends Component {
       release: {},
       found: null,
       report: {},
-      columns: [{
-        title: 'Study',
-        dataIndex: 'study_id',
-      }, {
-        title: 'Participants',
-        dataIndex: 'participants',
-        align: 'center',
-      }, {
-        title: 'Biospecimens',
-        dataIndex: 'biospecimens',
-        align: 'center',
-      }, {
-        title: 'Genomic Files',
-        dataIndex: 'genomic-files',
-        align: 'center',
-      }],
     };
     this.getData();
     this.mounted = false
@@ -66,52 +51,35 @@ class ReleaseReportSummary extends Component {
         <Row type='flex' justify='center'>
           <h3 className='mt-0 mb-4'>Release Summary</h3>
         </Row>
-        <Row gutter={16} type='flex' justify='center'>
-          <Col span={6}>
-            <Card>
-              <center>
-                <h3 className='m-0'>Studies</h3>
-                <h3 className='m-0'>{this.state.report.studies}</h3>
-              </center>
-            </Card>
-          </Col>
-          <Col span={6}>
-            <Card>
-              <center>
-                <h3 className='m-0'>Participants</h3>
-                <h3 className='m-0'>{this.state.report.participants}</h3>
-              </center>
-            </Card>
-          </Col>
-          <Col span={6}>
-            <Card>
-              <center>
-                <h3 className='m-0'>Biospecimens</h3>
-                <h3 className='m-0'>{this.state.report.biospecimens}</h3>
-              </center>
-            </Card>
-          </Col>
-          <Col span={6}>
-            <Card>
-              <center>
-                <h3 className='m-0'>Genomic Files</h3>
-                <h3 className='m-0'>{this.state.report['genomic-files']}</h3>
-              </center>
-            </Card>
-          </Col>
-        </Row>
+        <Stats
+          stats={[
+            {icon: 'study', label: 'Studies', metric: this.state.report.studies},
+            {icon: 'participant', label: 'Partiicpants', metric: this.state.report.participants},
+            {icon: 'family', label: 'Families', metric: this.state.report.families},
+            {icon: 'biospecimen', label: 'Biospecimens', metric: this.state.report.biospecimens},
+            {icon: 'file', label: 'Files', metric: this.state.report['genomic-files']},
+          ]}
+        />
         <Row type='flex' justify='center'>
           <hr />
-          <h3 className='mt-0 mb-4'>Study Summary</h3>
+          <h3 className='mt-0 mb-4'>Study Summaries</h3>
         </Row>
         <Row>
-          <Table
-            bordered={true}
-            pagination={false}
-            columns={this.state.columns}
-            dataSource={Object.values(this.state.report.study_summaries)}
-            size='middle'
-          />
+        {Object.values(this.state.report.study_summaries).map((study, i) => (
+          <Fragment>
+            <Row type='flex' justify='center'>
+              <h4 className='mt-0 mb-4'>{Object.keys(this.state.report.study_summaries)[i]}</h4>
+            </Row>
+            <Stats
+              stats={[
+                {icon: 'participant', label: 'Partiicpants', metric: study.participants},
+                {icon: 'family', label: 'Families', metric: study.families},
+                {icon: 'biospecimen', label: 'Biospecimens', metric: study.biospecimens},
+                {icon: 'file', label: 'Files', metric: study['genomic-files']},
+              ]}
+            />
+          </Fragment>
+        ))}
         </Row>
       </div>
     );
