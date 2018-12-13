@@ -11,12 +11,12 @@ Kids First Release Coordinator
 
 ## Development
 
-Modify copy `.env.template` to `.env.local` and modify the variables
-accordingly. It is suggested to use [kf-data-stack](https://github.com/kids-first/kf-data-stack)
-to get up and running quickly. `.env.template` is already populated with
-the default ports from `kf-data-stack`. All that is to be added is 
-`REACT_APP_GOOGLE_APP_ID`. Make sure the Google app id matches that for ego
-so that users may authenticate correctly.
+Default configuration values are set in `.env`. Create overrides by in a 
+`.env.local` file to configure as needed. The default values should be acceptable
+for use with [kf-data-stack](https://github.com/kids-first/kf-data-stack)
+to get up and running quickly. `REACT_APP_GOOGLE_APP_ID` will need to be
+configured for proper authentication with ego. Make sure the Google app id
+matches that for the running ego instance so that you may test authentication.
 
 Once the dependent services are running, install and start:
 ```
