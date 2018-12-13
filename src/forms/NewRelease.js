@@ -60,7 +60,7 @@ class NewReleaseForm extends Component {
         key: 'last_pub_version',
         align: 'right',
         width: 200,
-        sorter: (a, b) => compareSemVer(a.version, b.version),
+        sorter: (a, b) => compareSemVer(a.last_pub_version, b.last_pub_version),
         defaultSortOrder: 'descend',
         render: version => {
           return(
@@ -209,7 +209,7 @@ class NewReleaseForm extends Component {
                 columns={this.state.columns}
                 dataSource={this.state.data}
                 rowSelection={rowSelection} 
-                scroll={{x: 600, y: 300}}
+                scroll={{x: 600, y: 600}}
                 size="small"
               />
             </FormItem>
