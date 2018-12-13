@@ -17,9 +17,13 @@
     "react-draft-wysiwyg": "^1.12.13",
     "react-markdown": "^3.4.1",
     "react-progress-steps": "^0.0.8",
+    "react-redux": "^6.0.0",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.4",
     "react-timeago": "^3.4.3",
+    "redux": "^4.0.1",
+    "redux-devtools-extension": "^2.13.7",
+    "redux-thunk": "^2.3.0",
     "victory": "^30.5.0"
   },
   "scripts": {
