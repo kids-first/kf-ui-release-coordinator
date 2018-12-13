@@ -209,7 +209,7 @@ class NewReleaseForm extends Component {
                 columns={this.state.columns}
                 dataSource={this.state.data}
                 rowSelection={rowSelection} 
-                scroll={{x: 600, y: 300}}
+                scroll={{x: 600, y: 600}}
                 size="small"
               />
             </FormItem>
