@@ -25,7 +25,7 @@ const releasesPageError = (
   }
 };
 
-const releasesPageSuccess = (state = {releases: {}}, action) => {
+const releasesPageItems = (state = {}, action) => {
   switch (action.type) {
     case 'RELEASES_PAGE_SUCCESS':
       const newReleases = action.data.results.reduce((map, obj) => {
@@ -33,13 +33,35 @@ const releasesPageSuccess = (state = {releases: {}}, action) => {
         return map;
       }, {});
 
+      return {...newReleases, ...state};
+    default:
+      return state;
+  }
+};
+
+const releasesPagePagination = (state = {currentPage: null}, action) => {
+  switch (action.type) {
+    case 'RELEASES_PAGE_SUCCESS':
+      const releaseIds = action.data.results.map(res => res.kf_id);
       return {
         ...state,
-        releases: {...state.releases, ...newReleases},
-        next: action.data.next,
-        previous: action.data.next,
+        currentPage: action.page,
         count: action.data.count,
-        currentPage: Object.keys(newReleases),
+        [action.page]: {
+          next: action.data.next,
+          previous: action.data.previous,
+          ids: releaseIds,
+        },
+      };
+    case 'RELEASES_PAGE_ERROR':
+      return {
+        ...state,
+        [action.page]: {
+          error: {
+            message: action.message,
+            code: action.code,
+          },
+        },
       };
     default:
       return state;
@@ -47,7 +69,8 @@ const releasesPageSuccess = (state = {releases: {}}, action) => {
 };
 
 export default combineReducers({
+  items: releasesPageItems,
+  pages: releasesPagePagination,
   error: releasesPageError,
-  items: releasesPageSuccess,
   loading: releasesPageLoading,
 });

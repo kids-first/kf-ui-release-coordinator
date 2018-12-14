@@ -2,48 +2,68 @@ import {Link} from 'react-router-dom';
 import React from 'react';
 import {Button} from 'kf-uikit';
 import TimeAgo from 'react-timeago';
+import ReactTable from 'react-table';
+import 'react-table/react-table.css';
 
-const ReleaseList = ({releases}) => {
-  if (releases !== null) {
-    return (
-      <table className="w-full">
-        <thead className="border-grey-lightest border-b h-16">
-          <tr>
-            <th>Release</th>
-            <th>Name</th>
-            <th className="text-right">Author</th>
-            <th className="text-center">Version</th>
-            <th className="text-center">State</th>
-            <th className="text-right">Created At</th>
-          </tr>
-        </thead>
-        <tbody>
-          {Object.values(releases).map((release, i) => (
-            <ReleaseRow release={release} />
-          ))}
-        </tbody>
-      </table>
-    );
-  } else {
-    return <div>Nothing</div>;
-  }
+const ReleaseList = ({loading, releases}) => {
+  const columns = [
+    {
+      Header: 'Release',
+      accessor: 'kf_id',
+      Cell: row => (
+        <Link to={`/releases/${row.value}`}>
+          <Button className="w-full">{row.value}</Button>
+        </Link>
+      ),
+      width: 120,
+    },
+    {
+      Header: 'Name',
+      accessor: 'name',
+    },
+    {
+      Header: 'Author',
+      accessor: 'author',
+      width: 150,
+      className: 'text-center',
+      Cell: row => row.value.split('@')[0],
+    },
+    {
+      Header: 'Version',
+      accessor: 'version',
+      width: 70,
+      className: 'text-center',
+    },
+    {
+      Header: 'State',
+      accessor: 'state',
+      width: 100,
+      className: 'text-center',
+    },
+    {
+      Header: 'Created At',
+      accessor: 'created_at',
+      Cell: row => <TimeAgo date={row.value} />,
+      width: 120,
+      className: 'text-right',
+    },
+  ];
+  return (
+    <ReactTable
+      className="-striped -highlight"
+      loading={loading}
+      columns={columns}
+      data={releases}
+      pageSizeOptions={[10, 20]}
+      defaultPageSize={20}
+      defaultSorted={[
+        {
+          id: 'version',
+          desc: true,
+        },
+      ]}
+    />
+  );
 };
-
-const ReleaseRow = ({release}) => (
-  <tr className="border-grey-lightest border-b h-16">
-    <td>
-      <Link to={`/releases/${release.kf_id}`}>
-        <Button className="w-full">{release.kf_id}</Button>
-      </Link>
-    </td>
-    <td className="pl-2">{release.name}</td>
-    <td className="text-right">{release.author}</td>
-    <td className="text-center">{release.version}</td>
-    <td className="text-center">{release.state}</td>
-    <td className="text-right">
-      <TimeAgo date={release.created_at} />
-    </td>
-  </tr>
-);
 
 export default ReleaseList;
