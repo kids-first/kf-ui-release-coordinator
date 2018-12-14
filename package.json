@@ -20,6 +20,7 @@
     "react-redux": "^6.0.0",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.4",
+    "react-table": "^6.8.6",
     "react-timeago": "^3.4.3",
     "redux": "^4.0.1",
     "redux-devtools-extension": "^2.13.7",
