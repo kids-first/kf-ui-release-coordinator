@@ -3,9 +3,10 @@ import React from 'react';
 import {Button, Icon} from 'kf-uikit';
 import TimeAgo from 'react-timeago';
 import ReactTable from 'react-table';
+import checkboxHOC from 'react-table/lib/hoc/selectTable';
 import 'react-table/react-table.css';
 
-const StudiesTable = ({loading, studies, ...props}) => {
+const StudiesTable = ({loading, studies, selectable, ...props}) => {
   const columns = [
     {
       Header: 'Study',
@@ -49,8 +50,16 @@ const StudiesTable = ({loading, studies, ...props}) => {
       className: 'text-right',
     },
   ];
+
+  var Table = ReactTable;
+  var checkboxProps = {};
+  if (selectable) {
+    Table = checkboxHOC(Table);
+  }
+
   return (
-    <ReactTable
+    <Table
+      keyField='kf_id'
       className="-striped -highlight"
       loading={loading}
       columns={columns}
