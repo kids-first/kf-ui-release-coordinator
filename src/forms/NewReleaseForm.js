@@ -1,21 +1,10 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 import axios from 'axios';
-import {
-  Alert,
-  Col,
-  Input,
-  Tag,
-  Form,
-  Row,
-  Checkbox,
-  Select,
-  Table,
-  Modal,
-} from 'antd';
-import {Button} from 'kf-uikit';
+import {Alert, Col, Tag, Row, Modal} from 'antd';
 import TimeAgo from 'react-timeago';
-import {compareSemVer} from '../utils';
+import {Control, Form} from 'react-redux-form';
+import {Button} from 'kf-uikit';
 import {coordinatorApi} from '../globalConfig';
 import StudiesContainer from '../containers/StudiesContainer';
 // State stuff
@@ -23,93 +12,9 @@ import {UserContext} from '../contexts';
 
 import ServiceList from '../components/ServiceList';
 const FormItem = Form.Item;
-const Option = Select.Option;
 const confirm = Modal.confirm;
 
 class NewReleaseForm extends Component {
-  constructor(props) {
-    super(props);
-
-    let options = [
-      'Complete Release',
-      'Ready for Publication',
-      'Under Review',
-      'Returned for Modifications',
-      'For Immediate Release',
-      'Redacted',
-    ].map((el, i) => <Option key={i}>{el}</Option>);
-
-    const columns = [
-      {
-        title: 'Id',
-        dataIndex: 'kf_id',
-        key: 'viewButton',
-        width: 150,
-        render: id => (
-          <Tag size="small" icon="profile" type="primary">
-            {id}
-          </Tag>
-        ),
-      },
-      {
-        title: 'Name',
-        dataIndex: 'name',
-        key: 'name',
-        width: 400,
-        sorter: (a, b) => a.name.localeCompare(b.name),
-      },
-      {
-        title: 'Last Published Date',
-        dataIndex: 'last_pub_date',
-        key: 'pub_date',
-        align: 'right',
-        width: 200,
-        render: date => {
-          return (
-            <div>{date ? <TimeAgo date={date} /> : 'not published yet'}</div>
-          );
-        },
-      },
-      {
-        title: 'Last Published Version',
-        dataIndex: 'last_pub_version',
-        key: 'last_pub_version',
-        align: 'right',
-        width: 200,
-        sorter: (a, b) => compareSemVer(a.last_pub_version, b.last_pub_version),
-        defaultSortOrder: 'descend',
-        render: version => {
-          return <div>{version ? version : 'not published yet'}</div>;
-        },
-      },
-    ];
-
-    this.state = {
-      data: [],
-      selectedRowKeys: [],
-      loading: true,
-      tags: [],
-      options: options,
-      error: '',
-      columns: columns,
-    };
-  }
-
-  componentDidMount() {
-    axios.get(`${coordinatorApi}/studies?limit=100`).then(resp => {
-      let studies = resp.data.results.map((s, i) => ({
-        key: s.kf_id,
-        kf_id: s.kf_id,
-        name: `${s.name}`,
-        last_pub_version: `${s.last_pub_version}`,
-        last_pub_date: `${s.last_pub_date}`,
-        created_at: s.created_at,
-      }));
-
-      this.setState({data: studies, loading: false, error: '', tags: []});
-    });
-  }
-
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
@@ -178,66 +83,22 @@ class NewReleaseForm extends Component {
     });
   };
 
-  filterOption = (inputValue, option) => {
-    return option.description.indexOf(inputValue) > -1;
-  };
-
-  onSelectChange = selectedRowKeys => {
-    this.setState({selectedRowKeys});
-  };
-
   render() {
-    const {getFieldDecorator} = this.props.form;
-    const {selectedRowKeys} = this.state;
-    const rowSelection = {
-      selectedRowKeys,
-      onChange: this.onSelectChange,
-    };
     return (
-      <Form onSubmit={this.handleSubmit}>
-        <Row gutter={8} type="flex" justify="space-around">
-          <Col span={24}>
-            <FormItem label="Release Title">
-              {getFieldDecorator('title', {
-                rules: [{required: true, message: 'Please provide a title!'}],
-              })(<Input placeholder="Title" />)}
-            </FormItem>
-          </Col>
-        </Row>
-        <Row>
-          <Col span={24}>
-            <FormItem>
-              <Alert
-                message="Major releases involve all publicly released studies and data shape changes"
-                type="warning"
-                showIcon
-              />
-              {getFieldDecorator('isMajor', {
-                valuePropName: 'isMajor',
-                initialValue: false,
-              })(<Checkbox>This is a major release</Checkbox>)}
-            </FormItem>
-          </Col>
-        </Row>
-        <Row type="flex" justify="space-around">
-          <Col span={24}>
-            <FormItem label="Studies">
-              <StudiesContainer
-                tableProps={{defaultPageSize: 10, selectable: true}}
-              />
-            </FormItem>
-          </Col>
-        </Row>
-        <Row>
-          <h3>Services to be run for this release</h3>
-          <ServiceList noswitch />
-        </Row>
-        {this.state.error && <Alert type="error" message={this.state.error} />}
-        <FormItem>
-          <Button type="primary" loading={this.state.loading} htmlType="submit">
-            Start Release
-          </Button>
-        </FormItem>
+      <Form model="release" onSubmit={val => this.handleSubmit(val)}>
+        <label>Release Title:</label>
+        <Control.text model=".title" />
+
+        <label>Is this a major release:</label>
+        <Control.checkbox model=".isMajor" /> Yes
+
+        <label>Select studies to be included in this release</label>
+        <StudiesContainer selectable />
+
+        <label>Services to be run for this release:</label>
+        <ServiceList />
+
+        <Button htmlType="submit">Start the Release</Button>
       </Form>
     );
   }
@@ -253,6 +114,4 @@ function ReleaseProps(props) {
   );
 }
 
-const WrappedNewReleaseForm = Form.create()(ReleaseProps);
-
-export default withRouter(WrappedNewReleaseForm);
+export default withRouter(NewReleaseForm);
