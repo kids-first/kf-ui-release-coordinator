@@ -68,7 +68,7 @@ const studiesPagePagination = (state = {currentPage: null}, action) => {
   }
 };
 
-const studiesSelected = (state = {items: [] }, action) => {
+const studiesSelected = (state = {items: [], selectAll: false}, action) => {
   switch (action.type) {
     case 'STUDY_SELECTED':
       state.items.push(action.studyId);
@@ -82,6 +82,18 @@ const studiesSelected = (state = {items: [] }, action) => {
 
       return {
         ...state,
+        selectAll: false,
+      };
+    case 'STUDIES_DESELECTED':
+      return {
+        selectAll: false,
+        items: [],
+      };
+    case 'STUDIES_SELECTED':
+      return {
+        ...state,
+        selectAll: true,
+        items: action.selected,
       };
     default:
       return state;

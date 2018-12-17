@@ -39,6 +39,20 @@ export function studyDeselect(studyId) {
   };
 }
 
+export function studiesDeselectAll(selected) {
+  return {
+    type: 'STUDIES_DESELECTED',
+    selected,
+  };
+}
+
+export function studiesSelectAll(selected) {
+  return {
+    type: 'STUDIES_SELECTED',
+    selected,
+  };
+}
+
 export function fetchAllStudies(page, filters) {
   return dispatch => {
     dispatch(studiesPageLoading(true, page));
@@ -78,3 +92,16 @@ export function toggleStudy(key, shift, row) {
   };
 }
 
+export function toggleAllStudies(key, shift, row) {
+  return (dispatch, getState) => {
+    var allSelected = getState().studies.selected.selectAll;
+    if (allSelected) {
+      dispatch(studiesDeselectAll([]));
+      return []
+    } else {
+      const studies = Object.keys(getState().studies.items);
+      dispatch(studiesSelectAll(studies));
+      return studies
+    }
+  };
+}
