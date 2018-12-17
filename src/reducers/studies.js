@@ -68,9 +68,30 @@ const studiesPagePagination = (state = {currentPage: null}, action) => {
   }
 };
 
+const studiesSelected = (state = {items: [] }, action) => {
+  switch (action.type) {
+    case 'STUDY_SELECTED':
+      state.items.push(action.studyId);
+      return {
+        ...state,
+        items: state.items,
+      };
+    case 'STUDY_DESELECTED':
+      const index = state.items.indexOf(action.studyId);
+      if (index !== -1) state.items.splice(index, 1);
+
+      return {
+        ...state,
+      };
+    default:
+      return state;
+  }
+};
+
 export default combineReducers({
   items: studiesPageItems,
   pages: studiesPagePagination,
   error: studiesPageError,
   loading: studiesPageLoading,
+  selected: studiesSelected,
 });
