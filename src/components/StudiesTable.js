@@ -52,7 +52,6 @@ const StudiesTable = ({loading, studies, selectable, ...props}) => {
   ];
 
   var Table = ReactTable;
-  var checkboxProps = {};
   if (selectable) {
     Table = checkboxHOC(Table);
   }

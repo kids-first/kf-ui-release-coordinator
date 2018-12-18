@@ -1,5 +1,5 @@
 import {combineReducers} from 'redux';
-import {modelReducer, formReducer, combineForms} from 'react-redux-form';
+import {combineForms} from 'react-redux-form';
 import releases from './releases';
 import studies from './studies';
 

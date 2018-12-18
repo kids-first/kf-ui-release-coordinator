@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import axios from 'axios';
 import {Modal} from 'antd';
-import TimeAgo from 'react-timeago';
 import {Control, Form, Errors} from 'react-redux-form';
 import {Button} from 'kf-uikit';
 import {coordinatorApi} from '../globalConfig';
@@ -12,7 +11,6 @@ import StudiesContainer from '../containers/StudiesContainer';
 import {UserContext} from '../contexts';
 
 import ServiceList from '../components/ServiceList';
-const FormItem = Form.Item;
 const confirm = Modal.confirm;
 
 class NewReleaseForm extends Component {
@@ -28,8 +26,6 @@ class NewReleaseForm extends Component {
       is_major: e.isMajor,
       author: this.props.user.name,
     };
-
-    let studyByKfId = {};
 
     const list = (
       <ul>

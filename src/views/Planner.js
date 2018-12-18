@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Card} from 'kf-uikit';
+import {Card} from 'kf-uikit';
 import NewReleaseForm from '../forms/NewReleaseForm';
 
 class Planner extends Component {
