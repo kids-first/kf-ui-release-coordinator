@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux';
 import propTypes from 'prop-types';
 import axios from 'axios';
 import { Icon, Spin } from 'antd';
 import { Button } from 'kf-uikit';
 import ReactMarkdown from 'react-markdown';
 import { coordinatorApi } from '../globalConfig';
-import { UserContext } from '../contexts';
 
 import { Editor } from 'react-draft-wysiwyg';
 import { EditorState, convertToRaw, ContentState } from 'draft-js';
@@ -66,8 +66,6 @@ class MarkdownEditor extends Component {
   newNote() {
     const rawState = convertToRaw(this.state.editorState.getCurrentContent());
     const mdText = draftToMarkdown(rawState);
-    const token = this.props.egoToken;
-    const header = {headers: {Authorization: 'Bearer '+token}};
     const url = `${coordinatorApi}/release-notes`;
     axios.post(url,
         {
@@ -75,7 +73,7 @@ class MarkdownEditor extends Component {
           study: `${coordinatorApi}/studies/${this.state.studyId}`,
           description: mdText,
           author: this.props.user.name
-        }, header)
+        })
       .then(resp => {
         console.log(resp);
         this.setState({saving: false, description: mdText});
@@ -87,10 +85,8 @@ class MarkdownEditor extends Component {
   updateNote() {
     const rawState = convertToRaw(this.state.editorState.getCurrentContent());
     const mdText = draftToMarkdown(rawState);
-    const token = this.props.egoToken;
-    const header = {headers: {Authorization: 'Bearer '+token}};
     const url = `${coordinatorApi}/release-notes/${this.state.noteId}`
-    axios.patch(url, {description: mdText}, header)
+    axios.patch(url, {description: mdText})
       .then(resp => {
         this.setState({saving: false, description: mdText});
       })
@@ -101,10 +97,8 @@ class MarkdownEditor extends Component {
   updateRelease() {
     const rawState = convertToRaw(this.state.editorState.getCurrentContent());
     const mdText = draftToMarkdown(rawState);
-    const token = this.props.egoToken;
-    const header = {headers: {Authorization: 'Bearer '+token}};
     const url = `${coordinatorApi}/releases/${this.state.releaseId}`
-    axios.patch(url, {description: mdText}, header)
+    axios.patch(url, {description: mdText})
       .then(resp => {
         this.setState({saving: false, description: mdText});
       })
@@ -126,10 +120,8 @@ class MarkdownEditor extends Component {
 
   toggle(enabled) {
     this.setState({toggling: true});
-    const token = this.props.egoToken;
-    const header = {headers: {Authorization: 'Bearer '+token}};
     axios.patch(`${coordinatorApi}/task-services/${this.state.service.kf_id}`,
-                {enabled: enabled}, header)
+                {enabled: enabled})
       .then(resp => {
         let service = this.state.service;
         service.enabled = enabled
@@ -269,14 +261,17 @@ MarkdownEditor.defaultProps = {
   description: null,
 }
 
+function mapDispatchToProps(dispatch) {
+  return {};
+}
 
-function EditorProps(props) {
-  return (
-    <UserContext.Consumer>
-      {user => <MarkdownEditor{...props}
-        user={user.user} egoToken={user.egoToken}/>}
-    </UserContext.Consumer>
-  )
-};
+function mapStateToProps(state) {
+  return {
+    user: state.auth.user,
+  };
+}
 
-export default EditorProps;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(MarkdownEditor);

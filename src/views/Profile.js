@@ -3,8 +3,6 @@ import {connect} from 'react-redux';
 import { withRouter } from "react-router-dom";
 import { Tag } from 'antd';
 import { Card } from 'kf-uikit';
-import { dataserviceApi } from '../globalConfig';
-import { UserContext } from '../contexts';
 
 class Profile extends Component {
 

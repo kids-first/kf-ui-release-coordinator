@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {UserContext} from '../contexts';
 import {Row, Col, Layout} from 'antd';
 import {googleAppId} from '../globalConfig';
 import {loginUser} from '../actions/auth';
 import brand from '../brand.svg';
 
-class LoginNoProps extends Component {
+class Login extends Component {
   componentDidMount() {
     try {
       global.gapi.load('auth2', () => {
@@ -23,7 +22,6 @@ class LoginNoProps extends Component {
           onsuccess: googleUser => {
             const {id_token} = googleUser.getAuthResponse();
             this.props.login(id_token);
-            this.props.onLogin(id_token);
           },
           onfailure: error => console.log('login fail', error),
         });
@@ -56,12 +54,6 @@ class LoginNoProps extends Component {
     );
   }
 }
-
-const Login = ({...props}) => (
-  <UserContext.Consumer>
-    {user => <LoginNoProps {...Login} onLogin={user.onLogin} {...props}/>}
-  </UserContext.Consumer>
-);
 
 function mapDispatchToProps(dispatch) {
   return {

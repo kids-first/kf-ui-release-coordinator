@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Link, withRouter } from 'react-router-dom';
 import { List, Avatar, Icon, Switch } from 'antd';
-import { UserContext } from '../contexts';
 import { coordinatorApi } from '../globalConfig';
 
 
@@ -31,10 +30,8 @@ class ServiceList extends Component {
 
   onChange(kf_id, state) {
     this.setState({loading: true});
-    const token = this.props.egoToken;
-    const header = {headers: {Authorization: 'Bearer '+token}};
     axios.patch(`${coordinatorApi}/task-services/${kf_id}`,
-                {enabled: state}, header)
+                {enabled: state})
       .then(resp => {
         this.getData();
       });
@@ -77,14 +74,4 @@ class ServiceList extends Component {
   }
 }
 
-function ServiceListProps(props) {
-  return (
-    <UserContext.Consumer>
-      {user => <ServiceList {...props}
-        egoToken={user.egoToken}
-        user={user.user} />}
-    </UserContext.Consumer>
-  )
-};
-
-export default withRouter(ServiceListProps);
+export default withRouter(ServiceList);

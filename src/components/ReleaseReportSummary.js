@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 import { Row } from 'antd';
 import { reportsApi } from '../globalConfig';
-import { UserContext } from '../contexts';
 import { Stats } from 'kf-uikit';
 
 
@@ -86,13 +85,4 @@ class ReleaseReportSummary extends Component {
   }
 }
 
-function ReleaseReportSummaryProps(props) {
-  return (
-    <UserContext.Consumer>
-      {user => <ReleaseReportSummary{...props}
-        user={user.user} egoToken={user.egoToken}/>}
-    </UserContext.Consumer>
-  )
-};
-
-export default ReleaseReportSummaryProps;
+export default ReleaseReportSummary;
