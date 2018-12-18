@@ -41,7 +41,8 @@ class StudiesContainer extends Component {
         isSelected={key => this.isSelected(key)}
         loading={this.props.loading}
         studies={this.props.studies}
-        {...this.props.tableProps}
+        selectable={this.props.selectable}
+        defaultPageSize={this.props.defaultPageSize}
       />
     );
   }
