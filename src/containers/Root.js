@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
-import {BrowserRouter as Router, Route, NavLink} from 'react-router-dom';
+import {connect} from 'react-redux';
+import {BrowserRouter as Router, Route} from 'react-router-dom';
 import {Layout} from 'antd';
-import {Header, Button} from 'kf-uikit';
+import HeaderContainer from '../containers/HeaderContainer';
 import Login from '../views/Login';
 import Status from '../views/Status';
 import Planner from '../views/Planner';
@@ -16,7 +17,7 @@ import Service from '../views/Service';
 import Profile from '../views/Profile';
 import NewService from '../views/NewService';
 import {UserContext} from '../contexts';
-import {syslevel, egoApi} from '../globalConfig';
+import {egoApi} from '../globalConfig';
 const {Content} = Layout;
 
 class Root extends Component {
@@ -52,43 +53,9 @@ class Root extends Component {
       <Router>
         <UserContext.Provider value={this.state}>
           <div>
-            {this.state.loggedIn ? (
+            {this.props.userStatus === 'Approved' ? (
               <Layout style={{minHeight: '100vh'}}>
-                {syslevel !== 'prd' && (
-                  <center>
-                    <h3
-                      className={`m-0 text-white ${
-                        syslevel === 'qa' ? 'bg-orange' : 'bg-pink'
-                      }`}>
-                      FYI, you're currently in the <b>{syslevel}</b>{' '}
-                      environment. Anything you do here will not be made public!
-                    </h3>
-                  </center>
-                )}
-                <Header
-                  buttons={[
-                    <NavLink key="status" to="/">
-                      <Button outline>Status</Button>
-                    </NavLink>,
-                    <NavLink key="planner" to="/planner">
-                      <Button outline>Planner</Button>
-                    </NavLink>,
-                    <NavLink key="releases" to="/releases">
-                      <Button outline>Releases</Button>
-                    </NavLink>,
-                    <NavLink key="studies" to="/studies">
-                      <Button outline>Studies</Button>
-                    </NavLink>,
-                    <NavLink key="services" to="/services">
-                      <Button outline>Services</Button>
-                    </NavLink>,
-                    <NavLink key="profile" to="/profile">
-                      <Button outline color="secondary">
-                        {this.state.user.name}
-                      </Button>
-                    </NavLink>,
-                  ]}
-                />
+                <HeaderContainer />
                 <Content
                   style={{
                     minHeight: '100%',
@@ -126,4 +93,15 @@ class Root extends Component {
   }
 }
 
-export default Root;
+function mapDispatchToProps(dispatch) {
+  return {};
+}
+
+function mapStateToProps(state) {
+  return {userStatus: state.auth.user.status};
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Root);
