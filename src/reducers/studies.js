@@ -93,7 +93,7 @@ const studiesSelected = (state = {items: [], selectAll: false}, action) => {
       return {
         ...state,
         selectAll: true,
-        items: action.selected,
+        items: [...action.selected],
       };
     default:
       return state;

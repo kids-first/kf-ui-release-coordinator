@@ -1,4 +1,5 @@
 import {coordinatorApi} from '../globalConfig';
+import {actions} from 'react-redux-form';
 import axios from 'axios';
 
 export function studiesPageLoading(loading, page) {
@@ -86,8 +87,10 @@ export function toggleStudy(key, shift, row) {
     const index = selection.indexOf(key);
     if (index >= 0) {
       dispatch(studyDeselect(key));
+      dispatch(actions.change('studies', [...selection]));
     } else {
       dispatch(studySelect(key));
+      dispatch(actions.change('studies', [...selection]));
     }
   };
 }
@@ -97,11 +100,13 @@ export function toggleAllStudies(key, shift, row) {
     var allSelected = getState().studies.selected.selectAll;
     if (allSelected) {
       dispatch(studiesDeselectAll([]));
-      return []
+      dispatch(actions.change('studies', []));
+      return [];
     } else {
       const studies = Object.keys(getState().studies.items);
       dispatch(studiesSelectAll(studies));
-      return studies
+      dispatch(actions.change('studies', studies));
+      return studies;
     }
   };
 }
