@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { Card } from 'kf-uikit';
-import StudyTable from '../components/StudyTable';
+import StudiesContainer from '../containers/StudiesContainer';
 
 
 class Studies extends Component {
   render() {
     return (
       <Card title='Kids First Studies'>
-        <StudyTable />
+        <StudiesContainer />
       </Card>
     );
   }

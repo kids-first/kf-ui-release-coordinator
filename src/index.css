@@ -1,12 +1,29 @@
+@import '../node_modules/kf-uikit/dist/styles.css';
+
 body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
 }
 
-
 .ant-card-actions {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+form label {
+  @inherit: .block, .w-full, .pt-4, .text-2xl;
+}
+
+form input {
+  @inherit:
+    .px-4,
+    .border,
+    .rounded-sm,
+    .border-mediumGrey,
+    .text-xl,
+    .w-full,
+    .h-12;
+  background-color: #fefefe;
 }

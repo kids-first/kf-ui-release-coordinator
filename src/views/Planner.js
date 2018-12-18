@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import { Card } from 'kf-uikit';
-import WrappedNewReleaseForm from '../forms/NewRelease';
+import React, {Component} from 'react';
+import {Card} from 'kf-uikit';
+import NewReleaseForm from '../forms/NewReleaseForm';
 
 class Planner extends Component {
   render() {
     return (
       <Card title="Create a new Release">
-        <WrappedNewReleaseForm />
+        <NewReleaseForm />
       </Card>
     );
   }
