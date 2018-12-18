@@ -3,7 +3,6 @@ import axios from 'axios';
 import { Divider, Icon, Row, Col, Spin, Tag, Steps } from 'antd';
 import { Card } from 'kf-uikit';
 import { coordinatorApi } from '../globalConfig';
-import { UserContext } from '../contexts';
 
 const { Step } = Steps;
 
@@ -83,13 +82,4 @@ class Study extends Component {
   }
 }
 
-function StudyProps(props) {
-  return (
-    <UserContext.Consumer>
-      {user => <Study{...props}
-        user={user.user} egoToken={user.egoToken}/>}
-    </UserContext.Consumer>
-  )
-};
-
-export default StudyProps;
+export default Study;

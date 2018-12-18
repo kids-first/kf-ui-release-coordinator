@@ -4,7 +4,6 @@ import axios from 'axios';
 import { Alert, Col, Input, Form, Row, Icon } from 'antd';
 import { Button } from 'kf-uikit';
 import { coordinatorApi } from '../globalConfig';
-import { UserContext } from '../contexts';
 const FormItem = Form.Item;
 
 class NewServiceForm extends Component {
@@ -30,10 +29,8 @@ class NewServiceForm extends Component {
           url: values.url
         };
         this.setState({loading: true});
-        const token = this.props.egoToken;
-        const header = {headers: {Authorization: 'Bearer '+token}};
 
-        axios.post(`${coordinatorApi}/task-services`, service, header)
+        axios.post(`${coordinatorApi}/task-services`, service)
           .then(resp => {
             this.props.history.push(`/services/${resp.data.kf_id}`);
           })
@@ -97,16 +94,6 @@ class NewServiceForm extends Component {
   }
 }
 
-function ServiceProps(props) {
-  return (
-    <UserContext.Consumer>
-      {user => <NewServiceForm {...props}
-        egoToken={user.egoToken}
-        user={user.user} />}
-    </UserContext.Consumer>
-  )
-};
-
-const WrappedNewServiceForm = Form.create()(ServiceProps);
+const WrappedNewServiceForm = Form.create()(NewServiceForm);
 
 export default withRouter(WrappedNewServiceForm);

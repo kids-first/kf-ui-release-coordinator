@@ -10,7 +10,6 @@ import ReleaseTimeline from '../components/ReleaseTimeline';
 import MarkdownEditor from '../components/MarkdownEditor';
 import ReleaseReportSummary from '../components/ReleaseReportSummary';
 import { coordinatorApi } from '../globalConfig';
-import { UserContext } from '../contexts';
 
 
 class Release extends Component {
@@ -40,12 +39,10 @@ class Release extends Component {
   }
 
   publish() {
-    const token = this.props.egoToken;
-    const header = {headers: {Authorization: 'Bearer '+token}};
     let release = this.state.release;
     release.state = 'publishing';
     this.setState({publishing: true});
-    axios.post(`${coordinatorApi}/releases/${this.props.match.params.releaseId}/publish`, {}, header)
+    axios.post(`${coordinatorApi}/releases/${this.props.match.params.releaseId}/publish`, {})
       .then(resp => {
         this.setState({publishing: false});
         this.timer = setTimeout(() => this.getData(), 3000);
@@ -53,12 +50,10 @@ class Release extends Component {
   }
 
   cancel() {
-    const token = this.props.egoToken;
-    const header = {headers: {Authorization: 'Bearer '+token}};
     let release = this.state.release;
     release.state = 'canceling';
     this.setState({canceling: true});
-    axios.delete(`${coordinatorApi}/releases/${this.props.match.params.releaseId}`, header)
+    axios.delete(`${coordinatorApi}/releases/${this.props.match.params.releaseId}`)
       .then(resp => {
         this.setState({canceling: false});
         this.getData();
@@ -360,14 +355,4 @@ class StudyNote extends Component {
   }
 }
 
-
-function ReleaseProps(props) {
-  return (
-    <UserContext.Consumer>
-      {user => <Release{...props}
-        user={user.user} egoToken={user.egoToken}/>}
-    </UserContext.Consumer>
-  )
-};
-
-export default ReleaseProps;
+export default Release;

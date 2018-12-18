@@ -7,9 +7,6 @@ import {Control, Form, Errors} from 'react-redux-form';
 import {Button} from 'kf-uikit';
 import {coordinatorApi} from '../globalConfig';
 import StudiesContainer from '../containers/StudiesContainer';
-// State stuff
-import {UserContext} from '../contexts';
-
 import ServiceList from '../components/ServiceList';
 const confirm = Modal.confirm;
 
@@ -49,10 +46,8 @@ class NewReleaseForm extends Component {
       okText: "Let's do it",
       cancelText: 'Wait!',
       onOk: close => {
-        const token = this.props.egoToken;
-        const header = {headers: {Authorization: 'Bearer ' + token}};
         axios
-          .post(`${coordinatorApi}/releases`, release, header)
+          .post(`${coordinatorApi}/releases`, release)
           .then(resp => {
             this.props.history.push(`/releases/${resp.data.kf_id}`);
             close();
@@ -127,17 +122,7 @@ function mapStateToProps(state) {
   };
 }
 
-function ReleaseProps(props) {
-  return (
-    <UserContext.Consumer>
-      {user => (
-        <NewReleaseForm {...props} user={user.user} egoToken={user.egoToken} />
-      )}
-    </UserContext.Consumer>
-  );
-}
-
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withRouter(ReleaseProps));
+)(withRouter(NewReleaseForm));
