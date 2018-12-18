@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
-import { Layout, Icon } from 'antd';
+import { Layout } from 'antd';
 import { Header, Button } from 'kf-uikit';
 import Login from '../views/Login';
 import Status from '../views/Status';
@@ -64,14 +64,14 @@ class Root extends Component {
               )}
               <Header
                 buttons={[
-                  <NavLink to="/"><Button outline>Status</Button></NavLink>,
-                  <NavLink to="/planner"><Button outline>Planner</Button></NavLink>,
-                  <NavLink to="/releases"><Button outline>Releases</Button></NavLink>,
-                  <NavLink to="/studies"><Button outline>Studies</Button></NavLink>,
-                  <NavLink to="/services"><Button outline>Services</Button></NavLink>,
-                  <NavLink to="/profile">
+                  <NavLink key="status" to="/"><Button outline>Status</Button></NavLink>,
+                  <NavLink key="planner" to="/planner"><Button outline>Planner</Button></NavLink>,
+                  <NavLink key="releases" to="/releases"><Button outline>Releases</Button></NavLink>,
+                  <NavLink key="studies" to="/studies"><Button outline>Studies</Button></NavLink>,
+                  <NavLink key="services" to="/services"><Button outline>Services</Button></NavLink>,
+                  <NavLink key="profile" to="/profile">
                     <Button outline color='secondary'>
-                      {this.state.user.name} <Icon type='user' />
+                      {this.state.user.name}
                     </Button>
                   </NavLink>,
                 ]}
