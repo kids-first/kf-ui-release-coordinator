@@ -8,7 +8,7 @@ export default combineReducers({
   studies,
   releaseForm: combineForms({
     studies: [],
-    title: null,
+    title: '',
     isMajor: false,
   }),
 });
