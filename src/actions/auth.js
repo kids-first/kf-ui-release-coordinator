@@ -15,10 +15,11 @@ export function userLoggedIn(user) {
   };
 }
 
-export function authSuccess(token, user) {
+export function authSuccess(token, tokenExpires, user) {
   return {
     type: 'AUTH_SUCCESS',
     token,
+    tokenExpires,
     user,
   };
 }
@@ -51,7 +52,8 @@ export function loginUser(id_token) {
         const user = {
           ...jwtData.context,
         };
-        dispatch(authSuccess(resp.data, user.user))
+        console.log(jwtData);
+        dispatch(authSuccess(resp.data, jwtData.exp, user.user))
       })
       .catch(err => {
         if (err.code === 403) {
