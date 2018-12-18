@@ -3,6 +3,7 @@ import {combineReducers} from 'redux';
 const initialState = {
   loading: true,
   token: null,
+  tokenExpires: 0,
   error: {hasError: false, message: ''},
   user: {},
 };
@@ -18,6 +19,7 @@ const auth = (state = initialState, action) => {
       return {
         ...state,
         token: action.token,
+        tokenExpires: action.tokenExpires,
         user: action.user,
         loading: false,
       };
