@@ -25,6 +25,7 @@
     "react-timeago": "^3.4.3",
     "redux": "^4.0.1",
     "redux-devtools-extension": "^2.13.7",
+    "redux-persist": "^5.10.0",
     "redux-thunk": "^2.3.0",
     "victory": "^30.5.0"
   },
