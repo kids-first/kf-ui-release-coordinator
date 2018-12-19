@@ -12,15 +12,12 @@ const confirm = Modal.confirm;
 
 class NewReleaseForm extends Component {
   handleSubmit = e => {
-    console.log('submitting!');
-    console.log(e);
-
     let release = {
       name: e.title,
       description: '',
       studies: e.studies,
       tags: [],
-      is_major: e.isMajor,
+      is_major: e.isMajor === 'true',
       author: this.props.user.name,
     };
 
@@ -72,21 +69,24 @@ class NewReleaseForm extends Component {
       <Form model="releaseForm" onSubmit={val => this.handleSubmit(val)}>
         <label>Release Title:</label>
         <Control.text
-          model=".title"
-          defaultValue="Title"
+          model="title"
+          defaultValue=""
           validators={{
             required: val => val && val.length,
           }}
         />
         <Errors
           className="text-red"
-          model=".title"
+          model="title"
           messages={{
             required: 'This field is required',
           }}
         />
         <label>Is this a major release:</label>
-        <Control.checkbox model=".isMajor" /> Yes
+        <Control.select model="isMajor">
+          <option value={false}>No</option>
+          <option value={true}>Yes</option>
+        </Control.select>
         <label>Select studies to be included in this release</label>
         <Errors
           className="text-red"
