@@ -51,10 +51,6 @@ class NewReleaseForm extends Component {
           })
           .catch(err => {
             console.log(err);
-            this.setState({
-              loading: false,
-              error: JSON.stringify(err.response.data),
-            });
             close();
           });
       },
@@ -118,6 +114,7 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state) {
   return {
+    user: state.auth.user,
     studies: state.studies.items,
   };
 }
