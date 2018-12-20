@@ -24,7 +24,7 @@ class ReleaseReportSummary extends Component {
   }
 
   getData() {
-    axios.get(`${reportsApi}/reports/${this.props.releaseId}`)
+    axios.get(`${reportsApi}/reports/releases/${this.props.releaseId}`)
          .then((report) => {
             this.setState({
               report: report.data,
