@@ -27,18 +27,16 @@
     "redux-devtools-extension": "^2.13.7",
     "redux-persist": "^5.10.0",
     "redux-thunk": "^2.3.0",
-    "victory": "^30.5.0"
+    "victory": "^30.5.0",
+    "react-app-rewire-postcss": "^3.0.2",
+    "autoprefixer": "^9.4.3",
+    "postcss-import": "^12.0.1",
+    "postcss-inherit": "^4.1.0",
+    "postcss-nested": "^4.1.1"
   },
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test --env=jsdom"
-  },
-  "devDependencies": {
-    "autoprefixer": "^9.4.3",
-    "postcss-import": "^12.0.1",
-    "postcss-inherit": "^4.1.0",
-    "postcss-nested": "^4.1.1",
-    "react-app-rewire-postcss": "^3.0.2"
   }
 }
