@@ -1,5 +1,43 @@
 import {combineReducers} from 'redux';
 
+const studiesSyncing = (state = false, action) => {
+  switch (action.type) {
+    case 'STUDIES_SYNCING':
+      return action.loading;
+    default:
+      return state;
+  }
+};
+
+const studiesSyncError = (
+  state = {hasError: false, message: '', code: 200},
+  action,
+) => {
+  switch (action.type) {
+    case 'STUDIES_SYNC_ERROR':
+      return {
+        hasError: action.hasError,
+        message: action.error.message,
+        code: action.error.code,
+      };
+    default:
+      return state;
+  }
+};
+
+const studiesSyncSuccess = (state = '', action) => {
+  switch (action.type) {
+    case 'STUDIES_SYNC_SUCCESS':
+      return action.data.message;
+    case 'STUDIES_SYNC_ERROR':
+      return action.data.message;
+    case 'STUDIES_SYNCING':
+      return 'Syncing studies...';
+    default:
+      return state;
+  }
+};
+
 const studiesPageLoading = (state = true, action) => {
   switch (action.type) {
     case 'STUDIES_PAGE_LOADING':
@@ -105,5 +143,8 @@ export default combineReducers({
   pages: studiesPagePagination,
   error: studiesPageError,
   loading: studiesPageLoading,
+  syncing: studiesSyncing,
+  syncError: studiesSyncError,
+  syncMessage: studiesSyncSuccess,
   selected: studiesSelected,
 });

@@ -2,6 +2,28 @@ import {coordinatorApi} from '../globalConfig';
 import {actions} from 'react-redux-form';
 import axios from 'axios';
 
+export function studiesSyncing(loading) {
+  return {
+    type: 'STUDIES_SYNCING',
+    loading,
+  };
+}
+
+export function studiesSyncSuccess(response) {
+  return {
+    type: 'STUDIES_SYNC_SUCCESS',
+    data: response,
+  };
+}
+
+export function studiesSyncError(hasError, error) {
+  return {
+    type: 'STUDIES_SYNC_ERROR',
+    hasError,
+    error,
+  };
+}
+
 export function studiesPageLoading(loading, page) {
   return {
     type: 'STUDIES_PAGE_LOADING',
@@ -51,6 +73,30 @@ export function studiesSelectAll(selected) {
   return {
     type: 'STUDIES_SELECTED',
     selected,
+  };
+}
+
+export function syncStudies() {
+  return dispatch => {
+    dispatch(studiesSyncing(true));
+
+    axios
+      .post(`${coordinatorApi}/studies/sync`)
+      .then(response => {
+        dispatch(studiesSyncing(false));
+        if (response.status !== 200) {
+          throw Error(response);
+        }
+        return response;
+      })
+      .then(response => {
+        dispatch(studiesSyncSuccess(response.data));
+        return response;
+      })
+      .catch(err => {
+        dispatch(studiesSyncError(true, err));
+        dispatch(studiesSyncing(false));
+      });
   };
 }
 
