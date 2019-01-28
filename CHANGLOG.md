@@ -1,3 +1,29 @@
+# Kids First Release Coordinator UI Release 1.3.0
+
+## Features
+
+### Summary
+
+Feature Emojis: ✨x3 🐛x3 🎨x2 🔥x1 ✨Statex1 ♻️x1 ✨Addx1 🔧x1 👷x1
+Feature Labels: [refactor](https://api.github.com/repos/kids-first/kf-ui-release-coordinator/labels/refactor) x5 [feature](https://api.github.com/repos/kids-first/kf-ui-release-coordinator/labels/feature) x4 [bug](https://api.github.com/repos/kids-first/kf-ui-release-coordinator/labels/bug) x4 [design](https://api.github.com/repos/kids-first/kf-ui-release-coordinator/labels/design) x3 [devops](https://api.github.com/repos/kids-first/kf-ui-release-coordinator/labels/devops) x1
+
+### New features and changes
+
+- (#105) ✨ Add syncronize button to sync coordinator with dataservice studies - @dankolbman
+- (#104) 🐛 Move postcss deps from dev to packages deps - @dankolbman
+- (#103) 🐛 Update release reports endpoint - @dankolbman
+- (#102) 🐛 Fix release form - @dankolbman
+- (#101) 🔥 Remove context api - @dankolbman
+- (#100) ✨ Re-authenticate user if token is expired - @dankolbman
+- (#99) ✨ Persist state - @dankolbman
+- (#98) ✨State over-haul with redux - @dankolbman
+- (#96) ♻️ Planner fixes - @dankolbman
+- (#95) 🎨 Show all services in planner - @dankolbman
+- (#94) 🎨 Use new stats component for release statistics - @dankolbman
+- (#93) ✨Add banner indicating which environment you're in - @dankolbman
+- (#92) 🔧 Add more standard .env configuration - @dankolbman
+- (#88) 👷 Use cloudfront module - @dankolbman
+
 # Kf Ui Release Coordinator Release 1.2.1
 
 ## Features
