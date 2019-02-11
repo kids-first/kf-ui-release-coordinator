@@ -4,6 +4,7 @@ import {Button} from 'kf-uikit';
 import TimeAgo from 'react-timeago';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
+import {compareSemVer} from '../utils';
 
 const ReleaseList = ({loading, releases}) => {
   const columns = [
@@ -62,6 +63,7 @@ const ReleaseList = ({loading, releases}) => {
           desc: true,
         },
       ]}
+      defaultSortMethod={(a, b, desc) => compareSemVer(a, b, desc)}
     />
   );
 };

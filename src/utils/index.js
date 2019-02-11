@@ -1,4 +1,4 @@
-const compareSemVer = (a, b) => {
+const compareSemVer = (a, b, desc) => {
     if (a === null) {
       return -1;
     } else if (b === null) {

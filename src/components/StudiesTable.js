@@ -5,6 +5,7 @@ import TimeAgo from 'react-timeago';
 import ReactTable from 'react-table';
 import checkboxHOC from 'react-table/lib/hoc/selectTable';
 import 'react-table/react-table.css';
+import {compareSemVer} from '../utils';
 
 const StudiesTable = ({loading, studies, selectable, ...props}) => {
   const columns = [
@@ -71,6 +72,7 @@ const StudiesTable = ({loading, studies, selectable, ...props}) => {
           desc: true,
         },
       ]}
+      defaultSortMethod={(a, b, desc) => compareSemVer(a, b, desc)}
       {...props}
     />
   );
