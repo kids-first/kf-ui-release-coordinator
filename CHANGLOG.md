@@ -1,3 +1,19 @@
+# Kids First Release Coordinator Release 1.3.1
+
+## Features
+
+### Summary
+
+Feature Emojis: ✨x2 🐛x1 🖼x1
+Feature Labels: [feature](https://api.github.com/repos/kids-first/kf-ui-release-coordinator/labels/feature) x2 [bug](https://api.github.com/repos/kids-first/kf-ui-release-coordinator/labels/bug) x1 [documentation](https://api.github.com/repos/kids-first/kf-ui-release-coordinator/labels/documentation) x1
+
+### New features and changes
+
+- (#114) ✨ Add button to download snapshot - @dankolbman
+- (#112) ✨ Add colum filters to releases table - @dankolbman
+- (#111) 🐛 Restore sort by SemVer to tables - @dankolbman
+- (#108) 🖼 Update logo - @dankolbman
+
 # Kids First Release Coordinator UI Release 1.3.0
 
 ## Features
