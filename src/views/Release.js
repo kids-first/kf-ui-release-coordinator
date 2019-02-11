@@ -9,7 +9,7 @@ import Events from '../components/Events';
 import ReleaseTimeline from '../components/ReleaseTimeline';
 import MarkdownEditor from '../components/MarkdownEditor';
 import ReleaseReportSummary from '../components/ReleaseReportSummary';
-import { coordinatorApi } from '../globalConfig';
+import { coordinatorApi, snapshotApi } from '../globalConfig';
 
 
 class Release extends Component {
@@ -236,12 +236,14 @@ class Release extends Component {
             disabled={disabled}>
             <Icon type='check-circle'/>Publish
           </Button>
-          <Button
-            size='large'
-            color='primary'
-            disabled={this.state.release.state !== 'staged'}>
-            <Icon type='search'/>Preview in Portal
-          </Button>
+          <a href={`${snapshotApi}/download/${this.state.release.kf_id}`}>
+            <Button
+              size='large'
+              color='primary'
+              disabled={false}>
+              <Icon type='download'/>Download Snapshot
+            </Button>
+          </a>
           <Button
             size='large'
             color='info'
