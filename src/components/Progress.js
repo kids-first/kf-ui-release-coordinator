@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { Steps, Icon} from 'antd';
-const { Step } = Steps;
+import React, {Component} from 'react';
+import {Steps, Icon} from 'antd';
+const {Step} = Steps;
 
 class Progress extends Component {
   isLoading(desired) {
     if (this.props.release.state === desired) {
-      return <Icon type='loading'/>
+      return <Icon type="loading" />;
     }
   }
 
@@ -32,23 +32,30 @@ class Progress extends Component {
     }
 
     return (
-      <Steps direction='horizontal' status={s} current={current}>
-        <Step title="pending"
+      <Steps direction="horizontal" status={s} current={current}>
+        <Step
+          title="pending"
           icon={this.isLoading('pending')}
           description="Waiting for confirmation from all task services"
         />
-        <Step title="running"
+        <Step
+          title="running"
           icon={this.isLoading('running')}
           description="Tasks are running"
         />
-        <Step title="staged"
-          description={"Release is ready for preview \nand waiting for approval"}
+        <Step
+          title="staged"
+          description={
+            'Release is ready for preview \nand waiting for approval'
+          }
         />
-        <Step title="publishing"
+        <Step
+          title="publishing"
           icon={this.isLoading('publishing')}
           description="Release is being made public"
         />
-        <Step title="published"
+        <Step
+          title="published"
           description="Release has been completed and is available in the portal"
         />
       </Steps>
