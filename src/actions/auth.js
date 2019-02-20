@@ -53,7 +53,7 @@ export function loginUser(id_token) {
           ...jwtData.context,
         };
         console.log(jwtData);
-        dispatch(authSuccess(resp.data, jwtData.exp, user.user))
+        dispatch(authSuccess(resp.data, jwtData.exp, user.user));
       })
       .catch(err => {
         if (err.code === 403) {

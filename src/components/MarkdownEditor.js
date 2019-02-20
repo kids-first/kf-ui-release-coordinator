@@ -1,17 +1,16 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import propTypes from 'prop-types';
 import axios from 'axios';
-import { Icon, Spin } from 'antd';
-import { Button } from 'kf-uikit';
+import {Icon, Spin} from 'antd';
+import {Button} from 'kf-uikit';
 import ReactMarkdown from 'react-markdown';
-import { coordinatorApi } from '../globalConfig';
+import {coordinatorApi} from '../globalConfig';
 
-import { Editor } from 'react-draft-wysiwyg';
-import { EditorState, convertToRaw, ContentState } from 'draft-js';
+import {Editor} from 'react-draft-wysiwyg';
+import {EditorState, convertToRaw, ContentState} from 'draft-js';
 import draftToMarkdown from 'draftjs-to-markdown';
 import '../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-
 
 /**
  * Displays a release description or note. If there is no description or note,
@@ -27,7 +26,7 @@ import '../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
  **/
 class MarkdownEditor extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       releaseId: this.props.releaseId,
@@ -39,7 +38,8 @@ class MarkdownEditor extends Component {
       toggling: false,
       saving: false,
       editorState: EditorState.createWithContent(
-          ContentState.createFromText(this.props.description || '')),
+        ContentState.createFromText(this.props.description || ''),
+      ),
     };
   }
 
@@ -59,7 +59,6 @@ class MarkdownEditor extends Component {
     }
 
     this.editToggle();
-
   }
 
   /* POSTs a new note for a given study and release */
@@ -67,13 +66,13 @@ class MarkdownEditor extends Component {
     const rawState = convertToRaw(this.state.editorState.getCurrentContent());
     const mdText = draftToMarkdown(rawState);
     const url = `${coordinatorApi}/release-notes`;
-    axios.post(url,
-        {
-          release: `${coordinatorApi}/releases/${this.state.releaseId}`,
-          study: `${coordinatorApi}/studies/${this.state.studyId}`,
-          description: mdText,
-          author: this.props.user.name
-        })
+    axios
+      .post(url, {
+        release: `${coordinatorApi}/releases/${this.state.releaseId}`,
+        study: `${coordinatorApi}/studies/${this.state.studyId}`,
+        description: mdText,
+        author: this.props.user.name,
+      })
       .then(resp => {
         console.log(resp);
         this.setState({saving: false, description: mdText});
@@ -85,8 +84,9 @@ class MarkdownEditor extends Component {
   updateNote() {
     const rawState = convertToRaw(this.state.editorState.getCurrentContent());
     const mdText = draftToMarkdown(rawState);
-    const url = `${coordinatorApi}/release-notes/${this.state.noteId}`
-    axios.patch(url, {description: mdText})
+    const url = `${coordinatorApi}/release-notes/${this.state.noteId}`;
+    axios
+      .patch(url, {description: mdText})
       .then(resp => {
         this.setState({saving: false, description: mdText});
       })
@@ -97,8 +97,9 @@ class MarkdownEditor extends Component {
   updateRelease() {
     const rawState = convertToRaw(this.state.editorState.getCurrentContent());
     const mdText = draftToMarkdown(rawState);
-    const url = `${coordinatorApi}/releases/${this.state.releaseId}`
-    axios.patch(url, {description: mdText})
+    const url = `${coordinatorApi}/releases/${this.state.releaseId}`;
+    axios
+      .patch(url, {description: mdText})
       .then(resp => {
         this.setState({saving: false, description: mdText});
       })
@@ -115,28 +116,29 @@ class MarkdownEditor extends Component {
   }
 
   updateDescription(ev) {
-    this.setState({description: ev.target.value})
+    this.setState({description: ev.target.value});
   }
 
   toggle(enabled) {
     this.setState({toggling: true});
-    axios.patch(`${coordinatorApi}/task-services/${this.state.service.kf_id}`,
-                {enabled: enabled})
+    axios
+      .patch(`${coordinatorApi}/task-services/${this.state.service.kf_id}`, {
+        enabled: enabled,
+      })
       .then(resp => {
         let service = this.state.service;
-        service.enabled = enabled
+        service.enabled = enabled;
         this.setState({service: service, toggling: false});
       });
   }
 
-  onEditorStateChange: Function = (editorState) => {
+  onEditorStateChange: Function = editorState => {
     this.setState({
       editorState,
     });
   };
 
   render() {
-
     // Saving or loading state
     if (this.state.loading || this.state.saving) {
       return (
@@ -149,7 +151,7 @@ class MarkdownEditor extends Component {
             marginBottom: '100px',
           }}
         />
-      )
+      );
     }
 
     // Show markdown description or button if no description is available
@@ -158,45 +160,39 @@ class MarkdownEditor extends Component {
         return (
           <div>
             <ReactMarkdown source={this.state.description} />
-            <div className='p-4 w-full flex justify-end'>
-              <Button
-                onClick={() => this.editToggle()}
-                className='mx-2'
-              >
-                <Icon type='form' /> Edit
+            <div className="p-4 w-full flex justify-end">
+              <Button onClick={() => this.editToggle()} className="mx-2">
+                <Icon type="form" /> Edit
               </Button>
             </div>
           </div>
-        )
+        );
       } else {
         return (
           <center>
-            <Button
-              onClick={() => this.editToggle()}
-            ><Icon type='form' />
-            {this.props.type === 'release' ? (
-                ' Add a release summary'
-            ) : ( 
-              ` Add a new note for ${this.state.studyId}`
-            )}
+            <Button onClick={() => this.editToggle()}>
+              <Icon type="form" />
+              {this.props.type === 'release'
+                ? ' Add a release summary'
+                : ` Add a new note for ${this.state.studyId}`}
             </Button>
           </center>
-        )
+        );
       }
     }
 
     const editorStyle = {
-        cursor: 'text',
-        maxWidth: '100%',
-        height: 'auto',
-        minHeight: '128px',
-        verticalAlign: 'bottom',
-        transition: 'all .3s, height 0s',
-        overflow: 'auto',
-        resize: 'vertical',
-    }
+      cursor: 'text',
+      maxWidth: '100%',
+      height: 'auto',
+      minHeight: '128px',
+      verticalAlign: 'bottom',
+      transition: 'all .3s, height 0s',
+      overflow: 'auto',
+      resize: 'vertical',
+    };
 
-    const { editorState } = this.state;
+    const {editorState} = this.state;
 
     return (
       <div>
@@ -207,10 +203,18 @@ class MarkdownEditor extends Component {
           editorState={editorState}
           onEditorStateChange={this.onEditorStateChange}
           toolbar={{
-            options: ['inline', 'blockType', 'list', 'link', 'emoji', 'image', 'history'],
+            options: [
+              'inline',
+              'blockType',
+              'list',
+              'link',
+              'emoji',
+              'image',
+              'history',
+            ],
             inline: {
               inDropdown: false,
-              options: ['bold', 'italic']
+              options: ['bold', 'italic'],
             },
             blockType: {
               inDropdown: true,
@@ -218,59 +222,68 @@ class MarkdownEditor extends Component {
             },
             emoji: {
               emojis: [
-                '😀','😋', '😦', '👍', '👎', '👌','👻', '🐛','🔥', '🎉', '🎊', '🎁',
-                '📦', '📊', '📈', '🔇', '🔈', '📅', '✅', '❎', '💯', '❤️'
+                '😀',
+                '😋',
+                '😦',
+                '👍',
+                '👎',
+                '👌',
+                '👻',
+                '🐛',
+                '🔥',
+                '🎉',
+                '🎊',
+                '🎁',
+                '📦',
+                '📊',
+                '📈',
+                '🔇',
+                '🔈',
+                '📅',
+                '✅',
+                '❎',
+                '💯',
+                '❤️',
               ],
             },
           }}
         />
-        <div className='p-4 w-full flex justify-end'>
+        <div className="p-4 w-full flex justify-end">
           <Button
-            color='secondary'
+            color="secondary"
             outline
             onClick={() => this.editToggle()}
-            className='mx-2'
-          >
-            <Icon type='cancel' /> Cancel
+            className="mx-2">
+            <Icon type="cancel" /> Cancel
           </Button>
-          <Button
-            onClick={() => this.save()}
-            className='mx-2'
-          >
-            <Icon type='save' /> Save
+          <Button onClick={() => this.save()} className="mx-2">
+            <Icon type="save" /> Save
           </Button>
         </div>
       </div>
     );
   }
 }
-
 MarkdownEditor.propTypes = {
   releaseId: propTypes.string,
   studyId: propTypes.string,
   noteId: propTypes.string,
   type: propTypes.oneOf(['release', 'release-note']),
   description: propTypes.string,
-}
-
+};
 MarkdownEditor.defaultProps = {
   releaseId: null,
   studyId: null,
   noteId: null,
   type: 'release',
   description: null,
-}
-
+};
 function mapDispatchToProps(dispatch) {
   return {};
 }
-
 function mapStateToProps(state) {
-  return {
-    user: state.auth.user,
-  };
+  return {user: state.auth.user};
 }
-
 export default connect(
   mapStateToProps,
   mapDispatchToProps,

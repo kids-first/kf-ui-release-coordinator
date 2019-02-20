@@ -59,7 +59,7 @@ const StudiesTable = ({loading, studies, selectable, ...props}) => {
 
   return (
     <Table
-      keyField='kf_id'
+      keyField="kf_id"
       className="-striped -highlight"
       loading={loading}
       columns={columns}
