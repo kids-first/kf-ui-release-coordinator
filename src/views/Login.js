@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import auth0 from 'auth0-js';
+import {Button} from 'kf-uikit';
 import {Row, Col, Layout} from 'antd';
 import {googleAppId} from '../globalConfig';
 import {loginUser} from '../actions/auth';
@@ -48,6 +50,8 @@ class Login extends Component {
             <center>
               <div id="googleSignin" />
             </center>
+            <Button onClick={() => this.props.auth.login()}>Auth0 Login</Button>
+            <Button onClick={() => this.props.auth.logout()}>Auth0 Logout</Button>
           </Col>
         </Row>
       </Layout>

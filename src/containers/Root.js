@@ -15,7 +15,12 @@ import Services from '../views/Services';
 import Service from '../views/Service';
 import Profile from '../views/Profile';
 import NewService from '../views/NewService';
+import Callback from '../views/Callback';
+import Auth from '../Auth';
+
 const {Content} = Layout;
+const auth = new Auth();
+
 
 class Root extends Component {
   render() {
@@ -45,7 +50,12 @@ class Root extends Component {
             </Content>
           </Layout>
         ) : (
-          <Login />
+          <div>
+            <Login path="/" auth={auth} />
+            <Route path="/callback" render={(props) => {
+                return <Callback {...{...props, auth}} />
+              }}/>
+          </div>
         )}
       </Router>
     );
