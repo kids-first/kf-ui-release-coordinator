@@ -67,7 +67,6 @@ export function loginUser(id_token) {
 export function auth0Login (id_token) {
   return dispatch => {
     dispatch(beginAuth(true));
-    console.log('id_token: ', id_token);
     const jwtData = jwtDecode(id_token);
     const user = {
       name: jwtData.name,
