@@ -36,7 +36,8 @@ class Events extends Component {
             style={{fontSize: '18px', color: this.whatColor(ev)}}
           />
         }
-        key={i}>
+        key={i}
+      >
         <em>{new Date(ev.created_at).toLocaleString('en-US')}</em>- {ev.message}{' '}
         <div />
         {ev.release && <Tag color="blue">{ev.release.slice(1).slice(-11)}</Tag>}
@@ -51,11 +52,12 @@ class Events extends Component {
         pending={
           this.props.events.length > 0 &&
           !this.props.events[this.props.events.length - 1].message.includes(
-            'release published',
+            'release published'
           )
             ? ''
             : ''
-        }>
+        }
+      >
         {timeline}
       </Timeline>
     );

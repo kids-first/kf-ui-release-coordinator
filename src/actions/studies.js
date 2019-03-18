@@ -5,14 +5,14 @@ import axios from 'axios';
 export function studiesSyncing(loading) {
   return {
     type: 'STUDIES_SYNCING',
-    loading,
+    loading
   };
 }
 
 export function studiesSyncSuccess(response) {
   return {
     type: 'STUDIES_SYNC_SUCCESS',
-    data: response,
+    data: response
   };
 }
 
@@ -20,7 +20,7 @@ export function studiesSyncError(hasError, error) {
   return {
     type: 'STUDIES_SYNC_ERROR',
     hasError,
-    error,
+    error
   };
 }
 
@@ -28,7 +28,7 @@ export function studiesPageLoading(loading, page) {
   return {
     type: 'STUDIES_PAGE_LOADING',
     loading,
-    page,
+    page
   };
 }
 
@@ -36,7 +36,7 @@ export function studiesPageError(hasError, err, page) {
   return {
     type: 'STUDIES_PAGE_ERROR',
     hasError: hasError,
-    page,
+    page
   };
 }
 
@@ -44,35 +44,35 @@ export function studiesPageSuccess(response, page) {
   return {
     type: 'STUDIES_PAGE_SUCCESS',
     data: response,
-    page,
+    page
   };
 }
 
 export function studySelect(studyId) {
   return {
     type: 'STUDY_SELECTED',
-    studyId,
+    studyId
   };
 }
 
 export function studyDeselect(studyId) {
   return {
     type: 'STUDY_DESELECTED',
-    studyId,
+    studyId
   };
 }
 
 export function studiesDeselectAll(selected) {
   return {
     type: 'STUDIES_DESELECTED',
-    selected,
+    selected
   };
 }
 
 export function studiesSelectAll(selected) {
   return {
     type: 'STUDIES_SELECTED',
-    selected,
+    selected
   };
 }
 

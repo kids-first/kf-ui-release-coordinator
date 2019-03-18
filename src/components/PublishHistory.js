@@ -8,7 +8,7 @@ class PublishHistory extends Component {
     super(props);
 
     this.state = {
-      publishedReleases: [],
+      publishedReleases: []
     };
   }
 
@@ -21,7 +21,7 @@ class PublishHistory extends Component {
       .get(`${coordinatorApi}/releases?state=published&limit=1000`)
       .then(releases => {
         this.setState({
-          publishedReleases: releases.data.results.reverse(),
+          publishedReleases: releases.data.results.reverse()
         });
       })
       .catch(error => console.log(error));
@@ -31,14 +31,15 @@ class PublishHistory extends Component {
     const data = this.state.publishedReleases.map((r, i) => ({
       x: new Date(r.created_at),
       y: i,
-      l: r.version,
+      l: r.version
     }));
     return (
       <div>
         <VictoryChart
           padding={{top: 10, bottom: 20, left: 20, right: 10}}
           domainPadding={{x: [10, 10]}}
-          height={100}>
+          height={100}
+        >
           <VictoryArea
             data={data}
             scale="time"
@@ -47,11 +48,11 @@ class PublishHistory extends Component {
               data: {
                 fill: '#cc3399',
                 fillOpacity: 0.5,
-                stroke: 'none',
+                stroke: 'none'
               },
               axis: {
-                fontSize: 6,
-              },
+                fontSize: 6
+              }
             }}
           />
           <VictoryScatter
@@ -63,15 +64,15 @@ class PublishHistory extends Component {
               data: {
                 fill: '#1890ff',
                 fillOpacity: 0.75,
-                strokeWidth: 2,
+                strokeWidth: 2
               },
               axis: {
-                fontSize: 6,
+                fontSize: 6
               },
               labels: {
                 padding: 3,
-                fontSize: 6,
-              },
+                fontSize: 6
+              }
             }}
           />
           <VictoryAxis
@@ -79,21 +80,21 @@ class PublishHistory extends Component {
             tickFormat={x => x}
             style={{
               tickLabels: {
-                fontSize: 6,
-              },
+                fontSize: 6
+              }
             }}
           />
           <VictoryAxis
             tickFormat={x =>
               new Date(x).toLocaleString('en-us', {
                 month: 'short',
-                day: 'numeric',
+                day: 'numeric'
               })
             }
             style={{
               tickLabels: {
-                fontSize: 6,
-              },
+                fontSize: 6
+              }
             }}
           />
         </VictoryChart>

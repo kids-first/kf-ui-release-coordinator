@@ -3,7 +3,7 @@ const initialState = {
   token: null,
   tokenExpires: 0,
   error: {hasError: false, message: ''},
-  user: {},
+  user: {}
 };
 
 const auth = (state = initialState, action) => {
@@ -11,7 +11,7 @@ const auth = (state = initialState, action) => {
     case 'AUTH_BEGIN':
       return {
         ...state,
-        loading: true,
+        loading: true
       };
     case 'AUTH_SUCCESS':
       return {
@@ -19,13 +19,13 @@ const auth = (state = initialState, action) => {
         token: action.token,
         tokenExpires: action.tokenExpires,
         user: action.user,
-        loading: false,
+        loading: false
       };
     case 'AUTH_DENIED':
     case 'AUTH_ERROR':
       return {
         ...state,
-        error: {hasError: true, message: action.message},
+        error: {hasError: true, message: action.message}
       };
     default:
       return state;

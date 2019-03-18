@@ -21,7 +21,6 @@ import Auth from '../Auth';
 const {Content} = Layout;
 const auth = new Auth();
 
-
 class Root extends Component {
   render() {
     return (
@@ -35,8 +34,9 @@ class Root extends Component {
                 minHeight: '100%',
                 width: '100%',
                 maxWidth: '1080px',
-                margin: 'auto',
-              }}>
+                margin: 'auto'
+              }}
+            >
               <Route exact path="/" component={Status} />
               <Route path="/planner" component={Planner} />
               <Route exact path="/profile" component={Profile} />
@@ -52,9 +52,12 @@ class Root extends Component {
         ) : (
           <div>
             <Login path="/" auth={auth} />
-            <Route path="/callback" render={(props) => {
-                return <Callback {...{...props, auth}} />
-              }}/>
+            <Route
+              path="/callback"
+              render={props => {
+                return <Callback {...{...props, auth}} />;
+              }}
+            />
           </div>
         )}
       </Router>
@@ -70,11 +73,11 @@ function mapStateToProps(state) {
   axios.defaults.headers.common['Authorization'] = `Bearer ${state.auth.token}`;
   return {
     userStatus: state.auth.user.status,
-    tokenExpires: state.auth.tokenExpires,
+    tokenExpires: state.auth.tokenExpires
   };
 }
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(Root);

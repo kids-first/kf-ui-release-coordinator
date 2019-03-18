@@ -12,7 +12,8 @@ const HeaderContainer = ({...props}) => {
           <h3
             className={`m-0 text-white ${
               syslevel === 'qa' ? 'bg-orange' : 'bg-pink'
-            }`}>
+            }`}
+          >
             FYI, you're currently in the <b>{syslevel}</b> environment. Anything
             you do here will not be made public!
           </h3>
@@ -39,7 +40,7 @@ const HeaderContainer = ({...props}) => {
             <Button outline color="secondary">
               {props.userName}
             </Button>
-          </NavLink>,
+          </NavLink>
         ]}
       />
       ;
@@ -57,5 +58,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(HeaderContainer);

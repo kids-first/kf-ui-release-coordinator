@@ -8,21 +8,21 @@ class Tasks extends Component {
       {
         kf_id: 'TA_DVV673SB',
         name: 'Release Tagger',
-        state: 'ok',
+        state: 'ok'
       },
       {
         kf_id: 'TA_YW6XBRST',
         name: 'Cavatica Sync',
-        state: 'ok',
+        state: 'ok'
       },
       {
         kf_id: 'TA_FTDDYNM8',
         name: 'Portal ETL',
-        state: 'ok',
-      },
+        state: 'ok'
+      }
     ];
     this.state = {
-      tasks: tasks,
+      tasks: tasks
     };
   }
 
