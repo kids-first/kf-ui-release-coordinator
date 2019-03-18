@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import auth0 from 'auth0-js';
 import {Button} from 'kf-uikit';
 import {GoogleLogin} from 'react-google-login';
 import {Row, Col, Layout} from 'antd';
