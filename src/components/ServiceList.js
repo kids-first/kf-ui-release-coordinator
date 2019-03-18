@@ -10,7 +10,7 @@ class ServiceList extends Component {
 
     this.state = {
       data: [],
-      loading: true,
+      loading: true
     };
   }
 
@@ -39,7 +39,7 @@ class ServiceList extends Component {
   render() {
     const statusColors = {
       ok: '#87d068',
-      bad: '#f50',
+      bad: '#f50'
     };
 
     return (
@@ -53,7 +53,7 @@ class ServiceList extends Component {
                 icon={item.health_status === 'ok' ? 'check' : 'warning'}
                 style={{
                   backgroundColor: statusColors[item.health_status],
-                  marginRight: '5px',
+                  marginRight: '5px'
                 }}
               />
               <Link to={`/services/${item.kf_id}`}>{item.name}</Link> -

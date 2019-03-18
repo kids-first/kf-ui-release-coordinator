@@ -5,7 +5,7 @@ export function releasesPageLoading(loading, page) {
   return {
     type: 'RELEASES_PAGE_LOADING',
     loading,
-    page,
+    page
   };
 }
 
@@ -13,7 +13,7 @@ export function releasesPageError(hasError, err, page) {
   return {
     type: 'RELEASES_PAGE_ERROR',
     hasError: hasError,
-    page,
+    page
   };
 }
 
@@ -21,7 +21,7 @@ export function releasesPageSuccess(response, page) {
   return {
     type: 'RELEASES_PAGE_SUCCESS',
     data: response,
-    page,
+    page
   };
 }
 

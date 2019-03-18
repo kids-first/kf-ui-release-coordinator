@@ -11,14 +11,14 @@ const releasesPageLoading = (state = true, action) => {
 
 const releasesPageError = (
   state = {hasError: false, message: '', code: ''},
-  action,
+  action
 ) => {
   switch (action.type) {
     case 'RELEASES_PAGE_ERROR':
       return {
         hasError: action.hasError,
         message: action.message,
-        code: action.code,
+        code: action.code
       };
     default:
       return state;
@@ -50,8 +50,8 @@ const releasesPagePagination = (state = {currentPage: null}, action) => {
         [action.page]: {
           next: action.data.next,
           previous: action.data.previous,
-          ids: releaseIds,
-        },
+          ids: releaseIds
+        }
       };
     case 'RELEASES_PAGE_ERROR':
       return {
@@ -59,9 +59,9 @@ const releasesPagePagination = (state = {currentPage: null}, action) => {
         [action.page]: {
           error: {
             message: action.message,
-            code: action.code,
-          },
-        },
+            code: action.code
+          }
+        }
       };
     default:
       return state;
@@ -72,5 +72,5 @@ export default combineReducers({
   items: releasesPageItems,
   pages: releasesPagePagination,
   error: releasesPageError,
-  loading: releasesPageLoading,
+  loading: releasesPageLoading
 });

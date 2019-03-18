@@ -6,7 +6,7 @@ import {
   VictoryChart,
   VictoryScatter,
   VictoryAxis,
-  VictoryLegend,
+  VictoryLegend
 } from 'victory';
 import ServiceList from '../components/ServiceList';
 import Events from '../components/Events';
@@ -21,7 +21,7 @@ class Status extends Component {
     this.state = {
       events: [],
       latestPublish: {},
-      latest: [],
+      latest: []
     };
   }
 
@@ -42,7 +42,7 @@ class Status extends Component {
       .then(releases => {
         this.setState({
           latestPublish:
-            releases.data.results.length > 0 ? releases.data.results[0] : {},
+            releases.data.results.length > 0 ? releases.data.results[0] : {}
         });
       })
       .catch(error => console.log(error));
@@ -51,7 +51,7 @@ class Status extends Component {
       .get(`${coordinatorApi}/releases?limit=8`)
       .then(releases => {
         this.setState({
-          latest: releases.data.results,
+          latest: releases.data.results
         });
       })
       .catch(error => console.log(error));
@@ -65,7 +65,7 @@ class Status extends Component {
       .get(`${coordinatorApi}/events?limit=5`)
       .then(events => {
         this.setState({
-          events: events.data.results,
+          events: events.data.results
         });
         this.timer = setTimeout(() => this.getData(), 10000);
       })
@@ -80,7 +80,7 @@ class Status extends Component {
           y: 0,
           size: 5,
           label: r.version,
-          state: r.state,
+          state: r.state
         }))
       : null;
 
@@ -91,7 +91,7 @@ class Status extends Component {
       publishing: '#91d5ff',
       published: '#1890ff',
       canceled: '#dbdbdb',
-      failed: '#fc4a3a',
+      failed: '#fc4a3a'
     };
     return (
       <div>
@@ -117,7 +117,8 @@ class Status extends Component {
           <Card title="Latest Releases">
             <VictoryChart
               height={70}
-              padding={{top: 20, bottom: 20, left: 50, right: 50}}>
+              padding={{top: 20, bottom: 20, left: 50, right: 50}}
+            >
               <VictoryAxis
                 independentAxis
                 style={{tickLabels: {fontSize: 6, padding: 10}}}
@@ -127,12 +128,12 @@ class Status extends Component {
                 style={{
                   data: {
                     fill: d => stateColors[d.state],
-                    strokeWidth: 3,
+                    strokeWidth: 3
                   },
                   labels: {
                     padding: 10,
-                    fontSize: 14,
-                  },
+                    fontSize: 14
+                  }
                 }}
               />
 
@@ -145,13 +146,13 @@ class Status extends Component {
                 style={{
                   border: {stroke: 'none'},
                   title: {fontSize: 8},
-                  labels: {fontSize: 6},
+                  labels: {fontSize: 6}
                 }}
                 borderPadding={0}
                 padding={{top: 0, bottom: 0}}
                 data={Object.keys(stateColors).map(v => ({
                   name: v,
-                  symbol: {fill: stateColors[v]},
+                  symbol: {fill: stateColors[v]}
                 }))}
               />
             </VictoryChart>
@@ -164,7 +165,8 @@ class Status extends Component {
         <section className="flex justify-around" style={{minHeight: '200px'}}>
           <Card
             title="Register a Task Service"
-            className="max-w-sm relative min-h-full">
+            className="max-w-sm relative min-h-full"
+          >
             <p>
               Task Services follow a common HTTP API spec to process work for a
               release. Register an API endpoint for a task service below.
@@ -177,7 +179,8 @@ class Status extends Component {
           </Card>
           <Card
             title="Plan a Release"
-            className="max-w-sm relative  min-h-full">
+            className="max-w-sm relative  min-h-full"
+          >
             <p>
               Select studies to be released and submit for review and
               processing.
@@ -190,7 +193,8 @@ class Status extends Component {
           </Card>
           <Card
             title="View Past Releases"
-            className="max-w-sm relative min-h-full">
+            className="max-w-sm relative min-h-full"
+          >
             <p>View a history and status of past releases.</p>
             <center className="absolute w-full p-4" style={{bottom: 0}}>
               <Link to="/releases">

@@ -7,7 +7,8 @@ class StatusBadge extends Component {
       return (
         <Tag
           color="#87d068"
-          style={{fontSize: '22pt', padding: '10px', height: '38pt'}}>
+          style={{fontSize: '22pt', padding: '10px', height: '38pt'}}
+        >
           Status: <Icon type="check-circle" />
         </Tag>
       );
@@ -15,7 +16,8 @@ class StatusBadge extends Component {
       return (
         <Tag
           color="#f50"
-          style={{fontSize: '22pt', padding: '10px', height: '38pt'}}>
+          style={{fontSize: '22pt', padding: '10px', height: '38pt'}}
+        >
           Status: <Icon type="warning" />
         </Tag>
       );

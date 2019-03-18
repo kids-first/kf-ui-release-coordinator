@@ -13,7 +13,7 @@ class NewServiceForm extends Component {
     this.state = {
       data: [],
       loading: false,
-      error: '',
+      error: ''
     };
   }
 
@@ -25,7 +25,7 @@ class NewServiceForm extends Component {
           name: values.name,
           description: values.description,
           author: this.props.user.name,
-          url: values.url,
+          url: values.url
         };
         this.setState({loading: true});
 
@@ -38,7 +38,7 @@ class NewServiceForm extends Component {
             console.log(err);
             this.setState({
               loading: false,
-              error: JSON.stringify(err.response.data),
+              error: JSON.stringify(err.response.data)
             });
           });
       }
@@ -53,7 +53,7 @@ class NewServiceForm extends Component {
           <Col span={12}>
             <FormItem label="Service Name">
               {getFieldDecorator('name', {
-                rules: [{required: true, message: 'Please provide a name!'}],
+                rules: [{required: true, message: 'Please provide a name!'}]
               })(<Input placeholder="Name" />)}
             </FormItem>
           </Col>
@@ -64,9 +64,9 @@ class NewServiceForm extends Component {
                   {required: true, message: 'Please provide an endpoint url!'},
                   {
                     pattern: '^https?://',
-                    message: 'Must begin with http(s)://',
-                  },
-                ],
+                    message: 'Must begin with http(s)://'
+                  }
+                ]
               })(<Input addonAfter={<Icon type="link" />} />)}
             </FormItem>
           </Col>
@@ -76,8 +76,8 @@ class NewServiceForm extends Component {
             <FormItem label="Description">
               {getFieldDecorator('description', {
                 rules: [
-                  {required: false, message: 'Please provide a description!'},
-                ],
+                  {required: false, message: 'Please provide a description!'}
+                ]
               })(<Input.TextArea placeholder="What does this task do?" />)}
             </FormItem>
           </Col>

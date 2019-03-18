@@ -29,7 +29,7 @@ class Releases extends Component {
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchPage: (page, filters) => dispatch(fetchAllReleases(page, filters)),
+    fetchPage: (page, filters) => dispatch(fetchAllReleases(page, filters))
   };
 }
 
@@ -37,11 +37,11 @@ function mapStateToProps(state) {
   return {
     pages: state.releases.pages,
     releases: Object.values(state.releases.items),
-    loading: state.releases.loading && state.releases.pages[1] === undefined,
+    loading: state.releases.loading && state.releases.pages[1] === undefined
   };
 }
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(Releases);

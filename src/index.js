@@ -14,12 +14,12 @@ import './index.css';
 
 const persistedReducer = persistReducer(
   {key: 'root', storage, whitelist: ['auth']},
-  reducer,
+  reducer
 );
 
 const store = createStore(
   persistedReducer,
-  composeWithDevTools(applyMiddleware(thunk)),
+  composeWithDevTools(applyMiddleware(thunk))
 );
 
 const persistor = persistStore(store);
@@ -30,7 +30,7 @@ ReactDOM.render(
       <App />
     </PersistGate>
   </Provider>,
-  document.getElementById('root'),
+  document.getElementById('root')
 );
 
 registerServiceWorker();

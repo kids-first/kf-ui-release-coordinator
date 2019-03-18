@@ -4,14 +4,14 @@ import {egoApi} from '../globalConfig';
 
 export function beginAuth(loading) {
   return {
-    type: 'AUTH_BEGIN',
+    type: 'AUTH_BEGIN'
   };
 }
 
 export function userLoggedIn(user) {
   return {
     type: 'AUTH_SUCCESS',
-    user: user,
+    user: user
   };
 }
 
@@ -20,21 +20,21 @@ export function authSuccess(token, tokenExpires, user) {
     type: 'AUTH_SUCCESS',
     token,
     tokenExpires,
-    user,
+    user
   };
 }
 
 export function authNotAllowed(message) {
   return {
     type: 'AUTH_DENIED',
-    message,
+    message
   };
 }
 
 export function authError(message) {
   return {
     type: 'AUTH_ERROR',
-    message,
+    message
   };
 }
 
@@ -50,7 +50,7 @@ export function loginUser(id_token) {
       .then(resp => {
         const jwtData = jwtDecode(resp.data);
         const user = {
-          ...jwtData.context,
+          ...jwtData.context
         };
         console.log(jwtData);
         dispatch(authSuccess(resp.data, jwtData.exp, user.user));
@@ -64,7 +64,7 @@ export function loginUser(id_token) {
   };
 }
 
-export function auth0Login (id_token) {
+export function auth0Login(id_token) {
   return dispatch => {
     dispatch(beginAuth(true));
     const jwtData = jwtDecode(id_token);
@@ -76,8 +76,8 @@ export function auth0Login (id_token) {
       lastName: jwtData.family_name,
       groups: jwtData['https://kidsfirstdrc.org/groups'],
       roles: jwtData['https://kidsfirstdrc.org/roles'],
-      permissions: jwtData['https://kidsfirstdrc.org/permissions'],
+      permissions: jwtData['https://kidsfirstdrc.org/permissions']
     };
     dispatch(authSuccess(id_token, jwtData.exp, user));
-  }
+  };
 }

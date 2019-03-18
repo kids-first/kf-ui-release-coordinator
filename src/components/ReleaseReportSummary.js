@@ -12,7 +12,7 @@ class ReleaseReportSummary extends Component {
       loading: true,
       release: {},
       found: null,
-      report: {},
+      report: {}
     };
     this.getData();
     this.mounted = false;
@@ -29,13 +29,13 @@ class ReleaseReportSummary extends Component {
         this.setState({
           report: report.data,
           loading: false,
-          found: true,
+          found: true
         });
       })
       .catch(error => {
         console.log(error);
         this.setState({
-          found: false,
+          found: false
         });
       });
   }
@@ -54,28 +54,28 @@ class ReleaseReportSummary extends Component {
             {
               icon: 'study',
               label: 'Studies',
-              metric: this.state.report.studies,
+              metric: this.state.report.studies
             },
             {
               icon: 'participant',
               label: 'Partiicpants',
-              metric: this.state.report.participants,
+              metric: this.state.report.participants
             },
             {
               icon: 'family',
               label: 'Families',
-              metric: this.state.report.families,
+              metric: this.state.report.families
             },
             {
               icon: 'biospecimen',
               label: 'Biospecimens',
-              metric: this.state.report.biospecimens,
+              metric: this.state.report.biospecimens
             },
             {
               icon: 'file',
               label: 'Files',
-              metric: this.state.report['genomic-files'],
-            },
+              metric: this.state.report['genomic-files']
+            }
           ]}
         />
         <Row type="flex" justify="center">
@@ -95,19 +95,19 @@ class ReleaseReportSummary extends Component {
                   {
                     icon: 'participant',
                     label: 'Partiicpants',
-                    metric: study.participants,
+                    metric: study.participants
                   },
                   {icon: 'family', label: 'Families', metric: study.families},
                   {
                     icon: 'biospecimen',
                     label: 'Biospecimens',
-                    metric: study.biospecimens,
+                    metric: study.biospecimens
                   },
                   {
                     icon: 'file',
                     label: 'Files',
-                    metric: study['genomic-files'],
-                  },
+                    metric: study['genomic-files']
+                  }
                 ]}
               />
             </Fragment>
