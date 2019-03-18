@@ -63,3 +63,21 @@ export function loginUser(id_token) {
       });
   };
 }
+
+export function auth0Login (id_token) {
+  return dispatch => {
+    dispatch(beginAuth(true));
+    const jwtData = jwtDecode(id_token);
+    const user = {
+      name: jwtData.name,
+      email: jwtData.email,
+      status: 'Approved',
+      firstName: jwtData.given_name,
+      lastName: jwtData.family_name,
+      groups: jwtData['https://kidsfirstdrc.org/groups'],
+      roles: jwtData['https://kidsfirstdrc.org/roles'],
+      permissions: jwtData['https://kidsfirstdrc.org/permissions'],
+    };
+    dispatch(authSuccess(id_token, jwtData.exp, user));
+  }
+}

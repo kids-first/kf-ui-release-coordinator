@@ -5,3 +5,7 @@ export const reportsApi = process.env.REACT_APP_REPORTS_API;
 export const snapshotApi = process.env.REACT_APP_SNAPSHOT_API;
 export const egoApi = process.env.REACT_APP_EGO_API;
 export const googleAppId = process.env.REACT_APP_GOOGLE_APP_ID;
+export const auth0Domain = process.env.REACT_APP_AUTH0_DOMAIN;
+export const auth0ClientId = process.env.REACT_APP_AUTH0_CLIENT_ID;
+export const auth0RedirectUri = process.env.REACT_APP_AUTH0_REDIRECT_URI;
+export const auth0Aud = process.env.REACT_APP_AUTH0_AUD;
