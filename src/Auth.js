@@ -29,7 +29,7 @@ export default class Auth {
       this.auth0.parseHash((err, authResult) => {
         if (authResult && authResult.accessToken && authResult.idToken) {
           this.setSession(authResult);
-          callback(authResult.accessToken);
+          callback(authResult.accessToken, authResult.idToken);
           props.history.push('/');
         } else if (err) {
           console.log(err);

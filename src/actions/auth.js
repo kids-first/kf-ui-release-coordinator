@@ -64,7 +64,7 @@ export function loginUser(id_token) {
   };
 }
 
-export function auth0Login(id_token) {
+export function auth0Login(access_token, id_token) {
   return dispatch => {
     dispatch(beginAuth(true));
     const jwtData = jwtDecode(id_token);
@@ -78,6 +78,6 @@ export function auth0Login(id_token) {
       roles: jwtData['https://kidsfirstdrc.org/roles'],
       permissions: jwtData['https://kidsfirstdrc.org/permissions']
     };
-    dispatch(authSuccess(id_token, jwtData.exp, user));
+    dispatch(authSuccess(access_token, jwtData.exp, user));
   };
 }
