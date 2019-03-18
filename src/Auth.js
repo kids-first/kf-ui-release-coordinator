@@ -1,5 +1,10 @@
-import auth0 from 'auth0-js';
-// import { AUTH_CONFIG } from './auth0-variables';
+import auth0 from "auth0-js";
+import {
+  auth0Domain,
+  auth0ClientId,
+  auth0RedirectUri,
+  auth0Aud
+} from "./globalConfig";
 
 export default class Auth {
   accessToken;
@@ -7,11 +12,11 @@ export default class Auth {
   expiresAt;
 
   auth0 = new auth0.WebAuth({
-    domain: 'kids-first.auth0.com',
-    clientID: 'nfW2aFxjU5Gc8MFm2sVpGFmRKjxMsIZ4',
-    redirectUri: 'http://localhost:3000/callback',
+    domain: auth0Domain,
+    clientID: auth0ClientId,
+    redirectUri: auth0RedirectUri,
     responseType: 'token id_token',
-    audience: 'https://kf-release-coord.kidsfirstdrc.org',
+    audience: auth0Aud,
     scope: 'openid profile email'
   });
 
