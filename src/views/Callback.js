@@ -14,7 +14,8 @@ class Callback extends Component {
 
 function mapDispatchToProps(dispatch) {
   return {
-    auth0Login: id_token => dispatch(auth0Login(id_token))
+    auth0Login: (access_token, id_token) =>
+      dispatch(auth0Login(access_token, id_token))
   };
 }
 
