@@ -1,3 +1,10 @@
+[context.master.environment]
+  REACT_APP_ENV = "QA"
+  REACT_APP_AUTH0_REDIRECT_URI = "kf-release-coordinator-netlify.kidsfirstdrc.org/callback"
+  REACT_APP_COORDINATOR_API = "https://kf-release-coord-qa.kidsfirstdrc.org"
+  REACT_APP_REPORTS_API = "https://kf-task-release-reports-qa.kidsfirstdrc.org"
+  REACT_APP_EGO_API = "https://ego-dev.kids-first.io"
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
