@@ -15,7 +15,7 @@ class Study extends Component {
       study: {},
       releases: [],
       updating: false,
-      toggling: false
+      toggling: false,
     };
   }
 
@@ -25,20 +25,20 @@ class Study extends Component {
         axios.get(
           `${coordinatorApi}/studies/${
             this.props.match.params.studyId
-          }/releases`
+          }/releases`,
         ),
         axios.get(
-          `${coordinatorApi}/studies/${this.props.match.params.studyId}`
-        )
+          `${coordinatorApi}/studies/${this.props.match.params.studyId}`,
+        ),
       ])
       .then(
         axios.spread((releases, study) => {
           this.setState({
             study: study.data,
             releases: releases.data.results,
-            loading: false
+            loading: false,
           });
-        })
+        }),
       )
       .catch(error => console.log(error));
   }

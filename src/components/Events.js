@@ -52,7 +52,7 @@ class Events extends Component {
         pending={
           this.props.events.length > 0 &&
           !this.props.events[this.props.events.length - 1].message.includes(
-            'release published'
+            'release published',
           )
             ? ''
             : ''

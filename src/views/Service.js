@@ -11,7 +11,7 @@ import {
   Spin,
   Tag,
   Switch,
-  Tooltip
+  Tooltip,
 } from 'antd';
 import TaskList from '../components/TaskList';
 import StatusBadge from '../components/StatusBadge';
@@ -29,7 +29,7 @@ class Service extends Component {
       service: {},
       events: [],
       updating: false,
-      toggling: false
+      toggling: false,
     };
   }
 
@@ -37,13 +37,15 @@ class Service extends Component {
     axios
       .all([
         axios.get(
-          `${coordinatorApi}/task-services/${this.props.match.params.serviceId}`
+          `${coordinatorApi}/task-services/${
+            this.props.match.params.serviceId
+          }`,
         ),
         axios.get(
           `${coordinatorApi}/events?task_service=${
             this.props.match.params.serviceId
-          }`
-        )
+          }`,
+        ),
       ])
       .then(
         axios.spread((service, events) => {
@@ -51,9 +53,9 @@ class Service extends Component {
             service: service.data,
             events: events.data.results,
             loading: false,
-            editing: false
+            editing: false,
           });
-        })
+        }),
       )
       .catch(error => console.log(error));
   }
@@ -67,7 +69,7 @@ class Service extends Component {
     axios
       .patch(
         `${coordinatorApi}/task-services/${this.state.service.kf_id}`,
-        this.state.service
+        this.state.service,
       )
       .then(resp => {
         this.setState({updating: false});
@@ -90,7 +92,7 @@ class Service extends Component {
     this.setState({toggling: true});
     axios
       .patch(`${coordinatorApi}/task-services/${this.state.service.kf_id}`, {
-        enabled: enabled
+        enabled: enabled,
       })
       .then(resp => {
         let service = this.state.service;

@@ -20,7 +20,7 @@ class Release extends Component {
       release: {},
       events: [],
       publishing: false,
-      canceling: false
+      canceling: false,
     };
     this.getData();
     this.mounted = false;
@@ -46,7 +46,7 @@ class Release extends Component {
         `${coordinatorApi}/releases/${
           this.props.match.params.releaseId
         }/publish`,
-        {}
+        {},
       )
       .then(resp => {
         this.setState({publishing: false});
@@ -78,23 +78,23 @@ class Release extends Component {
     axios
       .all([
         axios.get(
-          `${coordinatorApi}/releases/${this.props.match.params.releaseId}`
+          `${coordinatorApi}/releases/${this.props.match.params.releaseId}`,
         ),
         axios.get(
           `${coordinatorApi}/events?release=${
             this.props.match.params.releaseId
-          }`
-        )
+          }`,
+        ),
       ])
       .then(
         axios.spread((release, events) => {
           this.setState({
             release: release.data,
             events: events.data.results.reverse(),
-            loading: false
+            loading: false,
           });
           this.timer = setTimeout(() => this.getData(), 3000);
-        })
+        }),
       )
       .catch(error => console.log(error));
   }
@@ -155,7 +155,7 @@ class Release extends Component {
 
     let style = {
       marginTop: '24px',
-      marginBottom: '24px'
+      marginBottom: '24px',
     };
 
     if (this.state.release.state === 'published') {
@@ -233,7 +233,7 @@ class Release extends Component {
         </Row>
         <Divider style={{margin: 0, marginTop: '24px', marginBottom: '24px'}} />
         {['staged', 'publishing', 'published', 'canceled', 'failed'].includes(
-          this.state.release.state
+          this.state.release.state,
         ) && (
           <ReleaseReportSummary
             releaseId={this.state.release.kf_id}

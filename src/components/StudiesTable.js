@@ -17,18 +17,18 @@ const StudiesTable = ({loading, studies, selectable, ...props}) => {
           <Button className="w-full">{row.value}</Button>
         </Link>
       ),
-      width: 120
+      width: 120,
     },
     {
       Header: 'Name',
-      accessor: 'name'
+      accessor: 'name',
     },
     {
       Header: 'Public Version',
       accessor: 'last_pub_version',
       width: 70,
       className: 'text-center',
-      Cell: row => (row.value === null ? '---' : row.value)
+      Cell: row => (row.value === null ? '---' : row.value),
     },
     {
       Header: 'Visible',
@@ -41,15 +41,15 @@ const StudiesTable = ({loading, studies, selectable, ...props}) => {
         />
       ),
       width: 120,
-      className: 'text-center'
+      className: 'text-center',
     },
     {
       Header: 'Created At',
       accessor: 'created_at',
       Cell: row => <TimeAgo date={row.value} />,
       width: 120,
-      className: 'text-right'
-    }
+      className: 'text-right',
+    },
   ];
 
   var Table = ReactTable;
@@ -69,8 +69,8 @@ const StudiesTable = ({loading, studies, selectable, ...props}) => {
       defaultSorted={[
         {
           id: 'last_pub_version',
-          desc: true
-        }
+          desc: true,
+        },
       ]}
       defaultSortMethod={(a, b, desc) => compareSemVer(a, b, desc)}
       {...props}

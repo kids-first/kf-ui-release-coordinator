@@ -6,7 +6,7 @@ import {
   VictoryChart,
   VictoryScatter,
   VictoryAxis,
-  VictoryLegend
+  VictoryLegend,
 } from 'victory';
 import ServiceList from '../components/ServiceList';
 import Events from '../components/Events';
@@ -21,7 +21,7 @@ class Status extends Component {
     this.state = {
       events: [],
       latestPublish: {},
-      latest: []
+      latest: [],
     };
   }
 
@@ -42,7 +42,7 @@ class Status extends Component {
       .then(releases => {
         this.setState({
           latestPublish:
-            releases.data.results.length > 0 ? releases.data.results[0] : {}
+            releases.data.results.length > 0 ? releases.data.results[0] : {},
         });
       })
       .catch(error => console.log(error));
@@ -51,7 +51,7 @@ class Status extends Component {
       .get(`${coordinatorApi}/releases?limit=8`)
       .then(releases => {
         this.setState({
-          latest: releases.data.results
+          latest: releases.data.results,
         });
       })
       .catch(error => console.log(error));
@@ -65,7 +65,7 @@ class Status extends Component {
       .get(`${coordinatorApi}/events?limit=5`)
       .then(events => {
         this.setState({
-          events: events.data.results
+          events: events.data.results,
         });
         this.timer = setTimeout(() => this.getData(), 10000);
       })
@@ -80,7 +80,7 @@ class Status extends Component {
           y: 0,
           size: 5,
           label: r.version,
-          state: r.state
+          state: r.state,
         }))
       : null;
 
@@ -91,7 +91,7 @@ class Status extends Component {
       publishing: '#91d5ff',
       published: '#1890ff',
       canceled: '#dbdbdb',
-      failed: '#fc4a3a'
+      failed: '#fc4a3a',
     };
     return (
       <div>
@@ -128,12 +128,12 @@ class Status extends Component {
                 style={{
                   data: {
                     fill: d => stateColors[d.state],
-                    strokeWidth: 3
+                    strokeWidth: 3,
                   },
                   labels: {
                     padding: 10,
-                    fontSize: 14
-                  }
+                    fontSize: 14,
+                  },
                 }}
               />
 
@@ -146,13 +146,13 @@ class Status extends Component {
                 style={{
                   border: {stroke: 'none'},
                   title: {fontSize: 8},
-                  labels: {fontSize: 6}
+                  labels: {fontSize: 6},
                 }}
                 borderPadding={0}
                 padding={{top: 0, bottom: 0}}
                 data={Object.keys(stateColors).map(v => ({
                   name: v,
-                  symbol: {fill: stateColors[v]}
+                  symbol: {fill: stateColors[v]},
                 }))}
               />
             </VictoryChart>

@@ -4,7 +4,7 @@ import {
   syncStudies,
   fetchAllStudies,
   toggleStudy,
-  toggleAllStudies
+  toggleAllStudies,
 } from '../actions/studies';
 import {Button, Icon} from 'kf-uikit';
 import StudiesTable from '../components/StudiesTable';
@@ -14,7 +14,7 @@ class StudiesContainer extends Component {
     super();
 
     this.state = {
-      selection: []
+      selection: [],
     };
   }
 
@@ -67,7 +67,7 @@ function mapDispatchToProps(dispatch) {
     syncStudies: () => dispatch(syncStudies()),
     fetchPage: (page, filters) => dispatch(fetchAllStudies(page, filters)),
     toggleStudy: studyId => dispatch(toggleStudy(studyId)),
-    toggleAll: () => dispatch(toggleAllStudies())
+    toggleAll: () => dispatch(toggleAllStudies()),
   };
 }
 
@@ -79,11 +79,11 @@ function mapStateToProps(state) {
     selectAll: state.studies.selected.selectAll,
     loading: state.studies.loading && state.studies.pages[1] === undefined,
     syncing: state.studies.syncing,
-    syncMessage: state.studies.syncMessage
+    syncMessage: state.studies.syncMessage,
   };
 }
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(StudiesContainer);

@@ -10,7 +10,7 @@ class Services extends Component {
 
     this.state = {
       data: [],
-      loading: true
+      loading: true,
     };
   }
 

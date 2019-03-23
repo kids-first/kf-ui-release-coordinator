@@ -18,7 +18,7 @@ class NewReleaseForm extends Component {
       studies: e.studies,
       tags: [],
       is_major: e.isMajor === 'true',
-      author: this.props.user.name
+      author: this.props.user.name,
     };
 
     const list = (
@@ -56,7 +56,7 @@ class NewReleaseForm extends Component {
       },
       onCancel(close) {
         close();
-      }
+      },
     });
   };
 
@@ -68,14 +68,14 @@ class NewReleaseForm extends Component {
           model="title"
           defaultValue=""
           validators={{
-            required: val => val && val.length
+            required: val => val && val.length,
           }}
         />
         <Errors
           className="text-red"
           model="title"
           messages={{
-            required: 'This field is required'
+            required: 'This field is required',
           }}
         />
         <label>Is this a major release:</label>
@@ -88,7 +88,7 @@ class NewReleaseForm extends Component {
           className="text-red"
           model="studies"
           messages={{
-            required: 'Select at least one study to release'
+            required: 'Select at least one study to release',
           }}
         />
         <Control.custom
@@ -97,7 +97,7 @@ class NewReleaseForm extends Component {
           selectable
           defaultPageSize={10}
           validators={{
-            required: val => val.selected.items.length !== 0
+            required: val => val.selected.items.length !== 0,
           }}
         />
         <label>Services to be run for this release:</label>
@@ -115,11 +115,11 @@ function mapDispatchToProps(dispatch) {
 function mapStateToProps(state) {
   return {
     user: state.auth.user,
-    studies: state.studies.items
+    studies: state.studies.items,
   };
 }
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(withRouter(NewReleaseForm));

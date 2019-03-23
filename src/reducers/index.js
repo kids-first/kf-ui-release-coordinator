@@ -11,6 +11,6 @@ export default combineReducers({
   releaseForm: combineForms({
     studies: [],
     title: '',
-    isMajor: 'false'
-  })
+    isMajor: 'false',
+  }),
 });

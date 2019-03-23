@@ -11,7 +11,7 @@ class TaskList extends Component {
       loading: true,
       releaseId: props.releaseId | null,
       serviceId: props.serivceId | null,
-      tasks: []
+      tasks: [],
     };
   }
 

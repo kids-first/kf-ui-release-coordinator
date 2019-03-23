@@ -34,7 +34,7 @@ class Root extends Component {
                 minHeight: '100%',
                 width: '100%',
                 maxWidth: '1080px',
-                margin: 'auto'
+                margin: 'auto',
               }}
             >
               <Route exact path="/" component={Status} />
@@ -73,11 +73,11 @@ function mapStateToProps(state) {
   axios.defaults.headers.common['Authorization'] = `Bearer ${state.auth.token}`;
   return {
     userStatus: state.auth.user.status,
-    tokenExpires: state.auth.tokenExpires
+    tokenExpires: state.auth.tokenExpires,
   };
 }
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(Root);
