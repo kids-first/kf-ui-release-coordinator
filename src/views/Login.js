@@ -59,7 +59,7 @@ class Login extends Component {
 
 function mapDispatchToProps(dispatch) {
   return {
-    login: user => dispatch(loginUser(user))
+    login: user => dispatch(loginUser(user)),
   };
 }
 
@@ -69,5 +69,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(Login);

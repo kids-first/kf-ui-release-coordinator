@@ -40,7 +40,7 @@ const HeaderContainer = ({...props}) => {
             <Button outline color="secondary">
               {props.userName}
             </Button>
-          </NavLink>
+          </NavLink>,
         ]}
       />
       ;
@@ -58,5 +58,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(HeaderContainer);

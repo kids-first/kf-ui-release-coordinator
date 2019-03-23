@@ -15,7 +15,7 @@ class Callback extends Component {
 function mapDispatchToProps(dispatch) {
   return {
     auth0Login: (access_token, id_token) =>
-      dispatch(auth0Login(access_token, id_token))
+      dispatch(auth0Login(access_token, id_token)),
   };
 }
 
@@ -25,5 +25,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(Callback);

@@ -38,8 +38,8 @@ class MarkdownEditor extends Component {
       toggling: false,
       saving: false,
       editorState: EditorState.createWithContent(
-        ContentState.createFromText(this.props.description || '')
-      )
+        ContentState.createFromText(this.props.description || ''),
+      ),
     };
   }
 
@@ -71,7 +71,7 @@ class MarkdownEditor extends Component {
         release: `${coordinatorApi}/releases/${this.state.releaseId}`,
         study: `${coordinatorApi}/studies/${this.state.studyId}`,
         description: mdText,
-        author: this.props.user.name
+        author: this.props.user.name,
       })
       .then(resp => {
         console.log(resp);
@@ -123,7 +123,7 @@ class MarkdownEditor extends Component {
     this.setState({toggling: true});
     axios
       .patch(`${coordinatorApi}/task-services/${this.state.service.kf_id}`, {
-        enabled: enabled
+        enabled: enabled,
       })
       .then(resp => {
         let service = this.state.service;
@@ -134,7 +134,7 @@ class MarkdownEditor extends Component {
 
   onEditorStateChange: Function = editorState => {
     this.setState({
-      editorState
+      editorState,
     });
   };
 
@@ -148,7 +148,7 @@ class MarkdownEditor extends Component {
             display: 'flex',
             justifyContent: 'center',
             marginTop: '100px',
-            marginBottom: '100px'
+            marginBottom: '100px',
           }}
         />
       );
@@ -189,7 +189,7 @@ class MarkdownEditor extends Component {
       verticalAlign: 'bottom',
       transition: 'all .3s, height 0s',
       overflow: 'auto',
-      resize: 'vertical'
+      resize: 'vertical',
     };
 
     const {editorState} = this.state;
@@ -210,15 +210,15 @@ class MarkdownEditor extends Component {
               'link',
               'emoji',
               'image',
-              'history'
+              'history',
             ],
             inline: {
               inDropdown: false,
-              options: ['bold', 'italic']
+              options: ['bold', 'italic'],
             },
             blockType: {
               inDropdown: true,
-              options: ['Normal', 'H1', 'H2', 'H3', 'H4', 'Blockquote', 'Code']
+              options: ['Normal', 'H1', 'H2', 'H3', 'H4', 'Blockquote', 'Code'],
             },
             emoji: {
               emojis: [
@@ -243,9 +243,9 @@ class MarkdownEditor extends Component {
                 '✅',
                 '❎',
                 '💯',
-                '❤️'
-              ]
-            }
+                '❤️',
+              ],
+            },
           }}
         />
         <div className="p-4 w-full flex justify-end">
@@ -270,14 +270,14 @@ MarkdownEditor.propTypes = {
   studyId: propTypes.string,
   noteId: propTypes.string,
   type: propTypes.oneOf(['release', 'release-note']),
-  description: propTypes.string
+  description: propTypes.string,
 };
 MarkdownEditor.defaultProps = {
   releaseId: null,
   studyId: null,
   noteId: null,
   type: 'release',
-  description: null
+  description: null,
 };
 function mapDispatchToProps(dispatch) {
   return {};
@@ -287,5 +287,5 @@ function mapStateToProps(state) {
 }
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(MarkdownEditor);

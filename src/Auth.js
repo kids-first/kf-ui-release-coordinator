@@ -3,7 +3,7 @@ import {
   auth0Domain,
   auth0ClientId,
   auth0RedirectUri,
-  auth0Aud
+  auth0Aud,
 } from './globalConfig';
 
 export default class Auth {
@@ -17,7 +17,7 @@ export default class Auth {
     redirectUri: auth0RedirectUri,
     responseType: 'token id_token',
     audience: auth0Aud,
-    scope: 'openid profile email'
+    scope: 'openid profile email',
   });
 
   login() {
@@ -66,7 +66,7 @@ export default class Auth {
         this.logout();
         console.log(err);
         alert(
-          `Could not get a new token (${err.error}: ${err.error_description}).`
+          `Could not get a new token (${err.error}: ${err.error_description}).`,
         );
       }
     });

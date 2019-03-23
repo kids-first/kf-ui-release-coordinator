@@ -4,7 +4,7 @@ import {
   VictoryLegend,
   VictoryChart,
   VictoryAxis,
-  VictoryScatter
+  VictoryScatter,
 } from 'victory';
 import {coordinatorApi} from '../globalConfig';
 
@@ -14,7 +14,7 @@ class ReleaseTimeline extends Component {
 
     this.state = {
       events: [],
-      releaseState: this.props.releaseState
+      releaseState: this.props.releaseState,
     };
   }
 
@@ -31,11 +31,11 @@ class ReleaseTimeline extends Component {
   getLatest() {
     axios
       .get(
-        `${coordinatorApi}/events?release=${this.props.releaseId}&limit=1000`
+        `${coordinatorApi}/events?release=${this.props.releaseId}&limit=1000`,
       )
       .then(events => {
         this.setState({
-          events: events.data.results.reverse()
+          events: events.data.results.reverse(),
         });
       })
       .catch(error => console.log(error));
@@ -50,7 +50,7 @@ class ReleaseTimeline extends Component {
       publishing: '#91d5ff',
       published: '#1890ff',
       canceled: '#dbdbdb',
-      failed: '#fc4a3a'
+      failed: '#fc4a3a',
     };
 
     const data = this.state.events.map((r, i) => ({
@@ -60,7 +60,7 @@ class ReleaseTimeline extends Component {
       service: r.task_service ? r.task_service.slice(-11) : '',
       release: r.release.slice(-11),
       name: r.task ? r.task.slice(-11) : r.release.slice(-11),
-      state: r.message.split(' ').splice(-1)
+      state: r.message.split(' ').splice(-1),
     }));
 
     const services = data
@@ -79,11 +79,11 @@ class ReleaseTimeline extends Component {
             style={{
               tickLabels: {
                 fontSize: 6,
-                padding: 3
+                padding: 3,
               },
               axis: {stroke: 'none'},
               grid: {stroke: '#cc3399'},
-              ticks: {stroke: '#cc3399', size: 5}
+              ticks: {stroke: '#cc3399', size: 5},
             }}
           />
           <VictoryScatter
@@ -97,15 +97,15 @@ class ReleaseTimeline extends Component {
               data: {
                 fill: ev => stateColors[ev.state],
                 fillOpacity: 1.0,
-                strokeWidth: 2
+                strokeWidth: 2,
               },
               axis: {
-                fontSize: 6
+                fontSize: 6,
               },
               labels: {
                 padding: 3,
-                fontSize: 6
-              }
+                fontSize: 6,
+              },
             }}
           />
           <VictoryAxis
@@ -115,16 +115,16 @@ class ReleaseTimeline extends Component {
                 day: 'numeric',
                 hour: 'numeric',
                 minute: 'numeric',
-                second: 'numeric'
+                second: 'numeric',
               })
             }
             style={{
               tickLabels: {
                 fontSize: 6,
-                padding: 2
+                padding: 2,
               },
               grid: {stroke: 'grey'},
-              ticks: {stroke: 'grey', size: 5}
+              ticks: {stroke: 'grey', size: 5},
             }}
           />
           <VictoryLegend
@@ -136,13 +136,13 @@ class ReleaseTimeline extends Component {
             style={{
               border: {stroke: 'none'},
               title: {fontSize: 8},
-              labels: {fontSize: 6}
+              labels: {fontSize: 6},
             }}
             borderPadding={0}
             padding={{top: 0, bottom: 0}}
             data={Object.keys(stateColors).map(v => ({
               name: v,
-              symbol: {fill: stateColors[v]}
+              symbol: {fill: stateColors[v]},
             }))}
           />
         </VictoryChart>

@@ -11,14 +11,14 @@ const studiesSyncing = (state = false, action) => {
 
 const studiesSyncError = (
   state = {hasError: false, message: '', code: 200},
-  action
+  action,
 ) => {
   switch (action.type) {
     case 'STUDIES_SYNC_ERROR':
       return {
         hasError: action.hasError,
         message: action.error.message,
-        code: action.error.code
+        code: action.error.code,
       };
     default:
       return state;
@@ -49,14 +49,14 @@ const studiesPageLoading = (state = true, action) => {
 
 const studiesPageError = (
   state = {hasError: false, message: '', code: ''},
-  action
+  action,
 ) => {
   switch (action.type) {
     case 'STUDIES_PAGE_ERROR':
       return {
         hasError: action.hasError,
         message: action.message,
-        code: action.code
+        code: action.code,
       };
     default:
       return state;
@@ -88,8 +88,8 @@ const studiesPagePagination = (state = {currentPage: null}, action) => {
         [action.page]: {
           next: action.data.next,
           previous: action.data.previous,
-          ids: releaseIds
-        }
+          ids: releaseIds,
+        },
       };
     case 'STUDIES_PAGE_ERROR':
       return {
@@ -97,9 +97,9 @@ const studiesPagePagination = (state = {currentPage: null}, action) => {
         [action.page]: {
           error: {
             message: action.message,
-            code: action.code
-          }
-        }
+            code: action.code,
+          },
+        },
       };
     default:
       return state;
@@ -112,7 +112,7 @@ const studiesSelected = (state = {items: [], selectAll: false}, action) => {
       state.items.push(action.studyId);
       return {
         ...state,
-        items: state.items
+        items: state.items,
       };
     case 'STUDY_DESELECTED':
       const index = state.items.indexOf(action.studyId);
@@ -120,18 +120,18 @@ const studiesSelected = (state = {items: [], selectAll: false}, action) => {
 
       return {
         ...state,
-        selectAll: false
+        selectAll: false,
       };
     case 'STUDIES_DESELECTED':
       return {
         selectAll: false,
-        items: []
+        items: [],
       };
     case 'STUDIES_SELECTED':
       return {
         ...state,
         selectAll: true,
-        items: [...action.selected]
+        items: [...action.selected],
       };
     default:
       return state;
@@ -146,5 +146,5 @@ export default combineReducers({
   syncing: studiesSyncing,
   syncError: studiesSyncError,
   syncMessage: studiesSyncSuccess,
-  selected: studiesSelected
+  selected: studiesSelected,
 });
