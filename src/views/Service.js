@@ -1,24 +1,11 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-import {
-  Button,
-  Card,
-  Divider,
-  Input,
-  Icon,
-  Row,
-  Col,
-  Spin,
-  Tag,
-  Switch,
-  Tooltip,
-} from 'antd';
 import TaskList from '../components/TaskList';
 import StatusBadge from '../components/StatusBadge';
 import Events from '../components/Events';
+import {Button, Card} from 'kf-uikit';
+import Tag from '../components/Tag';
 import {coordinatorApi} from '../globalConfig';
-
-const {TextArea} = Input;
 
 class Service extends Component {
   constructor(props) {
@@ -88,7 +75,8 @@ class Service extends Component {
     this.setState({service: service});
   }
 
-  toggle(enabled) {
+  toggle(ev) {
+    let enabled = ev.target.checked;
     this.setState({toggling: true});
     axios
       .patch(`${coordinatorApi}/task-services/${this.state.service.kf_id}`, {
@@ -103,118 +91,81 @@ class Service extends Component {
 
   render() {
     if (this.state.loading) {
-      return (
-        <Spin tip="loading...">
-          <Card style={{height: 300}} />
-        </Spin>
-      );
+      return <Card className="min-h-screen">Loading</Card>;
     }
 
     return (
       <Card title="Task Service">
-        <Row type="flex" justify="space-between">
-          <Col>
-            {!this.state.editing ? (
-              <h3>{this.state.service.name}</h3>
-            ) : (
-              <Input
-                value={this.state.service.name}
-                onChange={ev => this.updateName(ev)}
-              />
-            )}
-            <Tag>{this.state.service.kf_id}</Tag>
-            <h5>
-              <Icon type="calendar" /> Created At:{' '}
-              <em>{Date(this.state.service.created_at)}</em>
-            </h5>
-            <h5>
-              <Icon type="link" /> Endpoint: <em>{this.state.service.url}</em>
-            </h5>
-            <h5>
-              <Icon type="user" /> Author: <em>{this.state.service.author}</em>
-            </h5>
-          </Col>
-          <Col>
-            <Row type="flex" align="middle" gutter={16}>
-              <Col align="middle">
-                <b>Enabled: </b>
-                <Switch
-                  checkedChildren={<Icon type="check" />}
-                  unCheckedChildren={<Icon type="cross" />}
-                  checked={this.state.service.enabled}
-                  loading={this.state.toggling}
-                  onChange={enabled => this.toggle(enabled)}
-                />
-              </Col>
-              <Col>
-                <StatusBadge healthStatus={this.state.service.health_status} />
-              </Col>
-            </Row>
-            <br />
-            {!this.state.editing ? (
-              <Button
-                type="dashed"
-                icon="edit"
-                size="large"
-                onClick={() => this.edit()}
-                style={{float: 'right'}}
-              >
-                Edit
-              </Button>
-            ) : (
-              <Button
-                type="primary"
-                icon="check"
-                size="large"
-                onClick={() => this.update()}
-                style={{float: 'right'}}
-                loading={this.state.updating}
-              >
-                Save
-              </Button>
-            )}
-          </Col>
-        </Row>
-        <Row>
-          <h5>
-            <Icon type="form" /> Description:
-          </h5>
+        <div>
+          {!this.state.editing ? (
+            <Button type="dashed" onClick={() => this.edit()}>
+              Edit
+            </Button>
+          ) : (
+            <Button type="primary" onClick={() => this.update()}>
+              Save
+            </Button>
+          )}
+          <b>Enabled: </b>
+          <input type="checkbox" onChange={ev => this.toggle(ev)} />
+          <StatusBadge healthStatus={this.state.service.health_status} />
+        </div>
+        <hr />
+        <div>
+          <Tag type="service">{this.state.service.kf_id}</Tag>
+          {!this.state.editing ? (
+            <span className="text-xl">{this.state.service.name}</span>
+          ) : (
+            <input
+              className="text-xl border border border-mediumGrey"
+              name="name"
+              type="text"
+              value={this.state.service.name}
+              onChange={ev => this.updateName(ev)}
+            />
+          )}
+          <br />
+          <span>
+            Created At: <em>{Date(this.state.service.created_at)}</em>
+          </span>
+          <br />
+          <span>
+            Endpoint: <em>{this.state.service.url}</em>
+          </span>
+          <br />
+          <span>
+            Author: <em>{this.state.service.author}</em>
+          </span>
+        </div>
+        <div>
+          <span>Description:</span>
           {!this.state.editing ? (
             <p>{this.state.service.description}</p>
           ) : (
             <p>
-              <TextArea
-                placeholder="Autosize height based on content lines"
-                autosize
+              <input
+                className="w-full p-2 border border border-mediumGrey"
+                name="description"
+                type="text-area"
                 value={this.state.service.description}
                 onChange={ev => this.updateDescription(ev)}
               />
             </p>
           )}
-        </Row>
+        </div>
 
-        <Divider style={{margin: 0, marginBottom: '24px'}} />
+        <hr />
 
-        <Row justify="space-around" type="flex">
-          <Col span={10}>
-            <h2>
-              Recent Tasks <span />
-              <Tooltip title="Latest tasks run by this service">
-                <Icon type="info-circle-o" />
-              </Tooltip>
-            </h2>
+        <div className="w-full flex justify-around">
+          <div className="w-1/2">
+            <h2>Recent Tasks</h2>
             <TaskList serviceId={this.state.service.kf_id} />
-          </Col>
-          <Col span={10}>
-            <h2>
-              Recent Events <span />
-              <Tooltip title="Latest events reported by this service">
-                <Icon type="info-circle-o" />
-              </Tooltip>
-            </h2>
+          </div>
+          <div className="w-1/2">
+            <h2>Recent Events</h2>
             <Events events={this.state.events} />
-          </Col>
-        </Row>
+          </div>
+        </div>
       </Card>
     );
   }

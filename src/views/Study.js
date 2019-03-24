@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-import {Divider, Icon, Row, Col, Spin, Tag, Steps} from 'antd';
+import className from 'classnames';
 import {Card} from 'kf-uikit';
+import Tag from '../components/Tag';
 import {coordinatorApi} from '../globalConfig';
-
-const {Step} = Steps;
 
 class Study extends Component {
   constructor(props) {
@@ -45,54 +44,34 @@ class Study extends Component {
 
   render() {
     if (this.state.loading) {
-      return (
-        <Spin tip="loading...">
-          <Card style={{height: 300}} />
-        </Spin>
-      );
+      return <Card className="min-h-screen">Loading</Card>;
     }
 
     const releases = this.state.releases.map((release, i) => (
-      <Step
-        title={`${release.version} - ${release.kf_id} ${
-          i === 0 ? '- latest' : ''
-        }`}
+      <li
         key={i}
-        description={Date(release.created_at)}
-      />
+        className={className('p-2 border border-lightGrey', {
+          'bg-lightGrey': i % 2,
+        })}
+      >
+        <Tag>{release.version}</Tag>
+        <Tag type="release">{release.kf_id}</Tag>
+        <span className="pl-2 text-sm">at {Date(release.created_at)}</span>
+      </li>
     ));
 
     return (
-      <Card title="Study">
-        <Row type="flex" justify="space-between">
-          <Col>
-            <h2>{this.state.study.name}</h2>
-            <h3>
-              <Tag>{this.state.study.kf_id}</Tag>
-            </h3>
-            <h3>
-              <Icon type="tag" /> {this.state.study.version}
-            </h3>
-          </Col>
-        </Row>
+      <Card title={this.state.study.name}>
+        <div className="w-full">
+          <Tag type="study">{this.state.study.kf_id}</Tag>
+          Latest Version:
+          <Tag>{this.state.study.version}</Tag>
+        </div>
 
-        <Divider style={{margin: 0, marginBottom: '24px'}} />
+        <hr />
 
-        <Row justify="space-around" type="flex">
-          <Col span={24}>
-            <h2>Release Timeline</h2>
-          </Col>
-        </Row>
-        <Row>
-          <Steps
-            direction="vertical"
-            labelPlacement="vertical"
-            size="small"
-            progressDot={true}
-          >
-            {releases}
-          </Steps>
-        </Row>
+        <h2>Release Timeline</h2>
+        <ul className="min-w-full list-reset">{releases}</ul>
       </Card>
     );
   }

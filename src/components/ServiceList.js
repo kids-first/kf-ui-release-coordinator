@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import {Link, withRouter} from 'react-router-dom';
-import {List, Avatar, Icon, Switch} from 'antd';
+import {Icon} from 'kf-uikit';
 import {coordinatorApi} from '../globalConfig';
 
 class ServiceList extends Component {
@@ -30,48 +30,39 @@ class ServiceList extends Component {
   onChange(kf_id, state) {
     this.setState({loading: true});
     axios
-      .patch(`${coordinatorApi}/task-services/${kf_id}`, {enabled: state})
+      .patch(`${coordinatorApi}/task-services/${kf_id}`, {
+        enabled: state.target.checked,
+      })
       .then(resp => {
         this.getData();
       });
   }
 
   render() {
-    const statusColors = {
-      ok: '#87d068',
-      bad: '#f50',
-    };
-
     return (
-      <List
-        itemLayout="horizontal"
-        dataSource={this.state.data}
-        renderItem={item => (
-          <List.Item>
-            <div className="w-full">
-              <Avatar
-                icon={item.health_status === 'ok' ? 'check' : 'warning'}
-                style={{
-                  backgroundColor: statusColors[item.health_status],
-                  marginRight: '5px',
-                }}
-              />
-              <Link to={`/services/${item.kf_id}`}>{item.name}</Link> -
-              {item.description}
+      <ul className="list-reset w-full max-w-full">
+        {this.state.data.map(item => (
+          <li className="w-full inline-block">
+            <div className="inline-block w-8 h-8 border border-2 border-darkGrey mr-2 text-center rounded-full">
+              {item.health_status === 'ok' ? (
+                <Icon kind="star" width={20} />
+              ) : (
+                <Icon kind="close" width={20} />
+              )}
             </div>
-            <div className="w-48">
+            <Link to={`/services/${item.kf_id}`}>{item.name}</Link> -
+            <span className="font-normal">{item.description}</span>
+            <div className="float-right">
               <b>Enabled: </b>
-              <Switch
-                checkedChildren={<Icon type="check" />}
-                unCheckedChildren={<Icon type="cross" />}
+              <input
+                type="checkbox"
                 checked={item.enabled}
-                loading={this.state.loading}
                 onChange={enabled => this.onChange(item.kf_id, enabled)}
               />
             </div>
-          </List.Item>
-        )}
-      />
+          </li>
+        ))}
+      </ul>
     );
   }
 }

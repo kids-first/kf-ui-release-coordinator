@@ -43,7 +43,6 @@ const HeaderContainer = ({...props}) => {
           </NavLink>,
         ]}
       />
-      ;
     </Fragment>
   );
 };

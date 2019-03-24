@@ -1,18 +1,18 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
-import {Tag} from 'antd';
 import {Card} from 'kf-uikit';
+import Tag from '../components/Tag';
 
 class Profile extends Component {
   render() {
     const roles = this.props.user.roles.map((t, i) => (
-      <Tag key={i} color="blue">
+      <Tag key={i} type="service">
         {t}
       </Tag>
     ));
     const groups = this.props.user.groups.map((t, i) => (
-      <Tag key={i} color="green">
+      <Tag key={i} type="task">
         {t}
       </Tag>
     ));

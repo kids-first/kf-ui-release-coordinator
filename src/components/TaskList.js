@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-import {Avatar, Card, List, Spin, Tag} from 'antd';
+import className from 'classnames';
+import Tag from './Tag';
 import {coordinatorApi} from '../globalConfig';
 
 class TaskList extends Component {
@@ -42,83 +43,28 @@ class TaskList extends Component {
     });
   }
 
-  whatIcon(state) {
-    var icon = '';
-    switch (state) {
-      case 'running':
-      case 'publishing':
-        icon = 'loading';
-        break;
-      case 'canceled':
-        icon = 'close';
-        break;
-      case 'failed':
-        icon = 'exclamation';
-        break;
-      case 'published':
-        icon = 'check';
-        break;
-      default:
-        icon = 'ellipsis';
-        break;
-    }
-    return icon;
-  }
-
-  whatColor(state) {
-    var color = '';
-    switch (state) {
-      case 'running':
-      case 'publishing':
-        color = 'orange';
-        break;
-      case 'canceled':
-        color = 'magenta';
-        break;
-      case 'failed':
-        color = 'blue';
-        break;
-      case 'published':
-        color = 'green';
-        break;
-      default:
-        color = null;
-        break;
-    }
-    return color;
-  }
-
   render() {
     if (this.state.loading) {
-      return (
-        <Spin tip="loading...">
-          <Card style={{height: 300}} />
-        </Spin>
-      );
+      return <div className="bg-lightGrey w-full h-full">Loading</div>;
     }
 
     return (
-      <List
-        itemLayout="horizontal"
-        dataSource={this.state.tasks}
-        renderItem={item => (
-          <List.Item>
-            <List.Item.Meta
-              avatar={
-                <Avatar
-                  style={{backgroundColor: this.whatColor(item.state)}}
-                  icon={this.whatIcon(item.state)}
-                />
-              }
-              title={`${item.service_name}: ${item.kf_id}`}
-              description={item.created_at}
-            />
-            <div>
-              <Tag color={this.whatColor(item.state)}>{item.state}</Tag>
-            </div>
-          </List.Item>
-        )}
-      />
+      <ul className="list-reset">
+        {this.state.tasks.map((task, i) => (
+          <li
+            key={task.kf_id}
+            className={className('p-2 border border-lightGrey', {
+              'bg-lightGrey': i % 2,
+            })}
+          >
+            <Tag type="service">{task.kf_id}</Tag>
+            <span className="font-semibold">{task.service_name}</span>
+            <span className="float-right">
+              <Tag state={task.state}>{task.state}</Tag>
+            </span>
+          </li>
+        ))}
+      </ul>
     );
   }
 }
