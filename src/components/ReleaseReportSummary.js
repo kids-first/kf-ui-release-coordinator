@@ -1,6 +1,5 @@
 import React, {Component, Fragment} from 'react';
 import axios from 'axios';
-import {Row} from 'antd';
 import {reportsApi} from '../globalConfig';
 import {Stats} from 'kf-uikit';
 
@@ -46,9 +45,7 @@ class ReleaseReportSummary extends Component {
     }
     return (
       <div>
-        <Row type="flex" justify="center">
-          <h3 className="mt-0 mb-4">Release Summary</h3>
-        </Row>
+        <h3 className="mt-0 mb-4">Release Summary</h3>
         <Stats
           stats={[
             {
@@ -78,18 +75,16 @@ class ReleaseReportSummary extends Component {
             },
           ]}
         />
-        <Row type="flex" justify="center">
+        <div className="w-full">
           <hr />
           <h3 className="mt-0 mb-4">Study Summaries</h3>
-        </Row>
-        <Row>
+        </div>
+        <div className="w-full">
           {Object.values(this.state.report.study_summaries).map((study, i) => (
             <Fragment>
-              <Row type="flex" justify="center">
-                <h4 className="mt-0 mb-4">
-                  {Object.keys(this.state.report.study_summaries)[i]}
-                </h4>
-              </Row>
+              <h4 className="mt-0 mb-4">
+                {Object.keys(this.state.report.study_summaries)[i]}
+              </h4>
               <Stats
                 stats={[
                   {
@@ -112,7 +107,7 @@ class ReleaseReportSummary extends Component {
               />
             </Fragment>
           ))}
-        </Row>
+        </div>
       </div>
     );
   }
