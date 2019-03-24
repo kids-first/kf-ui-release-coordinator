@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
-import {Divider, Icon} from 'antd';
-import {Button, Card} from 'kf-uikit';
+import {Button, Card, Icon} from 'kf-uikit';
 import ReleasesContainer from '../containers/Releases';
 
 class Releases extends Component {
@@ -10,11 +9,11 @@ class Releases extends Component {
       <Card title="Kids First Data Releases">
         <Link to="/planner">
           <Button color="primary" size="large">
-            <Icon type="calendar" />
+            <Icon kind="add" />
             Plan a Release
           </Button>
         </Link>
-        <Divider />
+        <hr />
         <ReleasesContainer />
       </Card>
     );
