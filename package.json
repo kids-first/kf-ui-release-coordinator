@@ -3,12 +3,12 @@
   "version": "1.3.1",
   "private": true,
   "dependencies": {
-    "antd": "^3.4.1",
     "auth0-js": "^9.10.0",
     "autoprefixer": "^9.4.3",
     "axios": "^0.18.0",
     "babel-plugin-import": "^1.7.0",
     "classnames": "^2.2.6",
+    "draft-js": "^0.10.5",
     "draftjs-to-markdown": "^0.5.1",
     "gapi": "^0.0.3",
     "jwt-decode": "^2.2.0",
