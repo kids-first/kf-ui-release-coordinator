@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
 import {withRouter} from 'react-router-dom';
-import {Row, Divider} from 'antd';
 import {Button, Card} from 'kf-uikit';
 import {coordinatorApi} from '../globalConfig';
 import ServiceList from '../components/ServiceList';
@@ -35,14 +34,14 @@ class Services extends Component {
   render() {
     return (
       <Card title="Kids First Data Release Task Services">
-        <Row>
+        <div>
           <Link to="/service/new">
             <Button color="primary" size="large">
               Register New Service
             </Button>
           </Link>
-        </Row>
-        <Divider />
+        </div>
+        <hr />
         <ServiceList />
       </Card>
     );
