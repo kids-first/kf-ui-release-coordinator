@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import propTypes from 'prop-types';
 import axios from 'axios';
-import {Icon, Spin} from 'antd';
 import {Button} from 'kf-uikit';
 import ReactMarkdown from 'react-markdown';
 import {coordinatorApi} from '../globalConfig';
@@ -142,15 +141,9 @@ class MarkdownEditor extends Component {
     // Saving or loading state
     if (this.state.loading || this.state.saving) {
       return (
-        <Spin
-          tip={this.state.loading ? ' loading...' : ' saving...'}
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            marginTop: '100px',
-            marginBottom: '100px',
-          }}
-        />
+        <div className="bg-lightGrey my-32">
+          {this.state.loading ? 'loading...' : 'saving...'}
+        </div>
       );
     }
 
@@ -162,7 +155,7 @@ class MarkdownEditor extends Component {
             <ReactMarkdown source={this.state.description} />
             <div className="p-4 w-full flex justify-end">
               <Button onClick={() => this.editToggle()} className="mx-2">
-                <Icon type="form" /> Edit
+                Edit
               </Button>
             </div>
           </div>
@@ -171,7 +164,6 @@ class MarkdownEditor extends Component {
         return (
           <center>
             <Button onClick={() => this.editToggle()}>
-              <Icon type="form" />
               {this.props.type === 'release'
                 ? ' Add a release summary'
                 : ` Add a new note for ${this.state.studyId}`}
@@ -198,7 +190,7 @@ class MarkdownEditor extends Component {
       <div>
         <Editor
           wrapperClassName="wrapper-class"
-          editorClassName="ant-input"
+          editorClassName="border border-2 px-2 border-darkGrey"
           editorStyle={editorStyle}
           editorState={editorState}
           onEditorStateChange={this.onEditorStateChange}
@@ -255,10 +247,10 @@ class MarkdownEditor extends Component {
             onClick={() => this.editToggle()}
             className="mx-2"
           >
-            <Icon type="cancel" /> Cancel
+            Cancel
           </Button>
           <Button onClick={() => this.save()} className="mx-2">
-            <Icon type="save" /> Save
+            Save
           </Button>
         </div>
       </div>
