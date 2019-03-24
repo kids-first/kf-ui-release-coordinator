@@ -127,7 +127,9 @@ export function fetchAllStudies(page, filters) {
   };
 }
 
-export function toggleStudy(key, shift, row) {
+export function toggleStudy(selectedKey, shift, row) {
+  // Needed because react-table started adding a prefix to ids in 6.9.0
+  const key = selectedKey.replace('select-', '');
   return (dispatch, getState) => {
     var selection = getState().studies.selected.items;
     const index = selection.indexOf(key);
