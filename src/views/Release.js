@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-import {Divider, Row, Col, Spin, Icon, Tag, Tooltip} from 'antd';
-import {Button, Card} from 'kf-uikit';
+import {Button, Card, Icon} from 'kf-uikit';
 import TimeAgo from 'react-timeago';
+import Tag from '../components/Tag';
 import Progress from '../components/Progress';
 import TaskList from '../components/TaskList';
 import Events from '../components/Events';
@@ -99,52 +99,12 @@ class Release extends Component {
       .catch(error => console.log(error));
   }
 
-  whatColor(ev) {
-    var color = 'green';
-    switch (ev.event_type) {
-      case 'info':
-        color = '#19a9c4';
-        break;
-      case 'warning':
-        color = 'red';
-        break;
-      case 'error':
-        color = 'red';
-        break;
-      default:
-        color = 'blue';
-    }
-    return color;
-  }
-
-  whatIcon(ev) {
-    var icon = 'info';
-
-    if (ev.message.includes('release started')) {
-      icon = 'calendar';
-    } else if (ev.message.includes('initializing new')) {
-      icon = 'ellipsis';
-    } else if (ev.message.includes('was accepted')) {
-      icon = 'check';
-    } else if (ev.message.includes('starting work')) {
-      icon = 'calendar';
-    } else if (ev.message.includes('has started')) {
-      icon = 'caret-right';
-    } else if (ev.message.includes('has begun publishing')) {
-      icon = 'caret-right';
-    } else if (ev.message.includes('publishing release')) {
-      icon = 'calendar';
-    }
-
-    return icon;
-  }
-
   render() {
     if (this.state.loading) {
       return (
-        <Spin tip="loading...">
-          <Card style={{height: 300}} />
-        </Spin>
+        <Card className="min-h-screen">
+          <h1>Loading</h1>
+        </Card>
       );
     }
 
@@ -204,30 +164,34 @@ class Release extends Component {
           this.state.release.version
         } - ${this.state.release.name}`}
       >
-        <Icon type="tag" /> <Tag>{this.state.release.version}</Tag>
-        <Icon type="tag" /> <Tag>{this.state.release.kf_id}</Tag>
+        <Icon kind="comment" width={16} />
+        <Tag>{this.state.release.version}</Tag>
+        <Icon kind="comment" width={16} />
+        <Tag type="release">{this.state.release.kf_id}</Tag>
         <h5 style={{margin: 0}}>
-          <Icon type="calendar" /> Created At:{' '}
+          <Icon type="resources" /> Created At:{' '}
           <em>{Date(this.state.release.created_at)}</em>
         </h5>
         <h5 style={{margin: 0}}>
-          <Icon type="user" /> Author: <em>{this.state.release.author}</em>
+          <Icon kind="user" /> Author: <em>{this.state.release.author}</em>
         </h5>
         <span>Studies in this Release:</span>
         <br />
         {this.state.release.studies.map((r, i) => (
-          <Tag key={i}>{r}</Tag>
+          <Tag type="study" key={i}>
+            {r}
+          </Tag>
         ))}
-        <Divider style={{margin: 0, marginBottom: '24px', marginTop: '24px'}} />
+        <hr />
         {this.state.release.state !== 'canceled' &&
         this.state.release.state !== 'failed' ? (
           <Progress release={this.state.release} />
         ) : (
           <h2>
-            <Icon type="warning" /> {this.state.release.state}
+            <Icon kind="reset" /> {this.state.release.state}
           </h2>
         )}
-        <Divider style={{margin: 0, marginTop: '24px', marginBottom: '24px'}} />
+        <hr />
         {['staged', 'publishing', 'published', 'canceled', 'failed'].includes(
           this.state.release.state,
         ) && (
@@ -236,7 +200,7 @@ class Release extends Component {
             releaseState={this.state.release.state}
           />
         )}
-        <Divider style={{margin: 0, marginTop: '24px'}} />
+        <hr />
         <h1>Release Notes</h1>
         <MarkdownEditor
           type="release"
@@ -244,32 +208,30 @@ class Release extends Component {
           description={this.state.release.description}
         />
         {notes}
-        <Divider style={{margin: 0, marginTop: '24px'}} />
-        <Row gutter={16} type="flex" justify="space-around">
-          <Col span={24}>
-            <center>
-              <h3>Release Timeline</h3>
-            </center>
-            <ReleaseTimeline
-              releaseId={this.state.release.kf_id}
-              releaseState={this.state.release.state}
-            />
-          </Col>
-        </Row>
-        <Divider style={{margin: 0, marginBottom: '24px'}} />
-        <Row gutter={16} type="flex" justify="space-around">
+        <hr />
+        <div>
+          <center>
+            <h3>Release Timeline</h3>
+          </center>
+          <ReleaseTimeline
+            releaseId={this.state.release.kf_id}
+            releaseState={this.state.release.state}
+          />
+        </div>
+        <hr />
+        <div className="flex justify-around w-full">
           <Button
             size="large"
             color="primary"
             onClick={() => this.publish()}
             disabled={disabled}
           >
-            <Icon type="check-circle" />
+            <Icon kind="add" />
             Publish
           </Button>
           <a href={`${snapshotApi}/download/${this.state.release.kf_id}`}>
             <Button size="large" color="primary" disabled={false}>
-              <Icon type="download" />
+              <Icon kind="download" />
               Download Snapshot
             </Button>
           </a>
@@ -285,32 +247,25 @@ class Release extends Component {
               this.state.release.state === 'failed'
             }
           >
-            <Icon type="close-circle" />
+            <Icon kind="close" />
             Cancel
           </Button>
-        </Row>
-        <Divider />
-        <Row justify="space-around" type="flex">
-          <Col span={10}>
+        </div>
+        <hr />
+        <div className="flex w-full">
+          <div className="w-1/2">
             <h2>
               Task Status <span />
-              <Tooltip title="Current states of tasks involved in this release">
-                <Icon type="info-circle-o" />
-              </Tooltip>
             </h2>
             <TaskList releaseId={this.state.release.kf_id} />
-          </Col>
-
-          <Col span={10}>
+          </div>
+          <div className="w-1/2">
             <h2>
               Event History <span />
-              <Tooltip title="Events reported relating to this release tagged with relevant task service and task ids">
-                <Icon type="info-circle-o" />
-              </Tooltip>
             </h2>
             <Events events={this.state.events} />
-          </Col>
-        </Row>
+          </div>
+        </div>
       </Card>
     );
   }

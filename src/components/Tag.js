@@ -10,7 +10,9 @@ const Tag = ({type, state, children}) => {
       release: 'border-purple',
       task: 'border-orange',
       service: 'border-teal',
-    }[type] || {
+      study: 'border-lightBlue',
+    }[type] ||
+    {
       running: 'border-orange',
       publishing: 'border-orange',
       canceled: 'border-pink',
