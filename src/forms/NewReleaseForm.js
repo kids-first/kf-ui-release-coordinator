@@ -2,13 +2,11 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import axios from 'axios';
-import {Modal} from 'antd';
 import {Control, Form, Errors} from 'react-redux-form';
 import {Button} from 'kf-uikit';
 import {coordinatorApi} from '../globalConfig';
 import StudiesContainer from '../containers/StudiesContainer';
 import ServiceList from '../components/ServiceList';
-const confirm = Modal.confirm;
 
 class NewReleaseForm extends Component {
   handleSubmit = e => {
@@ -21,43 +19,22 @@ class NewReleaseForm extends Component {
       author: this.props.user.name,
     };
 
-    const list = (
-      <ul>
-        {release.studies.map(study => (
-          <li key={study}>{this.props.studies[study].name}</li>
-        ))}
-      </ul>
-    );
-    let text = (
-      <p>
-        You are about to begin a release for {release.studies.length} studies:
-        {list}
-        These studies will be staged for review. This <b>will not</b> affect any
-        public facing data until it is reviewed and published.
-      </p>
-    );
-    confirm({
-      title: 'Submit release for processing',
-      content: text,
-      width: '80%',
-      okText: "Let's do it",
-      cancelText: 'Wait!',
-      onOk: close => {
-        axios
-          .post(`${coordinatorApi}/releases`, release)
-          .then(resp => {
-            this.props.history.push(`/releases/${resp.data.kf_id}`);
-            close();
-          })
-          .catch(err => {
-            console.log(err);
-            close();
-          });
-      },
-      onCancel(close) {
-        close();
-      },
-    });
+    let text = `You are about to begin a release for ${
+      release.studies.length
+    } studies:
+${release.studies.join('\n')}
+These studies will be staged for review. This will not affect any
+public facing data until it is reviewed and published.`;
+    if (window.confirm(text)) {
+      axios
+        .post(`${coordinatorApi}/releases`, release)
+        .then(resp => {
+          this.props.history.push(`/releases/${resp.data.kf_id}`);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
   };
 
   render() {
