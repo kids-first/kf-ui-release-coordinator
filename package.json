@@ -8,6 +8,7 @@
     "autoprefixer": "^9.4.3",
     "axios": "^0.18.0",
     "babel-plugin-import": "^1.7.0",
+    "classnames": "^2.2.6",
     "draftjs-to-markdown": "^0.5.1",
     "gapi": "^0.0.3",
     "jwt-decode": "^2.2.0",
