@@ -219,18 +219,14 @@ class Release extends Component {
           <Tag key={i}>{r}</Tag>
         ))}
         <Divider style={{margin: 0, marginBottom: '24px', marginTop: '24px'}} />
-        <Row justify="center" type="flex" style={style}>
-          {this.state.release.state !== 'canceled' &&
-          this.state.release.state !== 'failed' ? (
-            <Col span={22}>
-              <Progress release={this.state.release} />
-            </Col>
-          ) : (
-            <h2>
-              <Icon type="warning" /> {this.state.release.state}
-            </h2>
-          )}
-        </Row>
+        {this.state.release.state !== 'canceled' &&
+        this.state.release.state !== 'failed' ? (
+          <Progress release={this.state.release} />
+        ) : (
+          <h2>
+            <Icon type="warning" /> {this.state.release.state}
+          </h2>
+        )}
         <Divider style={{margin: 0, marginTop: '24px', marginBottom: '24px'}} />
         {['staged', 'publishing', 'published', 'canceled', 'failed'].includes(
           this.state.release.state,
