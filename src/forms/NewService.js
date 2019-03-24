@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
+import {connect} from 'react-redux';
 import axios from 'axios';
 import {Alert, Col, Input, Form, Row, Icon} from 'antd';
 import {Button} from 'kf-uikit';
@@ -92,7 +93,12 @@ class NewServiceForm extends Component {
     );
   }
 }
+function mapStateToProps(state) {
+  return {
+    user: state.auth.user,
+  };
+}
 
 const WrappedNewServiceForm = Form.create()(NewServiceForm);
 
-export default withRouter(WrappedNewServiceForm);
+export default connect(mapStateToProps)(withRouter(WrappedNewServiceForm));
