@@ -169,11 +169,11 @@ class Release extends Component {
         <Icon kind="comment" width={16} />
         <Tag type="release">{this.state.release.kf_id}</Tag>
         <h5 style={{margin: 0}}>
-          <Icon type="resources" /> Created At:{' '}
+          <Icon kind="resources" /> Created At:{' '}
           <em>{Date(this.state.release.created_at)}</em>
         </h5>
         <h5 style={{margin: 0}}>
-          <Icon kind="user" /> Author: <em>{this.state.release.author}</em>
+          <Icon kind="users" /> Author: <em>{this.state.release.author}</em>
         </h5>
         <span>Studies in this Release:</span>
         <br />
