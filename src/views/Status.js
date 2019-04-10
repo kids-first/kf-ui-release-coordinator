@@ -101,7 +101,9 @@ class Status extends Component {
               <h2 style={{margin: 0}}>{latestPublish.name}</h2>
               <h1 style={{margin: 0}}>{latestPublish.version}</h1>
               <h4 style={{margin: 0}}>
-                <TimeAgo date={latestPublish.created_at} />
+                {latestPublish.created_at && (
+                  <TimeAgo date={latestPublish.created_at} />
+                )}
               </h4>
               <Link to={`/releases/${latestPublish.kf_id}`}>
                 <Button icon="profile" color="primary">
