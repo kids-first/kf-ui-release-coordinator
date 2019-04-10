@@ -42,7 +42,7 @@ class ServiceList extends Component {
     return (
       <ul className="list-reset w-full max-w-full">
         {this.state.data.map(item => (
-          <li className="w-full inline-block">
+          <li className="w-full inline-block" key={item.kf_id}>
             <div className="inline-block w-8 h-8 border border-2 border-darkGrey mr-2 text-center rounded-full">
               {item.health_status === 'ok' ? (
                 <Icon kind="star" width={20} />
