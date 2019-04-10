@@ -104,7 +104,7 @@ class Status extends Component {
                 <TimeAgo date={latestPublish.created_at} />
               </h4>
               <Link to={`/releases/${latestPublish.kf_id}`}>
-                <Button size="small" icon="profile" type="primary">
+                <Button icon="profile" color="primary">
                   {latestPublish.kf_id}
                 </Button>
               </Link>

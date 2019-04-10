@@ -237,7 +237,7 @@ class Release extends Component {
           </a>
           <Button
             size="large"
-            color="info"
+            color="primary"
             onClick={() => this.cancel()}
             loading={this.state.canceling}
             disabled={
