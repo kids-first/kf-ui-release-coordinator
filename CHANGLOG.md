@@ -1,3 +1,30 @@
+# Kids First Release Coordinator Release 1.4.0
+
+## Features
+
+Integrates Auth0 and removes the ant design system entirely.
+
+### Summary
+
+Feature Emojis: 🐛x3 🚨x3 🔧x2 ♻️x2 🔥x1 ⬆️x1 ✨x1
+Feature Labels: [refactor](https://api.github.com/repos/kids-first/kf-ui-release-coordinator/labels/refactor) x6 [bug](https://api.github.com/repos/kids-first/kf-ui-release-coordinator/labels/bug) x4 [devops](https://api.github.com/repos/kids-first/kf-ui-release-coordinator/labels/devops) x1 [feature](https://api.github.com/repos/kids-first/kf-ui-release-coordinator/labels/feature) x1
+
+### New features and changes
+
+- (#134) 🔥 Remove ant - @dankolbman
+- (#133) 🐛 Fix new service form - @dankolbman
+- (#132) 🐛 Fixes react-table selection - @dankolbman
+- (#131) 🚨 Update to new prettier standard - @dankolbman
+- (#130) 🐛 Add protocol to redirect url - @dankolbman
+- (#129) ⬆️ Upgrade yarn deps - @dankolbman
+- (#128) 🔧 Add build vars for master - @dankolbman
+- (#124) ♻️ Refactor docker setting by adding arg Auth0 Redirect URI - @XuTheBunny
+- (#123) 🔧 Add netlify.toml configuration - @dankolbman
+- (#122) ♻️ Refactor Auth0 callback function to provide user profile data - @XuTheBunny
+- (#121) 🚨 Add prettier configuration - @dankolbman
+- (#120) ✨ Add auth0 - @XuTheBunny
+- (#116) 🚨 Apply prettier formatting - @dankolbman
+
 # Kids First Release Coordinator Release 1.3.1
 
 ## Features
