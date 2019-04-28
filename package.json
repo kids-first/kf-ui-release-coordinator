@@ -2,6 +2,16 @@
   "name": "kf-ui-release-coordinator",
   "version": "1.4.0",
   "private": true,
+  "bundlesize": [
+    {
+      "path": "./build/static/js/*.js",
+      "maxSize": "3 MB"
+    },
+    {
+      "path": "./build/static/css/*.css",
+      "maxSize": "1 MB"
+    }
+  ],
   "dependencies": {
     "auth0-js": "^9.10.0",
     "autoprefixer": "^9.4.3",

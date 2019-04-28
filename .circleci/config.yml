@@ -24,3 +24,6 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
         
       - run: yarn build
+      - run: |
+          yarn add -D bundlesize
+          yarn run bundlesize
