@@ -1,21 +1,22 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
-import {Button, Card, Icon} from 'kf-uikit';
+import {Segment, Button, Icon} from 'semantic-ui-react';
 import ReleasesContainer from '../containers/Releases';
 
 class Releases extends Component {
   render() {
     return (
-      <Card title="Kids First Data Releases">
+      <Segment>
+        <h1>Kids First Data Releases</h1>
+        <hr />
         <Link to="/planner">
-          <Button color="primary" size="large">
-            <Icon kind="add" />
+          <Button primary>
+            <Icon name="calendar outline" />
             Plan a Release
           </Button>
         </Link>
-        <hr />
         <ReleasesContainer />
-      </Card>
+      </Segment>
     );
   }
 }
