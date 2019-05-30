@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import axios from 'axios';
-import {Control, Form, Errors} from 'react-redux-form';
-import {Button} from 'kf-uikit';
+import {Control, Form as RForm, Errors} from 'react-redux-form';
+import {Form, Button} from 'semantic-ui-react';
 import {coordinatorApi} from '../globalConfig';
 import StudiesContainer from '../containers/StudiesContainer';
 import ServiceList from '../components/ServiceList';
@@ -39,15 +39,21 @@ public facing data until it is reviewed and published.`;
 
   render() {
     return (
-      <Form model="releaseForm" onSubmit={val => this.handleSubmit(val)}>
-        <label>Release Title:</label>
-        <Control.text
-          model="title"
-          defaultValue=""
-          validators={{
-            required: val => val && val.length,
-          }}
-        />
+      <RForm
+        component={Form}
+        model="releaseForm"
+        onSubmit={val => this.handleSubmit(val)}
+      >
+        <Form.Field required>
+          <label>Release Title:</label>
+          <Control.text
+            model="title"
+            defaultValue=""
+            validators={{
+              required: val => val && val.length,
+            }}
+          />
+        </Form.Field>
         <Errors
           className="text-red"
           model="title"
@@ -55,32 +61,36 @@ public facing data until it is reviewed and published.`;
             required: 'This field is required',
           }}
         />
-        <label>Is this a major release:</label>
-        <Control.select model="isMajor">
-          <option value={false}>No</option>
-          <option value={true}>Yes</option>
-        </Control.select>
-        <label>Select studies to be included in this release</label>
-        <Errors
-          className="text-red"
-          model="studies"
-          messages={{
-            required: 'Select at least one study to release',
-          }}
-        />
-        <Control.custom
-          model="studies"
-          component={StudiesContainer}
-          selectable
-          defaultPageSize={10}
-          validators={{
-            required: val => val.selected.items.length !== 0,
-          }}
-        />
+        <Form.Field>
+          <label>Is this a major release:</label>
+          <Control.select model="isMajor">
+            <option value={false}>No</option>
+            <option value={true}>Yes</option>
+          </Control.select>
+        </Form.Field>
+        <Form.Field>
+          <label>Select studies to be included in this release</label>
+          <Errors
+            className="text-red"
+            model="studies"
+            messages={{
+              required: 'Select at least one study to release',
+            }}
+          />
+          <Control.custom
+            model="studies"
+            component={StudiesContainer}
+            selectable
+            defaultPageSize={10}
+            validators={{
+              required: val => val.selected.items.length !== 0,
+            }}
+          />
+        </Form.Field>
         <label>Services to be run for this release:</label>
         <ServiceList />
         <Button type="submit">Start the Release</Button>
-      </Form>
+      </RForm>
     );
   }
 }
