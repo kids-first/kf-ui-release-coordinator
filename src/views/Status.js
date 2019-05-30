@@ -8,9 +8,9 @@ import {
   VictoryAxis,
   VictoryLegend,
 } from 'victory';
+import {Button, Card} from 'semantic-ui-react';
 import ServiceList from '../components/ServiceList';
 import Events from '../components/Events';
-import {Button, Card} from 'kf-uikit';
 import {coordinatorApi} from '../globalConfig';
 import PublishHistory from '../components/PublishHistory';
 
@@ -95,119 +95,139 @@ class Status extends Component {
     };
     return (
       <div>
-        <Card title="Latest Publication" style={{maxWidth: '100%'}}>
-          {latestPublish ? (
-            <center>
-              <h2 style={{margin: 0}}>{latestPublish.name}</h2>
-              <h1 style={{margin: 0}}>{latestPublish.version}</h1>
-              <h4 style={{margin: 0}}>
-                <TimeAgo date={latestPublish.created_at} />
-              </h4>
-              <Link to={`/releases/${latestPublish.kf_id}`}>
-                <Button size="small" icon="profile" type="primary">
-                  {latestPublish.kf_id}
-                </Button>
-              </Link>
-            </center>
-          ) : (
-            <h2>No Releases Published Yet</h2>
-          )}
+        <Card fluid>
+          <Card.Content>
+            <Card.Header>Latest Publication</Card.Header>
+            {latestPublish ? (
+              <center>
+                <h2 style={{margin: 0}}>{latestPublish.name}</h2>
+                <h1 style={{margin: 0}}>{latestPublish.version}</h1>
+                <h4 style={{margin: 0}}>
+                  <TimeAgo date={latestPublish.created_at} />
+                </h4>
+                <Link to={`/releases/${latestPublish.kf_id}`}>
+                  <Button size="small" icon="profile" type="primary">
+                    {latestPublish.kf_id}
+                  </Button>
+                </Link>
+              </center>
+            ) : (
+              <h2>No Releases Published Yet</h2>
+            )}
+          </Card.Content>
         </Card>
         {latestData.length > 0 && (
-          <Card title="Latest Releases">
-            <VictoryChart
-              height={70}
-              padding={{top: 20, bottom: 20, left: 50, right: 50}}
-            >
-              <VictoryAxis
-                independentAxis
-                style={{tickLabels: {fontSize: 6, padding: 10}}}
-              />
-              <VictoryScatter
-                data={latestData.reverse()}
-                style={{
-                  data: {
-                    fill: d => stateColors[d.state],
-                    strokeWidth: 3,
-                  },
-                  labels: {
-                    padding: 10,
-                    fontSize: 14,
-                  },
-                }}
-              />
+          <Card fluid>
+            <Card.Content>
+              <Card.Header>LatestReleases</Card.Header>
+              <VictoryChart
+                height={70}
+                padding={{top: 20, bottom: 20, left: 50, right: 50}}
+              >
+                <VictoryAxis
+                  independentAxis
+                  style={{tickLabels: {fontSize: 6, padding: 10}}}
+                />
+                <VictoryScatter
+                  data={latestData.reverse()}
+                  style={{
+                    data: {
+                      fill: d => stateColors[d.state],
+                      strokeWidth: 3,
+                    },
+                    labels: {
+                      padding: 10,
+                      fontSize: 14,
+                    },
+                  }}
+                />
 
-              <VictoryLegend
-                orientation="horizontal"
-                centerTitle
-                x={0}
-                y={0}
-                gutter={0}
-                style={{
-                  border: {stroke: 'none'},
-                  title: {fontSize: 8},
-                  labels: {fontSize: 6},
-                }}
-                borderPadding={0}
-                padding={{top: 0, bottom: 0}}
-                data={Object.keys(stateColors).map(v => ({
-                  name: v,
-                  symbol: {fill: stateColors[v]},
-                }))}
-              />
-            </VictoryChart>
+                <VictoryLegend
+                  orientation="horizontal"
+                  centerTitle
+                  x={0}
+                  y={0}
+                  gutter={0}
+                  style={{
+                    border: {stroke: 'none'},
+                    title: {fontSize: 8},
+                    labels: {fontSize: 6},
+                  }}
+                  borderPadding={0}
+                  padding={{top: 0, bottom: 0}}
+                  data={Object.keys(stateColors).map(v => ({
+                    name: v,
+                    symbol: {fill: stateColors[v]},
+                  }))}
+                />
+              </VictoryChart>
+            </Card.Content>
           </Card>
         )}
-        <Card title="Publish History">
-          <PublishHistory />
+        <Card fluid>
+          <Card.Content>
+            <Card.Header>Publish History</Card.Header>
+            <PublishHistory />
+          </Card.Content>
         </Card>
 
-        <section className="flex justify-around" style={{minHeight: '200px'}}>
-          <Card
-            title="Register a Task Service"
-            className="max-w-sm relative min-h-full"
-          >
-            <p>
-              Task Services follow a common HTTP API spec to process work for a
-              release. Register an API endpoint for a task service below.
-            </p>
-            <center className="absolute w-full p-4" style={{bottom: 0}}>
+        <Card.Group itemsPerRow={3}>
+          <Card>
+            <Card.Content>
+              <Card.Header>Register a Task Service</Card.Header>
+              <Card.Description>
+                Task Services follow a common HTTP API spec to process work for
+                a release. Register an API endpoint for a task service below.
+              </Card.Description>
+            </Card.Content>
+            <Card.Content extra>
               <Link to="/service/new">
                 <Button color="primary">Register</Button>
               </Link>
-            </center>
+            </Card.Content>
           </Card>
-          <Card
-            title="Plan a Release"
-            className="max-w-sm relative  min-h-full"
-          >
-            <p>
-              Select studies to be released and submit for review and
-              processing.
-            </p>
-            <center className="absolute w-full p-4" style={{bottom: 0}}>
+
+          <Card>
+            <Card.Content>
+              <Card.Header>Plan a Release</Card.Header>
+              <Card.Description>
+                Select studies to be released and submit for review and
+                processing.
+              </Card.Description>
+            </Card.Content>
+            <Card.Content extra>
               <Link to="/planner">
                 <Button color="primary">Plan</Button>
               </Link>
-            </center>
+            </Card.Content>
           </Card>
-          <Card
-            title="View Past Releases"
-            className="max-w-sm relative min-h-full"
-          >
-            <p>View a history and status of past releases.</p>
-            <center className="absolute w-full p-4" style={{bottom: 0}}>
+
+          <Card>
+            <Card.Content>
+              <Card.Header>View Past Releases</Card.Header>
+              <Card.Description>
+                View a history and status of past releases.
+              </Card.Description>
+            </Card.Content>
+            <Card.Content extra>
               <Link to="/releases">
                 <Button color="primary">View</Button>
               </Link>
-            </center>
+            </Card.Content>
           </Card>
-        </section>
-        <Card title="Task Service Status">
-          <ServiceList />
+        </Card.Group>
+
+        <Card fluid>
+          <Card.Content>
+            <Card.Header>Task Service Status</Card.Header>
+            <ServiceList />
+          </Card.Content>
         </Card>
-        <Card title="Recent Release Events">
-          <Events events={this.state.events} />
+        <Card fluid>
+          <Card.Content>
+            <Card.Header>Recent Release Events</Card.Header>
+            <Events events={this.state.events} />
+          </Card.Content>
         </Card>
       </div>
     );
