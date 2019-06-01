@@ -1,48 +1,67 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Button} from 'kf-uikit';
+import {
+  Button,
+  Grid,
+  Header,
+  Icon,
+  Image,
+  Message,
+  Segment,
+} from 'semantic-ui-react';
 import {GoogleLogin} from 'react-google-login';
 import {googleAppId} from '../globalConfig';
 import {loginUser} from '../actions/auth';
-import brand from '../brand.svg';
+import brand from '../logo.svg';
 
 class Login extends Component {
   render() {
     return (
-      <div className="h-screen bg-blue py-16 text-center">
-        <center>
-          <img src={brand} alt="Kids First logo" />
-        </center>
-        <h1 style={{color: '#fff'}}>Kids First Release Coordinator</h1>
-        <br />
-        <center>
-          <GoogleLogin
-            clientId={googleAppId}
-            render={renderProps => (
-              <Button
-                size="large"
-                className="my-2"
-                onClick={renderProps.onClick}
-              >
-                Login with Ego
-              </Button>
-            )}
-            onSuccess={googleUser => {
-              const {id_token} = googleUser.getAuthResponse();
-              this.props.login(id_token);
-            }}
-            onFailure={error => console.log('login fail', error)}
-          />
-          <br />
-          <Button
-            size="large"
-            className="my-2"
-            onClick={() => this.props.auth.login()}
-          >
-            Login with Auth0
-          </Button>
-        </center>
-      </div>
+      <Grid
+        textAlign="center"
+        style={{background: '#2b388f', height: '100vh'}}
+        verticalAlign="middle"
+      >
+        <Grid.Column style={{maxWidth: 550}}>
+          <Image src={brand} alt="Kids First logo" size="medium" centered />
+          <Segment>
+            <Header as="h1">Kids First Release Coordinator</Header>
+            <Message
+              info
+              content="Log into the release coordinator to track and create new data releases for Kids First."
+            />
+            <GoogleLogin
+              clientId={googleAppId}
+              render={renderProps => (
+                <Button
+                  onClick={renderProps.onClick}
+                  size="large"
+                  icon
+                  labelPosition="right"
+                >
+                  Login with Ego
+                  <Icon name="chevron right" />
+                </Button>
+              )}
+              onSuccess={googleUser => {
+                const {id_token} = googleUser.getAuthResponse();
+                this.props.login(id_token);
+              }}
+              onFailure={error => console.log('login fail', error)}
+            />
+            <Button
+              onClick={() => this.props.auth.login()}
+              size="large"
+              positive
+              icon
+              labelPosition="right"
+            >
+              Login with Auth0
+              <Icon name="chevron right" />
+            </Button>
+          </Segment>
+        </Grid.Column>
+      </Grid>
     );
   }
 }
