@@ -5,7 +5,6 @@ import {Button, Card} from 'semantic-ui-react';
 import ServiceList from '../components/ServiceList';
 import Events from '../components/Events';
 import {coordinatorApi} from '../globalConfig';
-import PublishHistory from '../components/PublishHistory';
 import LatestPublish from '../components/LatestPublish';
 import LatestReleases from '../components/LatestReleases';
 
@@ -57,12 +56,6 @@ class Status extends Component {
           <Card.Content>
             <Card.Header>Latest Releases</Card.Header>
             <LatestReleases releases={this.state.latest.reverse()} />
-          </Card.Content>
-        </Card>
-        <Card fluid>
-          <Card.Content>
-            <Card.Header>Publish History</Card.Header>
-            <PublishHistory />
           </Card.Content>
         </Card>
 
