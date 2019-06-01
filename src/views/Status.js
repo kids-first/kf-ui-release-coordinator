@@ -2,17 +2,12 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
 import TimeAgo from 'react-timeago';
-import {
-  VictoryChart,
-  VictoryScatter,
-  VictoryAxis,
-  VictoryLegend,
-} from 'victory';
-import {Button, Card} from 'semantic-ui-react';
+import {Button, Card, Icon} from 'semantic-ui-react';
 import ServiceList from '../components/ServiceList';
 import Events from '../components/Events';
 import {coordinatorApi} from '../globalConfig';
 import PublishHistory from '../components/PublishHistory';
+import LatestReleases from '../components/LatestReleases';
 
 class Status extends Component {
   constructor(props) {
@@ -46,15 +41,6 @@ class Status extends Component {
         });
       })
       .catch(error => console.log(error));
-
-    axios
-      .get(`${coordinatorApi}/releases?limit=8`)
-      .then(releases => {
-        this.setState({
-          latest: releases.data.results,
-        });
-      })
-      .catch(error => console.log(error));
   }
 
   getData() {
@@ -74,25 +60,6 @@ class Status extends Component {
 
   render() {
     const latestPublish = this.state.latestPublish;
-    const latestData = this.state.latest
-      ? this.state.latest.map(r => ({
-          x: r.kf_id,
-          y: 0,
-          size: 5,
-          label: r.version,
-          state: r.state,
-        }))
-      : null;
-
-    const stateColors = {
-      initialized: '#fce220',
-      running: '#fa8c16',
-      staged: '#66fc25',
-      publishing: '#91d5ff',
-      published: '#1890ff',
-      canceled: '#dbdbdb',
-      failed: '#fc4a3a',
-    };
     return (
       <div>
         <Card fluid>
@@ -116,54 +83,12 @@ class Status extends Component {
             )}
           </Card.Content>
         </Card>
-        {latestData.length > 0 && (
-          <Card fluid>
-            <Card.Content>
-              <Card.Header>LatestReleases</Card.Header>
-              <VictoryChart
-                height={70}
-                padding={{top: 20, bottom: 20, left: 50, right: 50}}
-              >
-                <VictoryAxis
-                  independentAxis
-                  style={{tickLabels: {fontSize: 6, padding: 10}}}
-                />
-                <VictoryScatter
-                  data={latestData.reverse()}
-                  style={{
-                    data: {
-                      fill: d => stateColors[d.state],
-                      strokeWidth: 3,
-                    },
-                    labels: {
-                      padding: 10,
-                      fontSize: 14,
-                    },
-                  }}
-                />
-
-                <VictoryLegend
-                  orientation="horizontal"
-                  centerTitle
-                  x={0}
-                  y={0}
-                  gutter={0}
-                  style={{
-                    border: {stroke: 'none'},
-                    title: {fontSize: 8},
-                    labels: {fontSize: 6},
-                  }}
-                  borderPadding={0}
-                  padding={{top: 0, bottom: 0}}
-                  data={Object.keys(stateColors).map(v => ({
-                    name: v,
-                    symbol: {fill: stateColors[v]},
-                  }))}
-                />
-              </VictoryChart>
-            </Card.Content>
-          </Card>
-        )}
+        <Card fluid>
+          <Card.Content>
+            <Card.Header>Latest Releases</Card.Header>
+            <LatestReleases releases={this.state.latest.reverse()} />
+          </Card.Content>
+        </Card>
         <Card fluid>
           <Card.Content>
             <Card.Header>Publish History</Card.Header>
