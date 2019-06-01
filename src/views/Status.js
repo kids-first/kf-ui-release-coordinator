@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
-import {Button, Card} from 'semantic-ui-react';
+import {Button, Card, Icon, Image} from 'semantic-ui-react';
 import ServiceList from '../components/ServiceList';
 import Events from '../components/Events';
 import {coordinatorApi} from '../globalConfig';
@@ -61,6 +61,7 @@ class Status extends Component {
 
         <Card.Group itemsPerRow={3}>
           <Card>
+            <Image src="https://images.unsplash.com/photo-1520500807606-4ac9ae633574?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60" />
             <Card.Content>
               <Card.Header>Register a Task Service</Card.Header>
               <Card.Description>
@@ -68,7 +69,7 @@ class Status extends Component {
                 a release. Register an API endpoint for a task service below.
               </Card.Description>
             </Card.Content>
-            <Card.Content extra>
+            <Card.Content extra textAlign="center">
               <Link to="/service/new">
                 <Button color="primary">Register</Button>
               </Link>
@@ -76,6 +77,7 @@ class Status extends Component {
           </Card>
 
           <Card>
+            <Image src="https://images.unsplash.com/photo-1490724500206-cd5482e02b9e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60" />
             <Card.Content>
               <Card.Header>Plan a Release</Card.Header>
               <Card.Description>
@@ -83,7 +85,7 @@ class Status extends Component {
                 processing.
               </Card.Description>
             </Card.Content>
-            <Card.Content extra>
+            <Card.Content extra textAlign="center">
               <Link to="/planner">
                 <Button color="primary">Plan</Button>
               </Link>
@@ -91,13 +93,14 @@ class Status extends Component {
           </Card>
 
           <Card>
+            <Image src="https://images.unsplash.com/photo-1506784881475-0e408bbca849?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60" />
             <Card.Content>
               <Card.Header>View Past Releases</Card.Header>
               <Card.Description>
                 View a history and status of past releases.
               </Card.Description>
             </Card.Content>
-            <Card.Content extra>
+            <Card.Content extra textAlign="center">
               <Link to="/releases">
                 <Button color="primary">View</Button>
               </Link>
