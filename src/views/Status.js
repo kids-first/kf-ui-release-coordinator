@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
-import TimeAgo from 'react-timeago';
-import {Button, Card, Icon} from 'semantic-ui-react';
+import {Button, Card} from 'semantic-ui-react';
 import ServiceList from '../components/ServiceList';
 import Events from '../components/Events';
 import {coordinatorApi} from '../globalConfig';
 import PublishHistory from '../components/PublishHistory';
+import LatestPublish from '../components/LatestPublish';
 import LatestReleases from '../components/LatestReleases';
 
 class Status extends Component {
@@ -15,32 +15,18 @@ class Status extends Component {
 
     this.state = {
       events: [],
-      latestPublish: {},
       latest: [],
     };
   }
 
   componentDidMount() {
     this.mounted = true;
-    this.getLatest();
     this.timer = setTimeout(() => this.getData(), 1000);
   }
 
   componentWillUnmount() {
     this.mounted = false;
     clearTimeout(this.timer);
-  }
-
-  getLatest() {
-    axios
-      .get(`${coordinatorApi}/releases?state=published&limit=1`)
-      .then(releases => {
-        this.setState({
-          latestPublish:
-            releases.data.results.length > 0 ? releases.data.results[0] : {},
-        });
-      })
-      .catch(error => console.log(error));
   }
 
   getData() {
@@ -59,28 +45,12 @@ class Status extends Component {
   }
 
   render() {
-    const latestPublish = this.state.latestPublish;
     return (
       <div>
         <Card fluid>
           <Card.Content>
             <Card.Header>Latest Publication</Card.Header>
-            {latestPublish ? (
-              <center>
-                <h2 style={{margin: 0}}>{latestPublish.name}</h2>
-                <h1 style={{margin: 0}}>{latestPublish.version}</h1>
-                <h4 style={{margin: 0}}>
-                  <TimeAgo date={latestPublish.created_at} />
-                </h4>
-                <Link to={`/releases/${latestPublish.kf_id}`}>
-                  <Button size="small" icon="profile" type="primary">
-                    {latestPublish.kf_id}
-                  </Button>
-                </Link>
-              </center>
-            ) : (
-              <h2>No Releases Published Yet</h2>
-            )}
+            <LatestPublish />
           </Card.Content>
         </Card>
         <Card fluid>
