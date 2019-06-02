@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
 import {withRouter} from 'react-router-dom';
-import {Segment, Button, Icon} from 'semantic-ui-react';
+import {Segment, Button, Card, Icon} from 'semantic-ui-react';
 import {coordinatorApi} from '../globalConfig';
 import ServiceList from '../components/ServiceList';
 
@@ -33,16 +33,20 @@ class Services extends Component {
 
   render() {
     return (
-      <Segment>
-        <h1>Kids First Data Release Task Services</h1>
-        <hr />
-        <Link to="/service/new">
-          <Button color="primary">
-            <Icon name="server" />
-            Register New Service
-          </Button>
-        </Link>
-        <ServiceList />
+      <Segment basic>
+        <Card fluid>
+          <Card.Content>
+            <h1>Kids First Data Release Task Services</h1>
+            <hr />
+            <Link to="/service/new">
+              <Button color="primary">
+                <Icon name="server" />
+                Register New Service
+              </Button>
+            </Link>
+            <ServiceList />
+          </Card.Content>
+        </Card>
       </Segment>
     );
   }
