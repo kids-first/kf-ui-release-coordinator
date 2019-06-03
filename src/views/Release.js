@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import axios from 'axios';
 import {
   Accordion,
@@ -184,7 +184,7 @@ class Release extends Component {
           />
         );
       }
-      return;
+      return <Fragment />;
     });
 
     return (

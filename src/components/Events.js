@@ -4,7 +4,7 @@ import {Feed, Icon, Label} from 'semantic-ui-react';
 const Events = ({events}) => (
   <Feed>
     {events.map((ev, i) => (
-      <Feed.Event>
+      <Feed.Event key={i}>
         <Feed.Content>
           <Feed.Summary>
             <Feed.Date>

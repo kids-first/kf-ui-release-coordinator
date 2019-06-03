@@ -70,8 +70,8 @@ const ServiceList = ({filters}) => {
   } else {
     return (
       <List>
-        {services.map(item => (
-          <Service item={item} />
+        {services.map((item, i) => (
+          <Service item={item} key={i} />
         ))}
       </List>
     );

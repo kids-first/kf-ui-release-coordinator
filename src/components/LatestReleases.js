@@ -34,7 +34,7 @@ const LatestReleases = props => {
       <Grid columns={5} divided>
         <Grid.Row>
           {[1, 2, 3, 4, 5].map(i => (
-            <Grid.Column>
+            <Grid.Column key={i}>
               {i === 3 && (
                 <Loader active inline="centered">
                   Loading Latest Releases...
