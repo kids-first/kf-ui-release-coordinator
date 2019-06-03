@@ -1,26 +1,32 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
-import {Card} from 'kf-uikit';
-import Tag from '../components/Tag';
+import {Segment, Button, Card, Label, Header, Icon} from 'semantic-ui-react';
 
 class Profile extends Component {
   render() {
     const roles = this.props.user.roles.map((t, i) => (
-      <Tag key={i} type="service">
+      <Label basic key={i} color="blue">
         {t}
-      </Tag>
+      </Label>
     ));
     const groups = this.props.user.groups.map((t, i) => (
-      <Tag key={i} type="task">
+      <Label basic key={i} color="green">
         {t}
-      </Tag>
+      </Label>
     ));
     return (
-      <Card title={this.props.user.name}>
-        <h5>Roles: {roles}</h5>
-        <h5>Groups: {groups}</h5>
-      </Card>
+      <Segment basic>
+        <Card fluid>
+          <Card.Content>
+            <Header as="h2">User Profile</Header>
+          </Card.Content>
+          <Card.Content>
+            <h5>Roles: {roles}</h5>
+            <h5>Groups: {groups}</h5>
+          </Card.Content>
+        </Card>
+      </Segment>
     );
   }
 }
