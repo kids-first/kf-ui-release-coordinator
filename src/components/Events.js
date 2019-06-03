@@ -1,42 +1,43 @@
 import React from 'react';
-import className from 'classnames';
-import Tag from './Tag';
+import {Feed, Icon, Label} from 'semantic-ui-react';
 
 const Events = ({events}) => (
-  <ul className="list-reset">
+  <Feed>
     {events.map((ev, i) => (
-      <li
-        key={i}
-        className={className('p-2 border border-lightGrey', {
-          'bg-lightGrey': i % 2,
-        })}
-      >
-        <ul className="m-0 p-1 list-reset inline-block">
-          {ev.release && (
-            <li key={ev.release.kf_id} className="inline-block">
-              <Tag type="release">{ev.release.slice(1).slice(-11)}</Tag>
-            </li>
-          )}
-          {ev.task_service && (
-            <li key={ev.task_service.kf_id} className="inline-block">
-              <Tag type="service">{ev.task_service.slice(1).slice(-11)}</Tag>
-            </li>
-          )}
-          {ev.task && (
-            <li key={ev.task.kf_id} className="inline-block">
-              <Tag type="task">{ev.task.slice(1).slice(-11)}</Tag>
-            </li>
-          )}
-        </ul>
-        <br />
-        <span className="font-semibold">
-          {new Date(ev.created_at).toLocaleString('en-US')}
-        </span>
-        <br />
-        <span className="font-mono">{ev.message}</span>
-      </li>
+      <Feed.Event>
+        <Feed.Content>
+          <Feed.Summary>
+            <Feed.Date>
+              {new Date(ev.created_at).toLocaleString('en-US')}
+            </Feed.Date>
+          </Feed.Summary>
+          <Feed.Extra text>{ev.message}</Feed.Extra>
+          <Feed.Meta>
+            <Label.Group size="tiny">
+              {ev.release && (
+                <Label color="orange">
+                  <Icon name="tag" />
+                  {ev.release.slice(1).slice(-11)}
+                </Label>
+              )}
+              {ev.task_service && (
+                <Label color="purple">
+                  <Icon name="settings" />
+                  {ev.task_service.slice(1).slice(-11)}
+                </Label>
+              )}
+              {ev.task && (
+                <Label color="teal">
+                  <Icon name="calendar check" />
+                  {ev.task.slice(1).slice(-11)}
+                </Label>
+              )}
+            </Label.Group>
+          </Feed.Meta>
+        </Feed.Content>
+      </Feed.Event>
     ))}
-  </ul>
+  </Feed>
 );
 
 export default Events;
