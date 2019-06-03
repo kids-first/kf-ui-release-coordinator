@@ -6,7 +6,7 @@ import {
   toggleStudy,
   toggleAllStudies,
 } from '../actions/studies';
-import {Button, Icon} from 'kf-uikit';
+import {Button, Icon} from 'semantic-ui-react';
 import StudiesTable from '../components/StudiesTable';
 
 class StudiesContainer extends Component {
@@ -39,8 +39,7 @@ class StudiesContainer extends Component {
         <Button
           onClick={() => this.props.syncStudies()}
           disabled={this.props.syncing}
-          color="secondary"
-          className="my-4"
+          secondary
         >
           <Icon kind="reset" className="text-white" height={14} width={14} />
           Sync
