@@ -10,7 +10,6 @@ import storage from 'redux-persist/lib/storage';
 import {composeWithDevTools} from 'redux-devtools-extension';
 import reducer from './reducers';
 import App from './App';
-import './index.css';
 
 const persistedReducer = persistReducer(
   {key: 'root', storage, whitelist: ['auth']},
