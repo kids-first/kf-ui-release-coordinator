@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import {
   Segment,
-  Button,
   Card,
   Feed,
   Header,
