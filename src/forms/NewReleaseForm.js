@@ -1,99 +1,195 @@
-import React, {Component} from 'react';
+import React, {Fragment, useState} from 'react';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import axios from 'axios';
-import {Control, Form as RForm, Errors} from 'react-redux-form';
-import {Form, Button} from 'semantic-ui-react';
+import {Formik, Field} from 'formik';
+import {
+  Button,
+  Checkbox,
+  Confirm,
+  Form,
+  Icon,
+  Label,
+  Modal,
+} from 'semantic-ui-react';
 import {coordinatorApi} from '../globalConfig';
 import StudiesContainer from '../containers/StudiesContainer';
 import ServiceList from '../components/ServiceList';
 
-class NewReleaseForm extends Component {
-  handleSubmit = e => {
-    let release = {
-      name: e.title,
-      description: '',
-      studies: e.studies,
-      tags: [],
-      is_major: e.isMajor === 'true',
-      author: this.props.user.name,
-    };
-
-    let text = `You are about to begin a release for ${
-      release.studies.length
-    } studies:
-${release.studies.join('\n')}
-These studies will be staged for review. This will not affect any
-public facing data until it is reviewed and published.`;
-    if (window.confirm(text)) {
-      axios
-        .post(`${coordinatorApi}/releases`, release)
-        .then(resp => {
-          this.props.history.push(`/releases/${resp.data.kf_id}`);
-        })
-        .catch(err => {
-          console.log(err);
-        });
+const SemanticField = ({component, ...fieldProps}) => (
+  <Field
+    {...fieldProps}
+    render={({
+      field: {value, onBlur, ...field},
+      form: {setFieldValue, setFieldTouched},
+      ...props
+    }) =>
+      React.createElement(component, {
+        ...fieldProps,
+        ...field,
+        ...props,
+        ...(typeof value === 'boolean'
+          ? {
+              checked: value,
+            }
+          : {
+              value,
+            }),
+        onChange: (e, {value: newValue, checked}) =>
+          setFieldValue(fieldProps.name, newValue || checked),
+        onBlur: (e, blurProps) =>
+          blurProps
+            ? setFieldTouched(fieldProps.name, blurProps.value)
+            : onBlur(e),
+      })
     }
+  />
+);
+
+const NewReleaseForm = props => {
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [release, setRelease] = useState({});
+
+  const handleSubmit = (values, actions) => {
+    actions.setSubmitting(true);
+    let release = {
+      name: values.title,
+      description: '',
+      studies: props.studies,
+      tags: [],
+      is_major: values.isMajor,
+      author: props.user.name,
+    };
+    setRelease(release);
+
+    setConfirmOpen(true);
+    actions.setSubmitting(false);
   };
 
-  render() {
-    return (
-      <RForm
-        component={Form}
-        model="releaseForm"
-        onSubmit={val => this.handleSubmit(val)}
+  const handleCancel = () => {
+    setConfirmOpen(false);
+  };
+
+  const handleConfirm = () => {
+    axios
+      .post(`${coordinatorApi}/releases`, release)
+      .then(resp => {
+        props.history.push(`/releases/${resp.data.kf_id}`);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  return (
+    <Fragment>
+      <Formik
+        initialValues={{title: '', isMajor: false, studies: []}}
+        validate={values => {
+          const errors = {};
+          if (!values.title) {
+            errors.title = 'A title is required';
+          }
+          if (props.studies.length <= 0) {
+            errors.studies = 'At least one study is required';
+          }
+          return errors;
+        }}
+        onSubmit={handleSubmit}
       >
-        <Form.Field required>
-          <label>Release Title:</label>
-          <Control.text
-            model="title"
-            defaultValue=""
-            validators={{
-              required: val => val && val.length,
-            }}
-          />
-        </Form.Field>
-        <Errors
-          className="text-red"
-          model="title"
-          messages={{
-            required: 'This field is required',
-          }}
-        />
-        <Form.Field>
-          <label>Is this a major release:</label>
-          <Control.select model="isMajor">
-            <option value={false}>No</option>
-            <option value={true}>Yes</option>
-          </Control.select>
-        </Form.Field>
-        <Form.Field>
-          <label>Select studies to be included in this release</label>
-          <Errors
-            className="text-red"
-            model="studies"
-            messages={{
-              required: 'Select at least one study to release',
-            }}
-          />
-          <Control.custom
-            model="studies"
-            component={StudiesContainer}
-            selectable
-            defaultPageSize={10}
-            validators={{
-              required: val => val.selected.items.length !== 0,
-            }}
-          />
-        </Form.Field>
-        <label>Services to be run for this release:</label>
-        <ServiceList />
-        <Button type="submit">Start the Release</Button>
-      </RForm>
-    );
-  }
-}
+        {({
+          values,
+          errors,
+          touched,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          isSubmitting,
+          isValidating,
+        }) => (
+          <Form>
+            <SemanticField
+              label="Release Title"
+              name="title"
+              component={Form.Input}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.title}
+              error={errors.title !== undefined}
+            />
+
+            <Form.Field>
+              <label>Is this a major release</label>
+              <SemanticField name="isMajor" component={Checkbox} />
+              {errors.isMajor && (
+                <Label basic color="red" pointing>
+                  {errors.isMajor}
+                </Label>
+              )}
+            </Form.Field>
+
+            <Field
+              name="studies"
+              component={StudiesContainer}
+              selectable
+              defaultPageSize={10}
+            />
+            {errors.studies && touched.studies && (
+              <Label basic color="red" pointing>
+                {errors.studies}
+              </Label>
+            )}
+
+            <label>Services to be run for this release</label>
+            <ServiceList />
+
+            <Button
+              type="submit"
+              primary
+              size="large"
+              floated="right"
+              icon
+              labelPosition="right"
+              loading={isSubmitting}
+              onClick={handleSubmit}
+            >
+              Start the Release
+              <Icon name="play" />
+            </Button>
+          </Form>
+        )}
+      </Formik>
+
+      <Confirm
+        open={confirmOpen}
+        cancelButton="Noooooo"
+        confirmButton="Let 'er rip"
+        onCancel={handleCancel}
+        onConfirm={handleConfirm}
+        header={`About to start release: '${release.name}'`}
+        content={
+          <Modal.Content>
+            <p>
+              This <b>{release.is_major ? 'will' : 'will not'}</b> be a major
+              release.
+            </p>
+            These studies will be staged for review. This will not affect any
+            public facing data until it is reviewed and published.
+            {release.studies && (
+              <Label.Group>
+                {release.studies.map(sd => (
+                  <Label color="pink" icon="database">
+                    {sd}
+                  </Label>
+                ))}
+              </Label.Group>
+            )}
+          </Modal.Content>
+        }
+      />
+    </Fragment>
+  );
+};
 
 function mapDispatchToProps(dispatch) {
   return {};
@@ -102,7 +198,7 @@ function mapDispatchToProps(dispatch) {
 function mapStateToProps(state) {
   return {
     user: state.auth.user,
-    studies: state.studies.items,
+    studies: state.studies.selected.items,
   };
 }
 
