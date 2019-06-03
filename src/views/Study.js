@@ -1,8 +1,16 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-import className from 'classnames';
-import {Card} from 'kf-uikit';
-import Tag from '../components/Tag';
+import {
+  Segment,
+  Button,
+  Card,
+  Feed,
+  Header,
+  Icon,
+  Label,
+  Loader,
+} from 'semantic-ui-react';
+import TimeAgo from 'react-timeago';
 import {coordinatorApi} from '../globalConfig';
 
 class Study extends Component {
@@ -44,35 +52,60 @@ class Study extends Component {
 
   render() {
     if (this.state.loading) {
-      return <Card className="min-h-screen">Loading</Card>;
+      return (
+        <Loader active inline="centered">
+          Loading study timeline...
+        </Loader>
+      );
     }
 
     const releases = this.state.releases.map((release, i) => (
-      <li
-        key={i}
-        className={className('p-2 border border-lightGrey', {
-          'bg-lightGrey': i % 2,
-        })}
-      >
-        <Tag>{release.version}</Tag>
-        <Tag type="release">{release.kf_id}</Tag>
-        <span className="pl-2 text-sm">at {Date(release.created_at)}</span>
-      </li>
+      <Feed.Event>
+        <Feed.Label>
+          <Icon name="tag" circular />
+        </Feed.Label>
+        <Feed.Content>
+          <Feed.Summary>
+            <Feed.User>{release.author}</Feed.User> created release '
+            {release.name}'
+            <Feed.Date>
+              <TimeAgo date={new Date(release.created_at)} />
+            </Feed.Date>
+          </Feed.Summary>
+          <Feed.Meta>
+            <Label color="orange" size="tiny">
+              <Icon name="tag" />
+              {release.version}
+            </Label>
+            <Label color="orange" size="tiny">
+              <Icon name="tag" />
+              {release.kf_id}
+            </Label>
+          </Feed.Meta>
+        </Feed.Content>
+      </Feed.Event>
     ));
 
     return (
-      <Card title={this.state.study.name}>
-        <div className="w-full">
-          <Tag type="study">{this.state.study.kf_id}</Tag>
-          Latest Version:
-          <Tag>{this.state.study.version}</Tag>
-        </div>
-
-        <hr />
-
-        <h2>Release Timeline</h2>
-        <ul className="min-w-full list-reset">{releases}</ul>
-      </Card>
+      <Segment basic>
+        <Card fluid>
+          <Card.Content>
+            <Header as="h2">{this.state.study.name}</Header>
+            <Label color="pink">
+              <Icon name="database" />
+              {this.state.study.kf_id}
+            </Label>
+            Latest Version:
+            <Label color="orange">
+              <Icon name="tag" />
+              {this.state.study.version}
+            </Label>
+            <hr />
+            <Header as="h2">Release Timeline</Header>
+            <Feed>{releases}</Feed>
+          </Card.Content>
+        </Card>
+      </Segment>
     );
   }
 }
