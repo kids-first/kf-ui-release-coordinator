@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-import className from 'classnames';
-import Tag from './Tag';
+import {Icon, Label, List, Loader} from 'semantic-ui-react';
 import {coordinatorApi} from '../globalConfig';
 
 class TaskList extends Component {
@@ -44,27 +43,39 @@ class TaskList extends Component {
   }
 
   render() {
+    const stateColors = {
+      initialized: 'blue',
+      running: 'teal',
+      staged: 'purple',
+      publishing: 'teal',
+      published: 'green',
+      canceled: 'grey',
+      failed: 'red',
+    };
+
     if (this.state.loading) {
-      return <div className="bg-lightGrey w-full h-full">Loading</div>;
+      return <Loader active>Loading...</Loader>;
     }
 
     return (
-      <ul className="list-reset">
+      <List>
         {this.state.tasks.map((task, i) => (
-          <li
-            key={task.kf_id}
-            className={className('p-2 border border-lightGrey', {
-              'bg-lightGrey': i % 2,
-            })}
-          >
-            <Tag type="service">{task.kf_id}</Tag>
-            <span className="font-semibold">{task.service_name}</span>
-            <span className="float-right">
-              <Tag state={task.state}>{task.state}</Tag>
-            </span>
-          </li>
+          <List.Item>
+            <List.Content floated="right">
+              <Label basic horizontal color={stateColors[task.state]}>
+                {task.state}
+              </Label>
+            </List.Content>
+            <List.Content>
+              <Label color="teal" horizontal>
+                <Icon name="calendar check" />
+                {task.kf_id}
+              </Label>
+              {task.service_name}
+            </List.Content>
+          </List.Item>
         ))}
-      </ul>
+      </List>
     );
   }
 }
