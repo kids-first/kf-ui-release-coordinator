@@ -10,6 +10,7 @@
     "classnames": "^2.2.6",
     "draft-js": "^0.10.5",
     "draftjs-to-markdown": "^0.5.1",
+    "formik": "^1.5.7",
     "gapi": "^0.0.3",
     "jwt-decode": "^2.2.0",
     "kf-uikit": "https://s3.amazonaws.com/kf-uikit-prd-bucket/0.3.1/kf-uikit/kf-uikit.tar.gz",
@@ -35,6 +36,7 @@
     "redux-devtools-extension": "^2.13.7",
     "redux-persist": "^5.10.0",
     "redux-thunk": "^2.3.0",
+    "semantic-ui-react": "^0.87.1",
     "victory": "^30.5.0"
   },
   "scripts": {
