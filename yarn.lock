@@ -1523,10 +1523,6 @@ chownr@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/chownr/-/chownr-1.1.1.tgz#54726b8b8fff4df053c42187e801fb4412df1494"
 
-chroma-js@^1.3.7:
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/chroma-js/-/chroma-js-1.4.1.tgz#eb2d9c4d1ff24616be84b35119f4d26f8205f134"
-
 ci-info@^1.5.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/ci-info/-/ci-info-1.6.0.tgz#2ca20dbb9ceb32d4524a683303313f0304b1e497"
@@ -4535,18 +4531,6 @@ keyboard-key@^1.0.4:
   resolved "https://registry.yarnpkg.com/keyboard-key/-/keyboard-key-1.0.4.tgz#52d8fa07b7e17757072aa22a67fb4ae85e4c46b0"
   integrity sha512-my04dE6BCwPpwoe4KYKfPxWiwgDYQOHrVmtzn1CfzmoEsGG/ef4oZGaXCzi1+iFhG7CN5JkOuxmei5OABY8/ag==
 
-"kf-uikit@https://s3.amazonaws.com/kf-uikit-prd-bucket/0.3.1/kf-uikit/kf-uikit.tar.gz":
-  version "0.3.0"
-  resolved "https://s3.amazonaws.com/kf-uikit-prd-bucket/0.3.1/kf-uikit/kf-uikit.tar.gz#92db7af10e36e418f20189f3127e01a9f75cf485"
-  dependencies:
-    chroma-js "^1.3.7"
-    classnames "^2.2.6"
-    lodash "^4.17.10"
-    prop-types "^15.6.2"
-    react "^16.4.2"
-    react-dom "^16.4.2"
-    react-scripts "1.1.4"
-
 killable@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/killable/-/killable-1.0.1.tgz#4c8ce441187a061c7474fb87ca08e2a638194892"
@@ -4735,7 +4719,7 @@ lodash.uniq@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
 
-"lodash@>=3.5 <5", lodash@^4.15.0, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.2, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.3.0:
+"lodash@>=3.5 <5", lodash@^4.15.0, lodash@^4.17.11, lodash@^4.17.2, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.3.0:
   version "4.17.11"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
 
@@ -6180,7 +6164,7 @@ react-dev-utils@^5.0.1:
     strip-ansi "3.0.1"
     text-table "0.2.0"
 
-react-dom@^16.4.0, react-dom@^16.4.2:
+react-dom@^16.4.0:
   version "16.8.5"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.8.5.tgz#b3e37d152b49e07faaa8de41fdf562be3463335e"
   dependencies:
@@ -6352,7 +6336,7 @@ react-timeago@^3.4.3:
   version "3.4.3"
   resolved "https://registry.yarnpkg.com/react-timeago/-/react-timeago-3.4.3.tgz#eb9061eefb044e4a2b09ce8c99d34645b2dbfa25"
 
-react@^16.4.0, react@^16.4.2:
+react@^16.4.0:
   version "16.8.5"
   resolved "https://registry.yarnpkg.com/react/-/react-16.8.5.tgz#49be3b655489d74504ad994016407e8a0445de66"
   dependencies:
