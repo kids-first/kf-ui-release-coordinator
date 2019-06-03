@@ -1,8 +1,19 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-import {Button, Card, Icon} from 'kf-uikit';
+import {
+  Accordion,
+  Button,
+  Card,
+  Dimmer,
+  Grid,
+  Header,
+  Image,
+  Icon,
+  Segment,
+  Label,
+  Loader,
+} from 'semantic-ui-react';
 import TimeAgo from 'react-timeago';
-import Tag from '../components/Tag';
 import Progress from '../components/Progress';
 import TaskList from '../components/TaskList';
 import Events from '../components/Events';
@@ -10,6 +21,7 @@ import ReleaseTimeline from '../components/ReleaseTimeline';
 import MarkdownEditor from '../components/MarkdownEditor';
 import ReleaseReportSummary from '../components/ReleaseReportSummary';
 import {coordinatorApi, snapshotApi} from '../globalConfig';
+import paragraph from '../paragraph.png';
 
 class Release extends Component {
   constructor(props) {
@@ -21,6 +33,7 @@ class Release extends Component {
       events: [],
       publishing: false,
       canceling: false,
+      showStudies: false,
     };
     this.getData();
     this.mounted = false;
@@ -99,12 +112,25 @@ class Release extends Component {
       .catch(error => console.log(error));
   }
 
+  toggleStudies() {
+    this.setState({showStudies: !this.state.showStudies});
+  }
+
   render() {
     if (this.state.loading) {
       return (
-        <Card className="min-h-screen">
-          <h1>Loading</h1>
-        </Card>
+        <Segment basic>
+          <Card fluid>
+            <Card.Content>
+              <Dimmer active inverted>
+                <Loader active inverted>
+                  Loading Release
+                </Loader>
+              </Dimmer>
+              <Image src={paragraph} alt="loading" />
+            </Card.Content>
+          </Card>
+        </Segment>
       );
     }
 
@@ -148,125 +174,176 @@ class Release extends Component {
 
     const notes = this.state.release.studies.map((study, i) => {
       const notes = notesByStudy.get(study);
-      return (
-        <StudyNotes
-          key={i}
-          notes={notes}
-          studyId={study}
-          releaseId={this.state.release.kf_id}
-        />
-      );
+      if (notes) {
+        return (
+          <StudyNotes
+            key={i}
+            notes={notes}
+            studyId={study}
+            releaseId={this.state.release.kf_id}
+          />
+        );
+      }
+      return;
     });
 
     return (
-      <Card
-        title={`Release ${this.props.match.params.releaseId} - ${
-          this.state.release.version
-        } - ${this.state.release.name}`}
-      >
-        <Icon kind="comment" width={16} />
-        <Tag>{this.state.release.version}</Tag>
-        <Icon kind="comment" width={16} />
-        <Tag type="release">{this.state.release.kf_id}</Tag>
-        <h5 style={{margin: 0}}>
-          <Icon type="resources" /> Created At:{' '}
-          <em>{Date(this.state.release.created_at)}</em>
-        </h5>
-        <h5 style={{margin: 0}}>
-          <Icon kind="user" /> Author: <em>{this.state.release.author}</em>
-        </h5>
-        <span>Studies in this Release:</span>
-        <br />
-        {this.state.release.studies.map((r, i) => (
-          <Tag type="study" key={i}>
-            {r}
-          </Tag>
-        ))}
-        <hr />
-        {this.state.release.state !== 'canceled' &&
-        this.state.release.state !== 'failed' ? (
-          <Progress release={this.state.release} />
-        ) : (
-          <h2>
-            <Icon kind="reset" /> {this.state.release.state}
-          </h2>
-        )}
-        <hr />
-        {['staged', 'publishing', 'published', 'canceled', 'failed'].includes(
-          this.state.release.state,
-        ) && (
-          <ReleaseReportSummary
-            releaseId={this.state.release.kf_id}
-            releaseState={this.state.release.state}
-          />
-        )}
-        <hr />
-        <h1>Release Notes</h1>
-        <MarkdownEditor
-          type="release"
-          releaseId={this.state.release.kf_id}
-          description={this.state.release.description}
-        />
-        {notes}
-        <hr />
-        <div>
-          <center>
-            <h3>Release Timeline</h3>
-          </center>
-          <ReleaseTimeline
-            releaseId={this.state.release.kf_id}
-            releaseState={this.state.release.state}
-          />
-        </div>
-        <hr />
-        <div className="flex justify-around w-full">
-          <Button
-            size="large"
-            color="primary"
-            onClick={() => this.publish()}
-            disabled={disabled}
-          >
-            <Icon kind="add" />
-            Publish
-          </Button>
-          <a href={`${snapshotApi}/download/${this.state.release.kf_id}`}>
-            <Button size="large" color="primary" disabled={false}>
-              <Icon kind="download" />
-              Download Snapshot
-            </Button>
-          </a>
-          <Button
-            size="large"
-            color="info"
-            onClick={() => this.cancel()}
-            loading={this.state.canceling}
-            disabled={
-              this.state.release.state === 'published' ||
-              this.state.release.state === 'publishing' ||
-              this.state.release.state === 'canceled' ||
-              this.state.release.state === 'failed'
-            }
-          >
-            <Icon kind="close" />
-            Cancel
-          </Button>
-        </div>
-        <hr />
-        <div className="flex w-full">
-          <div className="w-1/2">
-            <h2>
-              Task Status <span />
-            </h2>
-            <TaskList releaseId={this.state.release.kf_id} />
-          </div>
-          <div className="w-1/2">
-            <h2>
-              Event History <span />
-            </h2>
-            <Events events={this.state.events} />
-          </div>
-        </div>
-      </Card>
+      <Segment basic>
+        <Card fluid>
+          <Card.Content>
+            <Grid columns={3}>
+              <Grid.Row centered>
+                <Header as="h2">
+                  <Header.Content>{this.state.release.name}</Header.Content>
+                  <Header.Subheader>
+                    <TimeAgo date={new Date(this.state.release.created_at)} />
+                  </Header.Subheader>
+                </Header>
+              </Grid.Row>
+              <Grid.Row>
+                <Grid.Column>
+                  <Header as="h3">Tags</Header>
+                  <Label color="orange">
+                    <Icon name="tag" />
+                    {this.state.release.version}
+                  </Label>
+                  <Label color="orange">
+                    <Icon name="tag" />
+                    {this.state.release.kf_id}
+                  </Label>
+                </Grid.Column>
+
+                <Grid.Column textAlign="center">
+                  <Header as="h3">Authored By</Header>
+                  <Label color="blue">
+                    <Icon name="user" />
+                    {this.state.release.author}
+                  </Label>
+                </Grid.Column>
+
+                <Grid.Column textAlign="right">
+                  <Header as="h3">Studies in this Release</Header>
+                  <Accordion>
+                    <Accordion.Title active={this.state.showStudies}>
+                      <Label onClick={() => this.toggleStudies()}>
+                        <Icon name="eye" />
+                        View all {this.state.release.studies.length} studies
+                        <Icon name="dropdown" />
+                      </Label>
+                    </Accordion.Title>
+                  </Accordion>
+                </Grid.Column>
+              </Grid.Row>
+              {this.state.showStudies && (
+                <Grid.Row centered>
+                  <Label.Group>
+                    {this.state.release.studies.map((r, i) => (
+                      <Label color="pink">
+                        <Icon name="database" key={i} />
+                        {r}
+                      </Label>
+                    ))}
+                  </Label.Group>
+                </Grid.Row>
+              )}
+              <Grid.Row centered columns={1}>
+                {this.state.release.state !== 'canceled' &&
+                this.state.release.state !== 'failed' ? (
+                  <Progress release={this.state.release} />
+                ) : (
+                  <h2>
+                    <Icon kind="reset" /> {this.state.release.state}
+                  </h2>
+                )}
+              </Grid.Row>
+              <Grid.Row centered>
+                <Button.Group size="large">
+                  <Button
+                    icon
+                    negative
+                    labelPosition="left"
+                    onClick={() => this.cancel()}
+                    loading={this.state.canceling}
+                    disabled={
+                      this.state.release.state === 'published' ||
+                      this.state.release.state === 'publishing' ||
+                      this.state.release.state === 'canceled' ||
+                      this.state.release.state === 'failed'
+                    }
+                  >
+                    <Icon name="cancel" />
+                    Cancel
+                  </Button>
+                  <Button
+                    as="a"
+                    href={`${snapshotApi}/download/${this.state.release.kf_id}`}
+                  >
+                    <Icon name="download" />
+                    Download Snapshot
+                  </Button>
+                  <Button
+                    icon
+                    positive
+                    labelPosition="right"
+                    onClick={() => this.publish()}
+                    disabled={disabled}
+                  >
+                    Publish
+                    <Icon name="bookmark" />
+                  </Button>
+                </Button.Group>
+              </Grid.Row>
+            </Grid>
+            <hr />
+            {[
+              'staged',
+              'publishing',
+              'published',
+              'canceled',
+              'failed',
+            ].includes(this.state.release.state) && (
+              <ReleaseReportSummary
+                releaseId={this.state.release.kf_id}
+                releaseState={this.state.release.state}
+              />
+            )}
+            <hr />
+            <h1>Release Notes</h1>
+            <MarkdownEditor
+              type="release"
+              releaseId={this.state.release.kf_id}
+              description={this.state.release.description}
+            />
+            {notes}
+            <hr />
+            <div>
+              <center>
+                <h3>Release Timeline</h3>
+              </center>
+              <ReleaseTimeline
+                releaseId={this.state.release.kf_id}
+                releaseState={this.state.release.state}
+              />
+            </div>
+            <hr />
+            <hr />
+            <div className="flex w-full">
+              <div className="w-1/2">
+                <h2>
+                  Task Status <span />
+                </h2>
+                <TaskList releaseId={this.state.release.kf_id} />
+              </div>
+              <div className="w-1/2">
+                <h2>
+                  Event History <span />
+                </h2>
+                <Events events={this.state.events} />
+              </div>
+            </div>
+          </Card.Content>
+        </Card>
+      </Segment>
     );
   }
 }
