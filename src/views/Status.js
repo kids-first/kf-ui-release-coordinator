@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
-import {Button, Card, Icon, Image} from 'semantic-ui-react';
+import {Button, Card, Segment, Icon, Image} from 'semantic-ui-react';
 import ServiceList from '../components/ServiceList';
 import Events from '../components/Events';
 import {coordinatorApi} from '../globalConfig';
@@ -45,7 +45,7 @@ class Status extends Component {
 
   render() {
     return (
-      <div>
+      <Segment basic>
         <Card fluid>
           <Card.Content>
             <Card.Header>Latest Publication</Card.Header>
@@ -120,7 +120,7 @@ class Status extends Component {
             <Events events={this.state.events} />
           </Card.Content>
         </Card>
-      </div>
+      </Segment>
     );
   }
 }
