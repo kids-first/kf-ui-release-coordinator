@@ -81,3 +81,9 @@ export function auth0Login(access_token, id_token) {
     dispatch(authSuccess(access_token, jwtData.exp, user));
   };
 }
+
+export function auth0Logout() {
+  return dispatch => {
+    dispatch(authSuccess(null, 0, {}));
+  };
+}

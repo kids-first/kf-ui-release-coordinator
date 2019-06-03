@@ -1,7 +1,8 @@
 import React, {Fragment} from 'react';
 import {NavLink, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {Button, Icon, Image, Menu} from 'semantic-ui-react';
+import {auth0Logout} from '../actions/auth';
+import {Dropdown, Icon, Image, Menu} from 'semantic-ui-react';
 import {syslevel} from '../globalConfig';
 import logo from '../logo.svg';
 
@@ -21,10 +22,26 @@ const HeaderContainer = ({...props}) => {
         <Menu.Item as={Nav} to="/studies" content="Studies" />
         <Menu.Item as={Nav} to="/services" content="Services" />
         <Menu.Menu position="right">
-          <Menu.Item as={Nav} name={props.userName} to="/profile">
-            <Icon name="user" />
-            {props.userName}
-          </Menu.Item>
+          <Dropdown text={props.userName} className="link item">
+            <Dropdown.Menu>
+              <Dropdown.Item as={Nav} to="/profile">
+                <Icon name="user" />
+                Account
+              </Dropdown.Item>
+              <Dropdown.Item
+                as={Nav}
+                to="/"
+                onClick={() => {
+                  localStorage.removeItem('isLoggedIn');
+                  localStorage.removeItem('persist:root');
+                  window.location.reload();
+                }}
+              >
+                <Icon name="log out" />
+                Logout
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
         </Menu.Menu>
       </Menu>
       {syslevel !== 'prd' && (
@@ -45,7 +62,12 @@ const HeaderContainer = ({...props}) => {
 };
 
 function mapDispatchToProps(dispatch) {
-  return {};
+  return {
+    logout: () => {
+      console.log('logout');
+      dispatch(auth0Logout);
+    },
+  };
 }
 
 function mapStateToProps(state) {
