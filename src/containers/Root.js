@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import axios from 'axios';
 import {connect} from 'react-redux';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
@@ -16,6 +16,7 @@ import Profile from '../views/Profile';
 import NewService from '../views/NewService';
 import Callback from '../views/Callback';
 import Auth from '../Auth';
+import {Container} from 'semantic-ui-react';
 
 const auth = new Auth();
 
@@ -23,9 +24,9 @@ const Root = props => (
   <Router>
     {props.userStatus === 'Approved' &&
     props.tokenExpires > Math.floor(new Date().getTime() / 1000) ? (
-      <center className="bg-lightGrey">
+      <Fragment>
         <HeaderContainer />
-        <div className="min-h-full max-w-3xl m-0 px-4 text-left">
+        <Container>
           <Route exact path="/" component={Status} />
           <Route path="/planner" component={Planner} />
           <Route exact path="/profile" component={Profile} />
@@ -36,10 +37,10 @@ const Root = props => (
           <Route exact path="/services" component={Services} />
           <Route exact path="/service/new" component={NewService} />
           <Route exact path="/services/:serviceId" component={Service} />
-        </div>
-      </center>
+        </Container>
+      </Fragment>
     ) : (
-      <div>
+      <Fragment>
         <Login path="/" auth={auth} />
         <Route
           path="/callback"
@@ -47,7 +48,7 @@ const Root = props => (
             return <Callback {...{...props, auth}} />;
           }}
         />
-      </div>
+      </Fragment>
     )}
   </Router>
 );
