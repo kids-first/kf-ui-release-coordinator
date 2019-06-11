@@ -1,13 +1,26 @@
 import React, {Component} from 'react';
-import {Card} from 'kf-uikit';
+import {Segment, Button, Card, Header, Icon} from 'semantic-ui-react';
 import StudiesContainer from '../containers/StudiesContainer';
 
 class Studies extends Component {
   render() {
     return (
-      <Card title="Kids First Studies">
-        <StudiesContainer />
-      </Card>
+      <Segment basic>
+        <Card fluid>
+          <Card.Content>
+            <Header as="h2">
+              Kids First Studies
+              <Button floated="right" primary size="large">
+                <Icon name="refresh" />
+                Sync Studies
+              </Button>
+            </Header>
+          </Card.Content>
+          <Card.Content>
+            <StudiesContainer />
+          </Card.Content>
+        </Card>
+      </Segment>
     );
   }
 }

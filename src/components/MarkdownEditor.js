@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import propTypes from 'prop-types';
 import axios from 'axios';
-import {Button} from 'kf-uikit';
+import {Button} from 'semantic-ui-react';
 import ReactMarkdown from 'react-markdown';
 import {coordinatorApi} from '../globalConfig';
 

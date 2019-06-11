@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import WrappedNewServiceForm from '../forms/NewService';
-import {Card} from 'kf-uikit';
+import {Card} from 'semantic-ui-react';
 import {coordinatorApi} from '../globalConfig';
 
 class Services extends Component {

@@ -1,70 +1,81 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
+import {Loader, List, Icon, Radio} from 'semantic-ui-react';
 import {Link, withRouter} from 'react-router-dom';
-import {Icon} from 'kf-uikit';
 import {coordinatorApi} from '../globalConfig';
 
-class ServiceList extends Component {
-  constructor(props) {
-    super(props);
+const Service = ({item}) => {
+  const [loading, setLoading] = useState(false);
+  const [service, setService] = useState(item);
 
-    this.state = {
-      data: [],
-      loading: true,
-    };
-  }
-
-  componentWillMount() {
-    this.getData();
-  }
-
-  getData() {
+  const toggle = ev => {
+    setLoading(true);
     axios
-      .get(`${coordinatorApi}/task-services?${this.props.filters}`)
-      .then(resp => {
-        let data = resp.data.results;
-        this.setState({data: data, loading: false});
-      });
-  }
-
-  onChange(kf_id, state) {
-    this.setState({loading: true});
-    axios
-      .patch(`${coordinatorApi}/task-services/${kf_id}`, {
-        enabled: state.target.checked,
+      .patch(`${coordinatorApi}/task-services/${service.kf_id}`, {
+        enabled: !service.enabled,
       })
       .then(resp => {
-        this.getData();
+        setService(resp.data);
+        setLoading(false);
       });
-  }
+  };
 
-  render() {
+  return (
+    <List.Item>
+      <List.Content floated="right">
+        {loading && <Loader active inline size="tiny" />}
+        <Radio
+          toggle
+          label={service.enabled ? 'Enabled' : 'Disabled'}
+          disabled={loading}
+          checked={service.enabled}
+          onChange={ev => toggle()}
+        />
+      </List.Content>
+      {service.health_status === 'ok' ? (
+        <Icon name="check" size="large" color="green" />
+      ) : (
+        <Icon name="close" size="large" color="red" />
+      )}
+      <List.Content>
+        <List.Header>
+          <Link to={`/services/${service.kf_id}`}>{service.name}</Link>
+        </List.Header>
+        <List.Description>{service.description}</List.Description>
+      </List.Content>
+    </List.Item>
+  );
+};
+
+const ServiceList = ({filters}) => {
+  const [loading, setLoading] = useState(true);
+  const [services, setServices] = useState([]);
+
+  const fetchData = async () => {
+    const result = await axios(`${coordinatorApi}/task-services?${filters}`);
+    setServices(result.data.results);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  if (loading) {
     return (
-      <ul className="list-reset w-full max-w-full">
-        {this.state.data.map(item => (
-          <li className="w-full inline-block">
-            <div className="inline-block w-8 h-8 border border-2 border-darkGrey mr-2 text-center rounded-full">
-              {item.health_status === 'ok' ? (
-                <Icon kind="star" width={20} />
-              ) : (
-                <Icon kind="close" width={20} />
-              )}
-            </div>
-            <Link to={`/services/${item.kf_id}`}>{item.name}</Link> -
-            <span className="font-normal">{item.description}</span>
-            <div className="float-right">
-              <b>Enabled: </b>
-              <input
-                type="checkbox"
-                checked={item.enabled}
-                onChange={enabled => this.onChange(item.kf_id, enabled)}
-              />
-            </div>
-          </li>
+      <Loader active inline="centered">
+        Loading Services...
+      </Loader>
+    );
+  } else {
+    return (
+      <List>
+        {services.map((item, i) => (
+          <Service item={item} key={i} />
         ))}
-      </ul>
+      </List>
     );
   }
-}
+};
 
 export default withRouter(ServiceList);

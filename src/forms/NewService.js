@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import axios from 'axios';
-import {Button} from 'kf-uikit';
+import {Button} from 'semantic-ui-react';
 import {coordinatorApi} from '../globalConfig';
 
 class NewServiceForm extends Component {

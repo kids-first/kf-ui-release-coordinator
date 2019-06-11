@@ -1,22 +1,33 @@
 import {Link} from 'react-router-dom';
 import React from 'react';
-import {Button} from 'kf-uikit';
+import {Icon, Label} from 'semantic-ui-react';
 import TimeAgo from 'react-timeago';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import {compareSemVer} from '../utils';
 
 const ReleaseList = ({loading, releases}) => {
+  const stateColors = {
+    initialized: 'blue',
+    running: 'teal',
+    staged: 'purple',
+    publishing: 'teal',
+    published: 'green',
+    canceled: 'grey',
+    failed: 'red',
+  };
+
   const columns = [
     {
       Header: 'Release',
       accessor: 'kf_id',
       Cell: row => (
-        <Link to={`/releases/${row.value}`}>
-          <Button className="w-full">{row.value}</Button>
-        </Link>
+        <Label as={Link} to={`/releases/${row.value}`} color="orange">
+          <Icon name="tag" />
+          {row.value}
+        </Label>
       ),
-      width: 120,
+      width: 140,
       filterable: true,
     },
     {
@@ -29,19 +40,35 @@ const ReleaseList = ({loading, releases}) => {
       accessor: 'author',
       width: 150,
       className: 'text-center',
-      Cell: row => row.value.split('@')[0],
+      Cell: row => (
+        <Label color="blue">
+          <Icon name="user" />
+          {row.value.split('@')[0]}
+        </Label>
+      ),
       filterable: true,
     },
     {
       Header: 'Version',
       accessor: 'version',
-      width: 70,
+      Cell: row => (
+        <Label as={Link} to={`/releases/${row.row.kf_id}`} color="orange">
+          <Icon name="tag" />
+          {row.value}
+        </Label>
+      ),
+      width: 100,
       className: 'text-center',
       filterable: true,
     },
     {
       Header: 'State',
       accessor: 'state',
+      Cell: row => (
+        <Label basic color={stateColors[row.value]}>
+          {row.value}
+        </Label>
+      ),
       width: 100,
       className: 'text-center',
       filterable: true,

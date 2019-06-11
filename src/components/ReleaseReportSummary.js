@@ -1,7 +1,7 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import axios from 'axios';
 import {reportsApi} from '../globalConfig';
-import {Stats} from 'kf-uikit';
+import {Icon, Loader, Statistic} from 'semantic-ui-react';
 
 class ReleaseReportSummary extends Component {
   constructor(props) {
@@ -41,74 +41,50 @@ class ReleaseReportSummary extends Component {
 
   render() {
     if (!this.state.found || this.state.loading) {
-      return null;
+      return <Loader content="Loading release stats..." />;
     }
     return (
-      <div>
-        <h3 className="mt-0 mb-4">Release Summary</h3>
-        <Stats
-          stats={[
-            {
-              icon: 'study',
-              label: 'Studies',
-              metric: this.state.report.studies,
-            },
-            {
-              icon: 'participant',
-              label: 'Partiicpants',
-              metric: this.state.report.participants,
-            },
-            {
-              icon: 'family',
-              label: 'Families',
-              metric: this.state.report.families,
-            },
-            {
-              icon: 'biospecimen',
-              label: 'Biospecimens',
-              metric: this.state.report.biospecimens,
-            },
-            {
-              icon: 'file',
-              label: 'Files',
-              metric: this.state.report['genomic-files'],
-            },
-          ]}
-        />
-        <div className="w-full">
-          <hr />
-          <h3 className="mt-0 mb-4">Study Summaries</h3>
-        </div>
-        <div className="w-full">
-          {Object.values(this.state.report.study_summaries).map((study, i) => (
-            <Fragment>
-              <h4 className="mt-0 mb-4">
-                {Object.keys(this.state.report.study_summaries)[i]}
-              </h4>
-              <Stats
-                stats={[
-                  {
-                    icon: 'participant',
-                    label: 'Partiicpants',
-                    metric: study.participants,
-                  },
-                  {icon: 'family', label: 'Families', metric: study.families},
-                  {
-                    icon: 'biospecimen',
-                    label: 'Biospecimens',
-                    metric: study.biospecimens,
-                  },
-                  {
-                    icon: 'file',
-                    label: 'Files',
-                    metric: study['genomic-files'],
-                  },
-                ]}
-              />
-            </Fragment>
-          ))}
-        </div>
-      </div>
+      <Statistic.Group widths={5} size="small">
+        <Statistic>
+          <Statistic.Value>
+            <Icon name="database" />
+            {this.state.report.studies}
+          </Statistic.Value>
+          <Statistic.Label>Studies</Statistic.Label>
+        </Statistic>
+
+        <Statistic>
+          <Statistic.Value>
+            <Icon name="user" />
+            {this.state.report.participants}
+          </Statistic.Value>
+          <Statistic.Label>Participants</Statistic.Label>
+        </Statistic>
+
+        <Statistic>
+          <Statistic.Value>
+            <Icon name="users" />
+            {this.state.report.families}
+          </Statistic.Value>
+          <Statistic.Label>Families</Statistic.Label>
+        </Statistic>
+
+        <Statistic>
+          <Statistic.Value>
+            <Icon name="lab" />
+            {this.state.report.biospecimens}
+          </Statistic.Value>
+          <Statistic.Label>Biospecimens</Statistic.Label>
+        </Statistic>
+
+        <Statistic>
+          <Statistic.Value>
+            <Icon name="file" />
+            {this.state.report['genomic-files']}
+          </Statistic.Value>
+          <Statistic.Label>Files</Statistic.Label>
+        </Statistic>
+      </Statistic.Group>
     );
   }
 }
