@@ -1,9 +1,12 @@
 import React, {Component, Fragment} from 'react';
+import {connect} from 'react-redux';
+import {withRouter} from 'react-router-dom';
 import axios from 'axios';
 import {
   Accordion,
   Button,
   Card,
+  Confirm,
   Dimmer,
   Grid,
   Header,
@@ -12,6 +15,7 @@ import {
   Segment,
   Label,
   Loader,
+  Modal,
 } from 'semantic-ui-react';
 import TimeAgo from 'react-timeago';
 import Progress from '../components/Progress';
@@ -34,6 +38,7 @@ class Release extends Component {
       publishing: false,
       canceling: false,
       showStudies: false,
+      showConfirm: false,
     };
     this.getData();
     this.mounted = false;
@@ -48,6 +53,32 @@ class Release extends Component {
   componentWillUnmount() {
     this.mounted = false;
     clearTimeout(this.timer);
+  }
+
+  toggleConfirm() {
+    this.setState({showConfirm: !this.state.showConfirm});
+  }
+
+  handleConfirm() {
+    const curRelease = this.state.release;
+    const newRelease = {
+      name: curRelease.name,
+      description: curRelease.description,
+      studies: curRelease.studies,
+      tags: curRelease.tags,
+      is_major: curRelease.is_major,
+      author: this.props.user.name,
+    };
+
+    axios
+      .post(`${coordinatorApi}/releases`, newRelease)
+      .then(resp => {
+        this.props.history.push(`/releases/${resp.data.kf_id}`);
+        this.toggleConfirm();
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   publish() {
@@ -283,6 +314,14 @@ class Release extends Component {
                   </Button>
                   <Button
                     icon
+                    labelPosition="right"
+                    onClick={() => this.toggleConfirm()}
+                  >
+                    Run Again
+                    <Icon name="repeat" />
+                  </Button>
+                  <Button
+                    icon
                     positive
                     labelPosition="right"
                     onClick={() => this.publish()}
@@ -343,6 +382,33 @@ class Release extends Component {
             </div>
           </Card.Content>
         </Card>
+
+        <Confirm
+          open={this.state.showConfirm}
+          cancelButton="Cancel"
+          confirmButton="Start New Release"
+          onCancel={() => this.toggleConfirm()}
+          onConfirm={() => this.handleConfirm()}
+          header={`Restart release: '${this.state.release.name}'`}
+          content={
+            <Modal.Content>
+              <p>
+                You are about to start a new release identical to this release.
+                It will be assigned a new release id an version number but will
+                be identical otherwise.
+              </p>
+              {this.state.release.studies && (
+                <Label.Group>
+                  {this.state.release.studies.map(sd => (
+                    <Label color="pink" icon="database">
+                      {sd}
+                    </Label>
+                  ))}
+                </Label.Group>
+              )}
+            </Modal.Content>
+          }
+        />
       </Segment>
     );
   }
@@ -421,4 +487,10 @@ class StudyNote extends Component {
   }
 }
 
-export default Release;
+function mapStateToProps(state) {
+  return {
+    user: state.auth.user,
+  };
+}
+
+export default connect(mapStateToProps)(withRouter(Release));
