@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
 import {withRouter} from 'react-router-dom';
-import {Segment, Button, Card, Header, Icon} from 'semantic-ui-react';
+import {Segment, Button, Card, Grid, Header, Icon} from 'semantic-ui-react';
 import {coordinatorApi} from '../globalConfig';
 import ServiceList from '../components/ServiceList';
 
@@ -36,19 +36,26 @@ class Services extends Component {
       <Segment basic>
         <Card fluid>
           <Card.Content>
-            <Header as="h2">
-              Kids First Release Task Services
-              <Button
-                floated="right"
-                as={Link}
-                to="/service/new"
-                primary
-                size="large"
-              >
-                <Icon name="settings" />
-                Register a Service
-              </Button>
-            </Header>
+            <Grid>
+              <Grid.Row>
+                <Grid.Column width={8}>
+                  <Header as="h2">Kids First Release Task Services</Header>
+                </Grid.Column>
+                <Grid.Column width={8} textAlign="right">
+                  <Button
+                    as={Link}
+                    to="/service/new"
+                    primary
+                    size="large"
+                    icon
+                    labelPosition="left"
+                  >
+                    <Icon name="settings" />
+                    Register a Service
+                  </Button>
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
           </Card.Content>
           <Card.Content extra>
             <ServiceList />

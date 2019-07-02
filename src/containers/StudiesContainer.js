@@ -39,9 +39,11 @@ class StudiesContainer extends Component {
         <Button
           onClick={() => this.props.syncStudies()}
           disabled={this.props.syncing}
-          secondary
+          color="primary"
+          icon
+          labelPosition="left"
         >
-          <Icon kind="reset" className="text-white" height={14} width={14} />
+          <Icon name="refresh" />
           Sync
         </Button>
         {this.props.syncMessage && this.props.syncMessage}
