@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Segment, Button, Card, Header, Icon} from 'semantic-ui-react';
+import {Segment, Button, Card, Grid, Header, Icon} from 'semantic-ui-react';
 import StudiesContainer from '../containers/StudiesContainer';
 
 class Studies extends Component {
@@ -8,13 +8,19 @@ class Studies extends Component {
       <Segment basic>
         <Card fluid>
           <Card.Content>
-            <Header as="h2">
-              Kids First Studies
-              <Button floated="right" size="large">
-                <Icon name="refresh" />
-                Sync Studies
-              </Button>
-            </Header>
+            <Grid>
+              <Grid.Row>
+                <Grid.Column width={8}>
+                  <Header as="h2">Kids First Studies</Header>
+                </Grid.Column>
+                <Grid.Column width={8} textAlign="right">
+                  <Button primary size="large" icon labelPosition="left">
+                    <Icon name="refresh" />
+                    Sync Studies
+                  </Button>
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
           </Card.Content>
           <Card.Content>
             <StudiesContainer />
