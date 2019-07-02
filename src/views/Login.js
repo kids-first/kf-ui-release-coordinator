@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
 import {
   Button,
@@ -14,57 +14,59 @@ import {googleAppId} from '../globalConfig';
 import {loginUser} from '../actions/auth';
 import brand from '../logo.svg';
 
-class Login extends Component {
-  render() {
-    return (
-      <Grid
-        textAlign="center"
-        style={{background: '#2b388f', height: '100vh'}}
-        verticalAlign="middle"
-      >
-        <Grid.Column style={{maxWidth: 550}}>
-          <Image src={brand} alt="Kids First logo" size="medium" centered />
-          <Segment>
-            <Header as="h1">Kids First Release Coordinator</Header>
-            <Message
-              info
-              content="Log into the release coordinator to track and create new data releases for Kids First."
-            />
-            <GoogleLogin
-              clientId={googleAppId}
-              render={renderProps => (
-                <Button
-                  onClick={renderProps.onClick}
-                  size="large"
-                  icon
-                  labelPosition="right"
-                >
-                  Login with Ego
-                  <Icon name="chevron right" />
-                </Button>
-              )}
-              onSuccess={googleUser => {
-                const {id_token} = googleUser.getAuthResponse();
-                this.props.login(id_token);
-              }}
-              onFailure={error => console.log('login fail', error)}
-            />
-            <Button
-              onClick={() => this.props.auth.login()}
-              size="large"
-              positive
-              icon
-              labelPosition="right"
-            >
-              Login with Auth0
-              <Icon name="chevron right" />
-            </Button>
-          </Segment>
-        </Grid.Column>
-      </Grid>
-    );
-  }
-}
+const Login = props => (
+  <Grid
+    style={{
+      backgroundImage:
+        'linear-gradient(to bottom, #fff 400px, transparent 100%), url(https://portal.kidsfirstdrc.org/static/media/background-science.68317e4e.jpg)',
+      height: '100vh',
+    }}
+    stretched
+    textAlign="center"
+    verticalAlign="middle"
+  >
+    <Grid.Column computer="8" tablet="12" mobile="15">
+      <Segment>
+        <Header as="h1">
+          <Image src={brand} />
+          <Header.Content>Kids First Release Coordinator</Header.Content>
+        </Header>
+        <Button.Group vertical size="large">
+          <Button
+            onClick={() => props.auth.login()}
+            size="large"
+            positive
+            icon
+            labelPosition="right"
+          >
+            Login with Auth0
+            <Icon name="chevron right" />
+          </Button>
+          <GoogleLogin
+            clientId={googleAppId}
+            render={renderProps => (
+              <Button
+                onClick={renderProps.onClick}
+                size="large"
+                icon
+                labelPosition="right"
+              >
+                Login with Ego
+                <Icon name="chevron right" />
+              </Button>
+            )}
+            onSuccess={googleUser => {
+              const {id_token} = googleUser.getAuthResponse();
+              props.login(id_token);
+            }}
+            onFailure={error => console.log('login fail', error)}
+          />
+        </Button.Group>
+        <Message content="Log in to the release coordinator to track and create new data releases for Kids First." />
+      </Segment>
+    </Grid.Column>
+  </Grid>
+);
 
 function mapDispatchToProps(dispatch) {
   return {

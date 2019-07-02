@@ -10,7 +10,7 @@ class Studies extends Component {
           <Card.Content>
             <Header as="h2">
               Kids First Studies
-              <Button floated="right" primary size="large">
+              <Button floated="right" size="large">
                 <Icon name="refresh" />
                 Sync Studies
               </Button>
