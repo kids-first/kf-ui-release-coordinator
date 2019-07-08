@@ -1,6 +1,6 @@
 import {Link} from 'react-router-dom';
 import React from 'react';
-import {Icon, Label} from 'semantic-ui-react';
+import {Button, Icon, Label} from 'semantic-ui-react';
 import TimeAgo from 'react-timeago';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
@@ -22,12 +22,18 @@ const ReleaseList = ({loading, releases}) => {
       Header: 'Release',
       accessor: 'kf_id',
       Cell: row => (
-        <Label as={Link} to={`/releases/${row.value}`} color="orange">
-          <Icon name="tag" />
-          {row.value}
-        </Label>
+        <Button
+          as={Link}
+          to={`/releases/${row.value}`}
+          labelPosition="left"
+          size="tiny"
+          icon
+          fluid
+        >
+          <Icon name="tag" /> {row.value}
+        </Button>
       ),
-      width: 140,
+      width: 160,
       filterable: true,
     },
     {
