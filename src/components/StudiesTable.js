@@ -19,6 +19,7 @@ const StudiesTable = ({loading, studies, selectable, ...props}) => {
           labelPosition="left"
           size="tiny"
           icon
+          fluid
         >
           <Icon name="database" />
           {row.value}
