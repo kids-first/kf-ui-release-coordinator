@@ -1,3 +1,25 @@
+# Kids First Release Coordinator UI Release 1.5.0
+
+## Features
+
+Change to Semantic UI framework
+
+### Summary
+
+Feature Emojis: 💄x3 ✨x2 ♻️x1 👷 x1
+Feature Labels: [refactor](https://api.github.com/repos/kids-first/kf-ui-release-coordinator/labels/refactor) x5 [feature](https://api.github.com/repos/kids-first/kf-ui-release-coordinator/labels/feature) x2 [devops](https://api.github.com/repos/kids-first/kf-ui-release-coordinator/labels/devops) x1
+
+### New features and changes
+
+- (#144) ♻️  Simplify labels - @dankolbman
+- (#143) 💄 Properly use icon buttons - @dankolbman
+- (#142) 💄 Style login consistently with data tracker - @dankolbman
+- (#141) 💄 Style header consistently with data tracker - @dankolbman
+- (#138) 👷 Add bundlesize CI check - @dankolbman
+- (#140) ✨ Add re-run release button - @dankolbman
+- (#139) ✨ Semantic ui - @dankolbman
+
+
 # Kids First Release Coordinator Release 1.4.0
 
 ## Features
