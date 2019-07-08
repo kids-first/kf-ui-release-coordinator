@@ -1,6 +1,6 @@
 import {Link} from 'react-router-dom';
 import React from 'react';
-import {Icon, Label} from 'semantic-ui-react';
+import {Button, Icon, Label} from 'semantic-ui-react';
 import TimeAgo from 'react-timeago';
 import ReactTable from 'react-table';
 import checkboxHOC from 'react-table/lib/hoc/selectTable';
@@ -13,12 +13,18 @@ const StudiesTable = ({loading, studies, selectable, ...props}) => {
       Header: 'Study',
       accessor: 'kf_id',
       Cell: row => (
-        <Label as={Link} to={`/studies/${row.value}`} color="pink">
+        <Button
+          as={Link}
+          to={`/studies/${row.value}`}
+          labelPosition="left"
+          size="tiny"
+          icon
+        >
           <Icon name="database" />
           {row.value}
-        </Label>
+        </Button>
       ),
-      width: 140,
+      width: 160,
     },
     {
       Header: 'Name',
