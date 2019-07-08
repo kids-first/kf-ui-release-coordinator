@@ -1,6 +1,6 @@
 import {Link} from 'react-router-dom';
 import React from 'react';
-import {Icon, Label} from 'semantic-ui-react';
+import {Button, Icon, Label} from 'semantic-ui-react';
 import TimeAgo from 'react-timeago';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
@@ -22,12 +22,18 @@ const ReleaseList = ({loading, releases}) => {
       Header: 'Release',
       accessor: 'kf_id',
       Cell: row => (
-        <Label as={Link} to={`/releases/${row.value}`} color="orange">
-          <Icon name="tag" />
-          {row.value}
-        </Label>
+        <Button
+          as={Link}
+          to={`/releases/${row.value}`}
+          labelPosition="left"
+          size="tiny"
+          icon
+          fluid
+        >
+          <Icon name="tag" /> {row.value}
+        </Button>
       ),
-      width: 140,
+      width: 160,
       filterable: true,
     },
     {
@@ -39,9 +45,8 @@ const ReleaseList = ({loading, releases}) => {
       Header: 'Author',
       accessor: 'author',
       width: 150,
-      className: 'text-center',
       Cell: row => (
-        <Label color="blue">
+        <Label basic>
           <Icon name="user" />
           {row.value.split('@')[0]}
         </Label>
@@ -52,13 +57,12 @@ const ReleaseList = ({loading, releases}) => {
       Header: 'Version',
       accessor: 'version',
       Cell: row => (
-        <Label as={Link} to={`/releases/${row.row.kf_id}`} color="orange">
+        <Label basic>
           <Icon name="tag" />
           {row.value}
         </Label>
       ),
       width: 100,
-      className: 'text-center',
       filterable: true,
     },
     {
@@ -70,7 +74,6 @@ const ReleaseList = ({loading, releases}) => {
         </Label>
       ),
       width: 100,
-      className: 'text-center',
       filterable: true,
     },
     {
@@ -78,12 +81,10 @@ const ReleaseList = ({loading, releases}) => {
       accessor: 'created_at',
       Cell: row => <TimeAgo date={row.value} />,
       width: 120,
-      className: 'text-right',
     },
   ];
   return (
     <ReactTable
-      className="-striped -highlight"
       loading={loading}
       columns={columns}
       data={releases}

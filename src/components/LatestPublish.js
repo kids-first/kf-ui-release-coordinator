@@ -37,7 +37,7 @@ const LatestReleases = props => {
               <TimeAgo date={new Date(release.created_at)} />
             </Item.Meta>
             <Item.Description>
-              <Label size="small" color="orange">
+              <Label basic>
                 <Icon name="tag" />
                 {release.version}
               </Label>

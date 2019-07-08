@@ -1,6 +1,6 @@
 import {Link} from 'react-router-dom';
 import React from 'react';
-import {Icon, Label} from 'semantic-ui-react';
+import {Button, Icon, Label} from 'semantic-ui-react';
 import TimeAgo from 'react-timeago';
 import ReactTable from 'react-table';
 import checkboxHOC from 'react-table/lib/hoc/selectTable';
@@ -13,12 +13,19 @@ const StudiesTable = ({loading, studies, selectable, ...props}) => {
       Header: 'Study',
       accessor: 'kf_id',
       Cell: row => (
-        <Label as={Link} to={`/studies/${row.value}`} color="pink">
+        <Button
+          as={Link}
+          to={`/studies/${row.value}`}
+          labelPosition="left"
+          size="tiny"
+          icon
+          fluid
+        >
           <Icon name="database" />
           {row.value}
-        </Label>
+        </Button>
       ),
-      width: 140,
+      width: 160,
     },
     {
       Header: 'Name',
@@ -28,36 +35,21 @@ const StudiesTable = ({loading, studies, selectable, ...props}) => {
       Header: 'Public Version',
       accessor: 'last_pub_version',
       width: 100,
-      className: 'text-center',
       Cell: row =>
         row.value === null ? (
           '---'
         ) : (
-          <Label as={Link} to={`/releases/${row.row.kf_id}`} color="orange">
+          <Label basic>
             <Icon name="tag" />
             {row.value}
           </Label>
         ),
     },
     {
-      Header: 'Visible',
-      accessor: 'visible',
-      Cell: row => (
-        <Icon
-          kind={row.value ? 'access-open' : 'close'}
-          width={20}
-          height={20}
-        />
-      ),
-      width: 120,
-      className: 'text-center',
-    },
-    {
       Header: 'Created At',
       accessor: 'created_at',
       Cell: row => <TimeAgo date={row.value} />,
       width: 120,
-      className: 'text-right',
     },
   ];
 

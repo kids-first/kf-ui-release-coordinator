@@ -67,7 +67,7 @@ class TaskList extends Component {
               </Label>
             </List.Content>
             <List.Content>
-              <Label color="teal" horizontal>
+              <Label basic horizontal>
                 <Icon name="calendar check" />
                 {task.kf_id}
               </Label>

@@ -50,7 +50,7 @@ const LatestReleases = props => {
       <Grid columns={5} divided>
         <Grid.Row>
           {releases.map((release, i) => (
-            <Grid.Column key={i}>
+            <Grid.Column key={i} textAlign="center">
               <Item as={Link} to={`/releases/${release.kf_id}`}>
                 <Item.Content>
                   <Item.Header>{release.name}</Item.Header>
@@ -58,15 +58,11 @@ const LatestReleases = props => {
                     <TimeAgo date={new Date(release.created_at)} />
                   </Item.Meta>
                   <Item.Description>
-                    <Label size="small" color="orange">
+                    <Label basic>
                       <Icon name="tag" />
                       {release.version}
                     </Label>
-                    <Label
-                      basic
-                      size="small"
-                      color={stateColors[release.state]}
-                    >
+                    <Label basic color={stateColors[release.state]}>
                       {release.state}
                     </Label>
                   </Item.Description>

@@ -234,11 +234,11 @@ class Release extends Component {
               <Grid.Row>
                 <Grid.Column>
                   <Header as="h3">Tags</Header>
-                  <Label color="orange">
+                  <Label basic>
                     <Icon name="tag" />
                     {this.state.release.version}
                   </Label>
-                  <Label color="orange">
+                  <Label basic>
                     <Icon name="tag" />
                     {this.state.release.kf_id}
                   </Label>
@@ -246,7 +246,7 @@ class Release extends Component {
 
                 <Grid.Column textAlign="center">
                   <Header as="h3">Authored By</Header>
-                  <Label color="blue">
+                  <Label basic>
                     <Icon name="user" />
                     {this.state.release.author}
                   </Label>
@@ -269,7 +269,7 @@ class Release extends Component {
                 <Grid.Row centered>
                   <Label.Group>
                     {this.state.release.studies.map((r, i) => (
-                      <Label color="pink">
+                      <Label basic>
                         <Icon name="database" key={i} />
                         {r}
                       </Label>
@@ -400,7 +400,7 @@ class Release extends Component {
               {this.state.release.studies && (
                 <Label.Group>
                   {this.state.release.studies.map(sd => (
-                    <Label color="pink" icon="database">
+                    <Label basic icon="database">
                       {sd}
                     </Label>
                   ))}
