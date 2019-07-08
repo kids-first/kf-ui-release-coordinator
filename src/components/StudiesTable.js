@@ -34,12 +34,11 @@ const StudiesTable = ({loading, studies, selectable, ...props}) => {
       Header: 'Public Version',
       accessor: 'last_pub_version',
       width: 100,
-      className: 'text-center',
       Cell: row =>
         row.value === null ? (
           '---'
         ) : (
-          <Label as={Link} to={`/releases/${row.row.kf_id}`} color="orange">
+          <Label basic>
             <Icon name="tag" />
             {row.value}
           </Label>
