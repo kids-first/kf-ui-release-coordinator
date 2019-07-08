@@ -15,7 +15,7 @@
   "dependencies": {
     "auth0-js": "^9.10.0",
     "autoprefixer": "^9.4.3",
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "babel-plugin-import": "^1.7.0",
     "classnames": "^2.2.6",
     "draft-js": "^0.10.5",
