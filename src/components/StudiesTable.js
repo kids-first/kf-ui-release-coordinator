@@ -45,24 +45,10 @@ const StudiesTable = ({loading, studies, selectable, ...props}) => {
         ),
     },
     {
-      Header: 'Visible',
-      accessor: 'visible',
-      Cell: row => (
-        <Icon
-          kind={row.value ? 'access-open' : 'close'}
-          width={20}
-          height={20}
-        />
-      ),
-      width: 120,
-      className: 'text-center',
-    },
-    {
       Header: 'Created At',
       accessor: 'created_at',
       Cell: row => <TimeAgo date={row.value} />,
       width: 120,
-      className: 'text-right',
     },
   ];
 
