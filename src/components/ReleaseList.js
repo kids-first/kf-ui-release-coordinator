@@ -46,7 +46,7 @@ const ReleaseList = ({loading, releases}) => {
       accessor: 'author',
       width: 150,
       Cell: row => (
-        <Label color="blue">
+        <Label basic>
           <Icon name="user" />
           {row.value.split('@')[0]}
         </Label>
@@ -57,7 +57,7 @@ const ReleaseList = ({loading, releases}) => {
       Header: 'Version',
       accessor: 'version',
       Cell: row => (
-        <Label as={Link} to={`/releases/${row.row.kf_id}`} color="orange">
+        <Label basic>
           <Icon name="tag" />
           {row.value}
         </Label>
