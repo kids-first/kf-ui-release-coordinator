@@ -39,7 +39,6 @@ const ReleaseList = ({loading, releases}) => {
       Header: 'Author',
       accessor: 'author',
       width: 150,
-      className: 'text-center',
       Cell: row => (
         <Label color="blue">
           <Icon name="user" />
@@ -58,7 +57,6 @@ const ReleaseList = ({loading, releases}) => {
         </Label>
       ),
       width: 100,
-      className: 'text-center',
       filterable: true,
     },
     {
@@ -70,7 +68,6 @@ const ReleaseList = ({loading, releases}) => {
         </Label>
       ),
       width: 100,
-      className: 'text-center',
       filterable: true,
     },
     {
@@ -78,12 +75,10 @@ const ReleaseList = ({loading, releases}) => {
       accessor: 'created_at',
       Cell: row => <TimeAgo date={row.value} />,
       width: 120,
-      className: 'text-right',
     },
   ];
   return (
     <ReactTable
-      className="-striped -highlight"
       loading={loading}
       columns={columns}
       data={releases}
