@@ -33,6 +33,7 @@ const StudiesTable = ({
       name: 'Study',
       accessor: 'kf_id',
       Cell: value => <Link to={`/studies/${value}`}>{value}</Link>,
+      collapsing: true,
     },
     {
       name: 'Name',
@@ -128,7 +129,11 @@ const StudiesTable = ({
                 </Table.Cell>
               )}
               {columns.map(col => (
-                <Table.Cell key={row[col.accessor]} textAlign={col.textAlign}>
+                <Table.Cell
+                  key={row[col.accessor]}
+                  textAlign={col.textAlign}
+                  collapsing={col.collapsing}
+                >
                   {col.Cell ? col.Cell(row[col.accessor]) : row[col.accessor]}
                 </Table.Cell>
               ))}
@@ -137,7 +142,7 @@ const StudiesTable = ({
       </Table.Body>
       <Table.Footer>
         <Table.Row>
-          <Table.HeaderCell colSpan={columns.length + selectable}>
+          <Table.HeaderCell colSpan={columns.length + (selectable ? 1 : 0)}>
             <Pagination
               floated="right"
               activePage={pageState.activePage}
