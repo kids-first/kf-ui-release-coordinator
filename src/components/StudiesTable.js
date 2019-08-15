@@ -1,11 +1,18 @@
 import React, {useState} from 'react';
 import {Link} from 'react-router-dom';
-import {Icon, Pagination, Table} from 'semantic-ui-react';
+import {Checkbox, Icon, Pagination, Table} from 'semantic-ui-react';
 import TimeAgo from 'react-timeago';
 import 'react-table/react-table.css';
 import {compareSemVer} from '../utils';
 
-const StudiesTable = ({loading, studies, selectable, ...props}) => {
+const StudiesTable = ({
+  loading,
+  studies,
+  selectable,
+  isSelected,
+  toggleSelection,
+  toggleAll,
+}) => {
   const [sortState, setSortState] = useState({
     column: 'created_at',
     direction: 'descending',
@@ -83,9 +90,14 @@ const StudiesTable = ({loading, studies, selectable, ...props}) => {
     <Table sortable>
       <Table.Header>
         <Table.Row>
+          {selectable && (
+            <Table.HeaderCell>
+              <Checkbox checked={false} onChange={toggleAll} />
+            </Table.HeaderCell>
+          )}
           {columns.map(col => (
             <Table.HeaderCell
-              key={col.accessor}
+              key={col.accessor || col.name}
               textAlign={col.textAlign}
               width={col.width}
               sorted={
@@ -107,6 +119,14 @@ const StudiesTable = ({loading, studies, selectable, ...props}) => {
           )
           .map(row => (
             <Table.Row key={row.kf_id}>
+              {selectable && (
+                <Table.Cell collapsing>
+                  <Checkbox
+                    checked={isSelected(row.kf_id)}
+                    onChange={() => toggleSelection(row.kf_id)}
+                  />
+                </Table.Cell>
+              )}
               {columns.map(col => (
                 <Table.Cell key={row[col.accessor]} textAlign={col.textAlign}>
                   {col.Cell ? col.Cell(row[col.accessor]) : row[col.accessor]}
@@ -117,7 +137,7 @@ const StudiesTable = ({loading, studies, selectable, ...props}) => {
       </Table.Body>
       <Table.Footer>
         <Table.Row>
-          <Table.HeaderCell colSpan="4">
+          <Table.HeaderCell colSpan={columns.length + selectable}>
             <Pagination
               floated="right"
               activePage={pageState.activePage}
