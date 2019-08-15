@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Link} from 'react-router-dom';
-import {Button, Icon, Label, Table} from 'semantic-ui-react';
+import {Icon, Pagination, Table} from 'semantic-ui-react';
 import TimeAgo from 'react-timeago';
 import 'react-table/react-table.css';
 import {compareSemVer} from '../utils';
@@ -11,15 +11,21 @@ const StudiesTable = ({loading, studies, selectable, ...props}) => {
     direction: 'descending',
   });
 
+  const pageSize = 10;
+  const totalPages = Math.ceil(studies.length / pageSize);
+  const [pageState, setPageState] = useState({
+    activePage: 1,
+  });
+
+  const onPageChange = (ev, data) => {
+    setPageState({activePage: data.activePage});
+  };
+
   const columns = [
     {
       name: 'Study',
       accessor: 'kf_id',
-      Cell: value => (
-        <Link as={Link} to={`/studies/${value}`}>
-          {value}
-        </Link>
-      ),
+      Cell: value => <Link to={`/studies/${value}`}>{value}</Link>,
     },
     {
       name: 'Name',
@@ -79,6 +85,7 @@ const StudiesTable = ({loading, studies, selectable, ...props}) => {
         <Table.Row>
           {columns.map(col => (
             <Table.HeaderCell
+              key={col.accessor}
               textAlign={col.textAlign}
               width={col.width}
               sorted={
@@ -92,16 +99,39 @@ const StudiesTable = ({loading, studies, selectable, ...props}) => {
         </Table.Row>
       </Table.Header>
       <Table.Body>
-        {studies.sort(sortFunc).map(row => (
-          <Table.Row>
-            {columns.map(col => (
-              <Table.Cell textAlign={col.textAlign}>
-                {col.Cell ? col.Cell(row[col.accessor]) : row[col.accessor]}
-              </Table.Cell>
-            ))}
-          </Table.Row>
-        ))}
+        {studies
+          .sort(sortFunc)
+          .slice(
+            (pageState.activePage - 1) * pageSize,
+            pageState.activePage * pageSize,
+          )
+          .map(row => (
+            <Table.Row key={row.kf_id}>
+              {columns.map(col => (
+                <Table.Cell key={row[col.accessor]} textAlign={col.textAlign}>
+                  {col.Cell ? col.Cell(row[col.accessor]) : row[col.accessor]}
+                </Table.Cell>
+              ))}
+            </Table.Row>
+          ))}
       </Table.Body>
+      <Table.Footer>
+        <Table.Row>
+          <Table.HeaderCell colSpan="4">
+            <Pagination
+              floated="right"
+              activePage={pageState.activePage}
+              onPageChange={onPageChange}
+              totalPages={totalPages}
+              boundaryRange={0}
+              siblingRange={5}
+              firstItem={null}
+              lastItem={null}
+              ellipsisItem={null}
+            />
+          </Table.HeaderCell>
+        </Table.Row>
+      </Table.Footer>
     </Table>
   );
 };
