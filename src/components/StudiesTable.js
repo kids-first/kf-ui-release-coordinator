@@ -1,81 +1,108 @@
+import React, {useState} from 'react';
 import {Link} from 'react-router-dom';
-import React from 'react';
-import {Button, Icon, Label} from 'semantic-ui-react';
+import {Button, Icon, Label, Table} from 'semantic-ui-react';
 import TimeAgo from 'react-timeago';
-import ReactTable from 'react-table';
-import checkboxHOC from 'react-table/lib/hoc/selectTable';
 import 'react-table/react-table.css';
 import {compareSemVer} from '../utils';
 
 const StudiesTable = ({loading, studies, selectable, ...props}) => {
+  const [sortState, setSortState] = useState({
+    column: 'created_at',
+    direction: 'descending',
+  });
+
   const columns = [
     {
-      Header: 'Study',
+      name: 'Study',
       accessor: 'kf_id',
-      Cell: row => (
-        <Button
-          as={Link}
-          to={`/studies/${row.value}`}
-          labelPosition="left"
-          size="tiny"
-          icon
-          fluid
-        >
-          <Icon name="database" />
-          {row.value}
-        </Button>
+      Cell: value => (
+        <Link as={Link} to={`/studies/${value}`}>
+          {value}
+        </Link>
       ),
-      width: 160,
     },
     {
-      Header: 'Name',
+      name: 'Name',
       accessor: 'name',
+      textAlign: 'left',
     },
     {
-      Header: 'Public Version',
+      name: 'Public Version',
       accessor: 'last_pub_version',
-      width: 100,
-      Cell: row =>
-        row.value === null ? (
+      Cell: value =>
+        value === null ? (
           '---'
         ) : (
-          <Label basic>
+          <span>
             <Icon name="tag" />
-            {row.value}
-          </Label>
+            {value}
+          </span>
         ),
+      textAlign: 'center',
     },
     {
-      Header: 'Created At',
+      name: 'Created',
       accessor: 'created_at',
-      Cell: row => <TimeAgo date={row.value} />,
-      width: 120,
+      Cell: value => <TimeAgo date={value} />,
+      width: 2,
+      textAlign: 'right',
     },
   ];
 
-  var Table = ReactTable;
-  if (selectable) {
-    Table = checkboxHOC(Table);
-  }
+  const sortFunc = (row1, row2) => {
+    const col = sortState.column;
+    if (sortState.column === 'last_pub_version') {
+      return sortState.direction === 'ascending'
+        ? compareSemVer(row1[col], row2[col])
+        : compareSemVer(row2[col], row1[col]);
+    }
+    return sortState.direction === 'ascending'
+      ? row1[col] < row2[col]
+      : row1[col] > row2[col];
+  };
+
+  const handleSort = selectedCol => {
+    if (selectedCol === sortState.column) {
+      setSortState({
+        column: selectedCol,
+        direction:
+          sortState.direction === 'ascending' ? 'descending' : 'ascending',
+      });
+    } else {
+      setSortState({column: selectedCol, direction: 'ascending'});
+    }
+  };
 
   return (
-    <Table
-      keyField="kf_id"
-      className="-striped -highlight"
-      loading={loading}
-      columns={columns}
-      data={studies}
-      pageSizeOptions={[10, 20]}
-      defaultPageSize={20}
-      defaultSorted={[
-        {
-          id: 'last_pub_version',
-          desc: true,
-        },
-      ]}
-      defaultSortMethod={(a, b, desc) => compareSemVer(a, b, desc)}
-      {...props}
-    />
+    <Table sortable>
+      <Table.Header>
+        <Table.Row>
+          {columns.map(col => (
+            <Table.HeaderCell
+              textAlign={col.textAlign}
+              width={col.width}
+              sorted={
+                sortState.column === col.accessor ? sortState.direction : null
+              }
+              onClick={() => handleSort(col.accessor)}
+            >
+              {col.name}
+            </Table.HeaderCell>
+          ))}
+        </Table.Row>
+      </Table.Header>
+      <Table.Body>
+        {studies.sort(sortFunc).map(row => (
+          <Table.Row>
+            {columns.map(col => (
+              <Table.Cell textAlign={col.textAlign}>
+                {col.Cell ? col.Cell(row[col.accessor]) : row[col.accessor]}
+              </Table.Cell>
+            ))}
+          </Table.Row>
+        ))}
+      </Table.Body>
+    </Table>
   );
 };
 
