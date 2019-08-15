@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {Link} from 'react-router-dom';
 import {Checkbox, Icon, Pagination, Table} from 'semantic-ui-react';
 import TimeAgo from 'react-timeago';
-import 'react-table/react-table.css';
 import {compareSemVer} from '../utils';
 
 const StudiesTable = ({
