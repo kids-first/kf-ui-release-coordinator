@@ -30,7 +30,7 @@ class Releases extends Component {
               </Grid.Row>
             </Grid>
           </Card.Content>
-          <Card.Content extra>
+          <Card.Content>
             <ReleasesContainer />
           </Card.Content>
         </Card>
