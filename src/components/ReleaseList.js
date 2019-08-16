@@ -1,9 +1,7 @@
+import React, {useState} from 'react';
 import {Link} from 'react-router-dom';
-import React from 'react';
-import {Button, Icon, Label} from 'semantic-ui-react';
+import {Icon, Label, Pagination, Table} from 'semantic-ui-react';
 import TimeAgo from 'react-timeago';
-import ReactTable from 'react-table';
-import 'react-table/react-table.css';
 import {compareSemVer} from '../utils';
 
 const ReleaseList = ({loading, releases}) => {
@@ -17,87 +15,158 @@ const ReleaseList = ({loading, releases}) => {
     failed: 'red',
   };
 
+  const [sortState, setSortState] = useState({
+    column: 'created_at',
+    direction: 'ascending',
+  });
+
+  const pageSize = 15;
+  const totalPages = Math.ceil(releases.length / pageSize);
+  const [pageState, setPageState] = useState({
+    activePage: 1,
+  });
+
+  const onPageChange = (ev, data) => {
+    setPageState({activePage: data.activePage});
+  };
+
+  const sortFunc = (row1, row2) => {
+    const col = sortState.column;
+    if (sortState.column === 'version') {
+      return sortState.direction === 'ascending'
+        ? compareSemVer(row1[col], row2[col])
+        : compareSemVer(row2[col], row1[col]);
+    }
+    return sortState.direction === 'ascending'
+      ? row1[col] < row2[col]
+      : row1[col] > row2[col];
+  };
+
+  const handleSort = selectedCol => {
+    if (selectedCol === sortState.column) {
+      setSortState({
+        column: selectedCol,
+        direction:
+          sortState.direction === 'ascending' ? 'descending' : 'ascending',
+      });
+    } else {
+      setSortState({column: selectedCol, direction: 'ascending'});
+    }
+  };
+
   const columns = [
     {
-      Header: 'Release',
+      name: 'Release',
       accessor: 'kf_id',
-      Cell: row => (
-        <Button
-          as={Link}
-          to={`/releases/${row.value}`}
-          labelPosition="left"
-          size="tiny"
-          icon
-          fluid
-        >
-          <Icon name="tag" /> {row.value}
-        </Button>
-      ),
-      width: 160,
-      filterable: true,
+      Cell: value => <Link to={`/releases/${value}`}>{value}</Link>,
+      collapsing: true,
     },
     {
-      Header: 'Name',
+      name: 'Name',
       accessor: 'name',
-      filterable: true,
     },
     {
-      Header: 'Author',
+      name: 'Author',
       accessor: 'author',
-      width: 150,
-      Cell: row => (
+      Cell: value => (
         <Label basic>
           <Icon name="user" />
-          {row.value.split('@')[0]}
+          {value.split('@')[0]}
         </Label>
       ),
-      filterable: true,
+      textAlign: 'center',
+      collapsing: true,
     },
     {
-      Header: 'Version',
+      name: 'Version',
       accessor: 'version',
-      Cell: row => (
-        <Label basic>
+      Cell: value => (
+        <span>
           <Icon name="tag" />
-          {row.value}
-        </Label>
+          {value}
+        </span>
       ),
-      width: 100,
-      filterable: true,
+      textAlign: 'center',
+      collapsing: true,
     },
     {
-      Header: 'State',
+      name: 'State',
       accessor: 'state',
-      Cell: row => (
-        <Label basic color={stateColors[row.value]}>
-          {row.value}
+      Cell: value => (
+        <Label basic color={stateColors[value]}>
+          {value}
         </Label>
       ),
-      width: 100,
-      filterable: true,
+      textAlign: 'center',
+      collapsing: true,
     },
     {
-      Header: 'Created At',
+      name: 'Created',
       accessor: 'created_at',
-      Cell: row => <TimeAgo date={row.value} />,
-      width: 120,
+      Cell: value => <TimeAgo date={value} />,
+      textAlign: 'center',
+      collapsing: true,
     },
   ];
+
   return (
-    <ReactTable
-      loading={loading}
-      columns={columns}
-      data={releases}
-      pageSizeOptions={[10, 20]}
-      defaultPageSize={20}
-      defaultSorted={[
-        {
-          id: 'version',
-          desc: true,
-        },
-      ]}
-      defaultSortMethod={(a, b, desc) => compareSemVer(a, b, desc)}
-    />
+    <Table sortable>
+      <Table.Header>
+        <Table.Row>
+          {columns.map(col => (
+            <Table.HeaderCell
+              key={col.accessor || col.name}
+              textAlign={col.textAlign}
+              width={col.width}
+              sorted={
+                sortState.column === col.accessor ? sortState.direction : null
+              }
+              onClick={() => handleSort(col.accessor)}
+            >
+              {col.name}
+            </Table.HeaderCell>
+          ))}
+        </Table.Row>
+      </Table.Header>
+      <Table.Body>
+        {releases
+          .sort(sortFunc)
+          .slice(
+            (pageState.activePage - 1) * pageSize,
+            pageState.activePage * pageSize,
+          )
+          .map(row => (
+            <Table.Row key={row.kf_id}>
+              {columns.map(col => (
+                <Table.Cell
+                  key={row[col.accessor]}
+                  textAlign={col.textAlign}
+                  collapsing={col.collapsing}
+                >
+                  {col.Cell ? col.Cell(row[col.accessor]) : row[col.accessor]}
+                </Table.Cell>
+              ))}
+            </Table.Row>
+          ))}
+      </Table.Body>
+      <Table.Footer>
+        <Table.Row>
+          <Table.HeaderCell colSpan={columns.length}>
+            <Pagination
+              floated="right"
+              activePage={pageState.activePage}
+              onPageChange={onPageChange}
+              totalPages={totalPages}
+              boundaryRange={0}
+              siblingRange={5}
+              firstItem={null}
+              lastItem={null}
+              ellipsisItem={null}
+            />
+          </Table.HeaderCell>
+        </Table.Row>
+      </Table.Footer>
+    </Table>
   );
 };
 

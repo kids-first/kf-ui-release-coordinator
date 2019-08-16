@@ -17,12 +17,10 @@ class Releases extends Component {
 
   render() {
     return (
-      <div>
-        <ReleaseList
-          loading={this.props.loading}
-          releases={this.props.releases}
-        />
-      </div>
+      <ReleaseList
+        loading={this.props.loading}
+        releases={this.props.releases}
+      />
     );
   }
 }
