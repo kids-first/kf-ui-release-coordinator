@@ -39,7 +39,7 @@ class StudiesContainer extends Component {
         <Button
           onClick={() => this.props.syncStudies()}
           disabled={this.props.syncing}
-          color="primary"
+          primary
           icon
           labelPosition="left"
         >
