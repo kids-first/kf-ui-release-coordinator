@@ -49,13 +49,15 @@ class Status extends Component {
         <Card fluid>
           <Card.Content>
             <Card.Header>Latest Publication</Card.Header>
-            <LatestPublish />
+            {this.state.latest.length > 1 && <LatestPublish />}
           </Card.Content>
         </Card>
         <Card fluid>
           <Card.Content>
             <Card.Header>Latest Releases</Card.Header>
-            <LatestReleases releases={this.state.latest.reverse()} />
+            {this.state.latest.length > 1 && (
+              <LatestReleases releases={this.state.latest.reverse()} />
+            )}
           </Card.Content>
         </Card>
 
