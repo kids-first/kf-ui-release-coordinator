@@ -178,7 +178,8 @@ const NewReleaseForm = props => {
             {release.studies && (
               <Label.Group>
                 {release.studies.map(sd => (
-                  <Label color="pink" icon="database">
+                  <Label basic key={sd}>
+                    <Icon name="database" />
                     {sd}
                   </Label>
                 ))}

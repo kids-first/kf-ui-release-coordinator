@@ -215,7 +215,7 @@ class Release extends Component {
           />
         );
       }
-      return <Fragment />;
+      return <Fragment key={i} />;
     });
 
     return (
@@ -269,8 +269,8 @@ class Release extends Component {
                 <Grid.Row centered>
                   <Label.Group>
                     {this.state.release.studies.map((r, i) => (
-                      <Label basic>
-                        <Icon name="database" key={i} />
+                      <Label key={i} basic>
+                        <Icon name="database" />
                         {r}
                       </Label>
                     ))}
@@ -400,7 +400,8 @@ class Release extends Component {
               {this.state.release.studies && (
                 <Label.Group>
                   {this.state.release.studies.map(sd => (
-                    <Label basic icon="database">
+                    <Label basic key={sd}>
+                      <Icon name="database" />
                       {sd}
                     </Label>
                   ))}
@@ -434,7 +435,7 @@ class StudyNotes extends Component {
       );
     }
     const notes = this.props.notes.map((note, i) => (
-      <article>
+      <article key={i}>
         <em>
           Note by {note.author} <TimeAgo date={note.created_at} />
         </em>
