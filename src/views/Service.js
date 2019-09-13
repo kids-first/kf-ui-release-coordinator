@@ -8,10 +8,14 @@ import {
   Card,
   Dimmer,
   Divider,
+  Grid,
+  Header,
+  Form,
   Icon,
   Image,
   Label,
   Loader,
+  Message,
 } from 'semantic-ui-react';
 import {coordinatorApi} from '../globalConfig';
 import paragraph from '../paragraph.png';
@@ -22,6 +26,7 @@ class Service extends Component {
 
     this.state = {
       loading: true,
+      error: '',
       service: {},
       events: [],
       updating: false,
@@ -61,7 +66,7 @@ class Service extends Component {
   }
 
   update() {
-    this.setState({editing: false, updating: true});
+    this.setState({editing: false, updating: true, error: ''});
     axios
       .patch(
         `${coordinatorApi}/task-services/${this.state.service.kf_id}`,
@@ -69,6 +74,13 @@ class Service extends Component {
       )
       .then(resp => {
         this.setState({updating: false});
+      })
+      .catch(err => {
+        this.setState({
+          updating: false,
+          editing: true,
+          error: JSON.stringify(err.response.data),
+        });
       });
   }
 
@@ -84,8 +96,14 @@ class Service extends Component {
     this.setState({service: service});
   }
 
+  updateUrl(ev) {
+    let service = this.state.service;
+    service.url = ev.target.value;
+    this.setState({service: service});
+  }
+
   toggle(ev) {
-    let enabled = ev.target.checked;
+    let enabled = !this.state.service.enabled;
     this.setState({toggling: true});
     axios
       .patch(`${coordinatorApi}/task-services/${this.state.service.kf_id}`, {
@@ -120,58 +138,87 @@ class Service extends Component {
       <Segment basic>
         <Card fluid>
           <Card.Content>
-            {!this.state.editing ? (
-              <Button type="dashed" onClick={() => this.edit()}>
-                Edit
-              </Button>
-            ) : (
-              <Button type="primary" onClick={() => this.update()}>
-                Save
-              </Button>
-            )}
-            <b>Enabled: </b>
-            <input type="checkbox" onChange={ev => this.toggle(ev)} />
-            <Label basic>{this.state.service.health_status}</Label>
-            <Label color="purple">
-              <Icon name="settings" />
-              {this.state.service.kf_id}
-            </Label>
-            {!this.state.editing ? (
-              <span>{this.state.service.name}</span>
-            ) : (
-              <input
-                name="name"
-                type="text"
-                value={this.state.service.name}
-                onChange={ev => this.updateName(ev)}
-              />
-            )}
-            <Divider />
-            <span>
-              Created At: <em>{Date(this.state.service.created_at)}</em>
-            </span>
-            <br />
-            <span>
-              Endpoint: <em>{this.state.service.url}</em>
-            </span>
-            <br />
-            <span>
-              Author: <em>{this.state.service.author}</em>
-            </span>
-            <span>Description:</span>
-            {!this.state.editing ? (
-              <p>{this.state.service.description}</p>
-            ) : (
-              <p>
-                <input
-                  name="description"
-                  type="text-area"
+            <Grid>
+              <Grid.Row>
+                <Grid.Column width={8}>
+                  <Header as="h2">
+                    {this.state.service.name}
+                    <Header.Subheader>
+                      <Label basic>
+                        <Icon name="settings" />
+                        {this.state.service.kf_id}
+                      </Label>
+                    </Header.Subheader>
+                  </Header>
+                </Grid.Column>
+                <Grid.Column width={8} floated="right" textAlign="right">
+                  <Form>
+                    <Form.Field>
+                      <label>Enabled: </label>
+                      <Form.Checkbox
+                        toggle
+                        checked={this.state.service.enabled}
+                        onChange={ev => this.toggle(ev)}
+                      />
+                    </Form.Field>
+                  </Form>
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
+
+            <Form>
+              <Form.Field>
+                <label>Status:</label>
+                <Label basic>{this.state.service.health_status}</Label>
+              </Form.Field>
+              <Form.Field>
+                <label>Author</label>
+                {this.state.service.author}
+              </Form.Field>
+              <Form.Group widths="equal">
+                <Form.Field>
+                  <label>Name</label>
+                  <input
+                    disabled={!this.state.editing}
+                    name="name"
+                    type="text"
+                    value={this.state.service.name}
+                    onChange={ev => this.updateName(ev)}
+                  />
+                </Form.Field>
+                <Form.Field>
+                  <label>Endpoint</label>
+                  <input
+                    disabled={!this.state.editing}
+                    name="url"
+                    type="text"
+                    value={this.state.service.url}
+                    onChange={ev => this.updateUrl(ev)}
+                  />
+                </Form.Field>
+              </Form.Group>
+              <Form.Field>
+                <label>Description</label>
+                <Form.TextArea
+                  disabled={!this.state.editing}
                   value={this.state.service.description}
                   onChange={ev => this.updateDescription(ev)}
                 />
-              </p>
-            )}
-
+              </Form.Field>
+              {!this.state.editing ? (
+                <Button onClick={() => this.edit()}>Edit</Button>
+              ) : (
+                <Button
+                  loading={this.state.updating}
+                  onClick={() => this.update()}
+                >
+                  Save
+                </Button>
+              )}
+              {this.state.error && (
+                <Message negative content={this.state.error} />
+              )}
+            </Form>
             <Divider />
             <h2>Recent Tasks</h2>
             <TaskList serviceId={this.state.service.kf_id} />
