@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import WrappedNewServiceForm from '../forms/NewService';
-import {Card} from 'semantic-ui-react';
+import {Card, Grid, Header, Message, Segment} from 'semantic-ui-react';
 import {coordinatorApi} from '../globalConfig';
 
 class Services extends Component {
@@ -23,16 +23,26 @@ class Services extends Component {
 
   render() {
     return (
-      <Card title="Register new task service">
-        <div className="p-2 w-full border-2 border-mediumGrey">
-          <h3 className="m-0">Creating a New Task</h3>
-          Register a new task service by providing the task's endpoint. Any new
-          task registered will immediatley be included in a new release. Ensure
-          that the task service is up and accepting work correctly to ensure
-          that releases do not fail.
-        </div>
-        <WrappedNewServiceForm />
-      </Card>
+      <Segment basic>
+        <Card fluid>
+          <Card.Content>
+            <Grid>
+              <Grid.Row>
+                <Grid.Column width={16}>
+                  <Header as="h2" content="Register a New Task Service" />
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
+            <Message>
+              Register a new task service by providing the task's endpoint. Any
+              new task registered will immediatley be included in a new release.
+              Ensure that the task service is up and accepting work correctly to
+              ensure that releases do not fail.
+            </Message>
+            <WrappedNewServiceForm />
+          </Card.Content>
+        </Card>
+      </Segment>
     );
   }
 }
