@@ -41,7 +41,7 @@ const Root = props => (
       </Fragment>
     ) : (
       <Fragment>
-        <Login path="/" auth={auth} />
+        <Route path="/" render={props => <Login auth={auth} {...props} />} />
         <Route
           path="/callback"
           render={props => {

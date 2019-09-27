@@ -20,17 +20,19 @@ export default class Auth {
     scope: 'openid profile email',
   });
 
-  login() {
-    this.auth0.authorize();
+  login(originalUrl) {
+    this.auth0.authorize({
+      redirectUri: auth0RedirectUri + '?from=' + originalUrl,
+    });
   }
 
-  handleAuthentication(props, callback) {
+  handleAuthentication(props, callback, from) {
     if (/access_token|id_token|error/.test(props.location.hash)) {
       this.auth0.parseHash((err, authResult) => {
         if (authResult && authResult.accessToken && authResult.idToken) {
           this.setSession(authResult);
           callback(authResult.accessToken, authResult.idToken);
-          props.history.push('/');
+          props.history.push(from || '/');
         } else if (err) {
           console.log(err);
           alert(`Error: ${err.error}. Check the console for further details.`);

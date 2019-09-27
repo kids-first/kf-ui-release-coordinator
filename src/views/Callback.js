@@ -4,7 +4,13 @@ import {auth0Login} from '../actions/auth';
 
 class Callback extends Component {
   componentDidMount() {
-    this.props.auth.handleAuthentication(this.props, this.props.auth0Login);
+    const params = new URLSearchParams(this.props.location.search);
+    const from = params.get('from');
+    this.props.auth.handleAuthentication(
+      this.props,
+      this.props.auth0Login,
+      from,
+    );
   }
 
   render() {
