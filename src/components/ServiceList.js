@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import axios from 'axios';
 import {Loader, List, Icon, Radio} from 'semantic-ui-react';
 import {Link, withRouter} from 'react-router-dom';
@@ -11,7 +11,7 @@ const Service = ({item}) => {
   const toggle = ev => {
     setLoading(true);
     axios
-      .patch(`${coordinatorApi}/task-services/${service.kf_id}`, {
+      .patch(`${coordinatorApi}/task-services/${service.kfId}`, {
         enabled: !service.enabled,
       })
       .then(resp => {
@@ -39,7 +39,7 @@ const Service = ({item}) => {
       )}
       <List.Content>
         <List.Header>
-          <Link to={`/services/${service.kf_id}`}>{service.name}</Link>
+          <Link to={`/services/${service.kfId}`}>{service.name}</Link>
         </List.Header>
         <List.Description>{service.description}</List.Description>
       </List.Content>
@@ -47,35 +47,23 @@ const Service = ({item}) => {
   );
 };
 
-const ServiceList = ({filters}) => {
-  const [loading, setLoading] = useState(true);
-  const [services, setServices] = useState([]);
-
-  const fetchData = async () => {
-    const result = await axios(`${coordinatorApi}/task-services?${filters}`);
-    setServices(result.data.results);
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  if (loading) {
+const ServiceList = ({services, loading, error}) => {
+  if (loading || !services) {
     return (
       <Loader active inline="centered">
         Loading Services...
       </Loader>
     );
-  } else {
-    return (
-      <List>
-        {services.map((item, i) => (
-          <Service item={item} key={i} />
-        ))}
-      </List>
-    );
   }
+  if (error) return <div>Error getting services</div>;
+
+  return (
+    <List>
+      {services.map(service => (
+        <Service item={service} key={service.kfId} />
+      ))}
+    </List>
+  );
 };
 
 export default withRouter(ServiceList);

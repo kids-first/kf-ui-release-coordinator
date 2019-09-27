@@ -9,6 +9,7 @@ export const ALL_RELEASES = gql`
           kfId
           version
           name
+          state
           createdAt
           isMajor
           description
@@ -38,6 +39,24 @@ export const ALL_EVENTS = gql`
             id
             kfId
           }
+        }
+      }
+    }
+  }
+`;
+
+export const ALL_SERVICES = gql`
+  query AllServices {
+    allTaskServices {
+      edges {
+        node {
+          id
+          kfId
+          name
+          description
+          enabled
+          url
+          author
         }
       }
     }
