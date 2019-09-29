@@ -1,3 +1,27 @@
+# Kids First Release Coordinator UI Release 1.6.0
+
+## Features
+
+Update tables to use native semantic components and add missing forms
+for services.
+
+### Summary
+
+Feature Emojis: ⬆️x5 💄x1 🐛x1 ♻️x1
+Feature Labels: [refactor](https://api.github.com/repos/kids-first/kf-ui-release-coordinator/labels/refactor) x2 [devops](https://api.github.com/repos/kids-first/kf-ui-release-coordinator/labels/devops) x2 [bug](https://api.github.com/repos/kids-first/kf-ui-release-coordinator/labels/bug) x2
+
+### New features and changes
+
+- (#156) 💄 Restyle service forms - @dankolbman
+- (#153) ⬆️ Bump handlebars from 4.1.1 to 4.1.2 - @dependabot[bot]
+- (#154) ⬆️ Bump mixin-deep from 1.3.1 to 1.3.2 - @dependabot[bot]
+- (#155) 🐛 Don't show cards if there are no releases - @dankolbman
+- (#152) ♻️ Semantic tables - @dankolbman
+- (#148) ⬆️ Bump lodash.template from 4.4.0 to 4.5.0 - @dependabot[bot]
+- (#147) ⬆️ Bump lodash-es from 4.17.11 to 4.17.14 - @dependabot[bot]
+- (#146) ⬆️ Bump axios from 0.18.0 to 0.18.1 - @dependabot[bot]
+
+
 # Kids First Release Coordinator UI Release 1.5.0
 
 ## Features
