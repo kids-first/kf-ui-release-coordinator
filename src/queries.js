@@ -4,6 +4,7 @@ export const GET_RELEASE = gql`
   query GetRelease($id: ID!) {
     release(id: $id) {
       id
+      author
       kfId
       version
       name
