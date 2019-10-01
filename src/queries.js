@@ -1,5 +1,37 @@
 import {gql} from 'apollo-boost';
 
+export const GET_RELEASE = gql`
+  query GetRelease($id: ID!) {
+    release(id: $id) {
+      id
+      kfId
+      version
+      name
+      state
+      createdAt
+      isMajor
+      description
+      studies {
+        edges {
+          node {
+            id
+            kfId
+            name
+          }
+        }
+      }
+      notes {
+        edges {
+          node {
+            id
+            description
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const ALL_RELEASES = gql`
   query AllReleases($first: Int, $state: String) {
     allReleases(first: $first, state: $state, orderBy: "-created_at") {
