@@ -66,8 +66,8 @@ export const ALL_NOTES = gql`
 `;
 
 export const ALL_EVENTS = gql`
-  query AllEvents {
-    allEvents(orderBy: "-created_at") {
+  query AllEvents($release: ID) {
+    allEvents(release: $release, orderBy: "-created_at") {
       edges {
         node {
           id
