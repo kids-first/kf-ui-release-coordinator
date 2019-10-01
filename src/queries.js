@@ -50,6 +50,20 @@ export const ALL_RELEASES = gql`
     }
   }
 `;
+export const ALL_NOTES = gql`
+  query AllNotes($release: ID) {
+    allReleaseNotes(release: $release) {
+      edges {
+        node {
+          id
+          kfId
+          description
+          createdAt
+        }
+      }
+    }
+  }
+`;
 
 export const ALL_EVENTS = gql`
   query AllEvents {
