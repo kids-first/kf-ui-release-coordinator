@@ -51,6 +51,25 @@ export const ALL_RELEASES = gql`
     }
   }
 `;
+
+export const ALL_STUDIES = gql`
+  query AllStudies($first: Int) {
+    allStudies(first: $first, orderBy: "-created_at") {
+      edges {
+        node {
+          id
+          kfId
+          name
+          createdAt
+          lastPublishedVersion
+          visible
+          deleted
+        }
+      }
+    }
+  }
+`;
+
 export const ALL_NOTES = gql`
   query AllNotes($release: ID) {
     allReleaseNotes(release: $release) {

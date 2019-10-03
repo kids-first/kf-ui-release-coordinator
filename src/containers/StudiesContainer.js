@@ -1,67 +1,65 @@
-import React, {Component, Fragment} from 'react';
+import React, {Fragment} from 'react';
 import {connect} from 'react-redux';
+import {useQuery} from '@apollo/react-hooks';
 import {
   syncStudies,
   fetchAllStudies,
   toggleStudy,
   toggleAllStudies,
 } from '../actions/studies';
-import {Button, Icon} from 'semantic-ui-react';
+import {Button, Icon, Loader, Message} from 'semantic-ui-react';
 import StudiesTable from '../components/StudiesTable';
 
-class StudiesContainer extends Component {
-  constructor() {
-    super();
+import {ALL_STUDIES} from '../queries';
 
-    this.state = {
-      selection: [],
-    };
+const StudiesContainer = props => {
+  const {
+    loading: studiesLoading,
+    error: studiesError,
+    data: studiesData,
+  } = useQuery(ALL_STUDIES);
+
+  const isSelected = key => {
+    return props.selected.includes(key);
+  };
+
+  if (studiesError) {
+    return <Message negative header="Error" content={studiesError} />;
   }
-
-  componentDidMount() {
-    const currPage = this.props.pages.currentPage;
-    if (
-      currPage === undefined ||
-      this.props.pages[currPage] === undefined ||
-      this.props.pages[currPage].next !== null
-    ) {
-      this.props.fetchPage(1, {});
-    }
-  }
-
-  isSelected(key) {
-    return this.props.selected.includes(key);
-  }
-
-  render() {
+  if (studiesLoading) {
     return (
-      <Fragment>
-        <Button
-          onClick={() => this.props.syncStudies()}
-          disabled={this.props.syncing}
-          primary
-          icon
-          labelPosition="left"
-        >
-          <Icon name="refresh" />
-          Sync
-        </Button>
-        {this.props.syncMessage && this.props.syncMessage}
-        <StudiesTable
-          selectType="checkbox"
-          toggleSelection={this.props.toggleStudy}
-          toggleAll={this.props.toggleAll}
-          selectAll={this.props.selectAll}
-          isSelected={key => this.isSelected(key)}
-          loading={this.props.loading}
-          studies={this.props.studies}
-          selectable={this.props.selectable}
-          defaultPageSize={this.props.defaultPageSize}
-        />
-      </Fragment>
+      <Loader active inline="centered">
+        Loading Studies
+      </Loader>
     );
   }
-}
+
+  return (
+    <Fragment>
+      <Button
+        onClick={() => props.syncStudies()}
+        disabled={props.syncing}
+        primary
+        icon
+        labelPosition="left"
+      >
+        <Icon name="refresh" />
+        Sync
+      </Button>
+      {props.syncMessage && props.syncMessage}
+      <StudiesTable
+        selectType="checkbox"
+        toggleSelection={props.toggleStudy}
+        toggleAll={props.toggleAll}
+        selectAll={props.selectAll}
+        isSelected={key => isSelected(key)}
+        studies={studiesData ? studiesData.allStudies.edges : []}
+        selectable={props.selectable}
+        defaultPageSize={props.defaultPageSize}
+      />
+    </Fragment>
+  );
+};
 
 function mapDispatchToProps(dispatch) {
   return {
