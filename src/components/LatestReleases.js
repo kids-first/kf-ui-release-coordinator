@@ -31,6 +31,15 @@ const LatestReleases = ({releases, loading, error}) => {
       </Grid>
     );
   }
+
+  if (!releases || releases.length === 0) {
+    return (
+      <Grid columns={5} divided>
+        <Grid.Row>No releases yet.</Grid.Row>
+      </Grid>
+    );
+  }
+
   return (
     <Grid columns={5} divided>
       <Grid.Row>
