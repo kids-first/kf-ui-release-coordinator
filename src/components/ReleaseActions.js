@@ -1,27 +1,49 @@
 import React, {useState} from 'react';
-import axios from 'axios';
-import {Button, Confirm, Grid, Icon, Label, Modal} from 'semantic-ui-react';
-import {coordinatorApi, snapshotApi} from '../globalConfig';
+import {useMutation} from '@apollo/react-hooks';
+import {
+  Button,
+  Confirm,
+  Grid,
+  Icon,
+  Label,
+  Message,
+  Modal,
+} from 'semantic-ui-react';
+import {snapshotApi} from '../globalConfig';
+
+import {START_RELEASE, PUBLISH_RELEASE, CANCEL_RELEASE} from '../mutations';
 
 const ReleaseActions = ({release, user, history, match}) => {
   const [showConfirm, setShowConfirm] = useState(false);
+
+  const [
+    startRelease,
+    {loading: startReleaseLoading, error: startReleaseError},
+  ] = useMutation(START_RELEASE);
+
+  const [
+    publishRelease,
+    {loading: publishReleaseLoading, error: publishReleaseError},
+  ] = useMutation(PUBLISH_RELEASE);
+
+  const [
+    cancelRelease,
+    {loading: cancelReleaseLoading, error: cancelReleaseError},
+  ] = useMutation(CANCEL_RELEASE);
 
   const handleConfirm = () => {
     const curRelease = release;
     const newRelease = {
       name: curRelease.name,
       description: curRelease.description,
-      studies: curRelease.studies,
+      studies: curRelease.studies.edges.map(({node}) => node.id),
       tags: curRelease.tags,
-      is_major: curRelease.is_major,
-      author: user.name,
+      isMajor: curRelease.isMajor,
     };
 
-    axios
-      .post(`${coordinatorApi}/releases`, newRelease)
+    startRelease({variables: {input: newRelease}})
       .then(resp => {
-        history.push(`/releases/${resp.data.kf_id}`);
-        setShowConfirm(!showConfirm);
+        history.push(`/releases/${resp.data.startRelease.release.kfId}`);
       })
       .catch(err => {
         console.log(err);
@@ -29,32 +51,29 @@ const ReleaseActions = ({release, user, history, match}) => {
   };
 
   const publish = () => {
-    axios
-      .post(`${coordinatorApi}/releases/${match.params.releaseId}/publish`, {})
-      .then(resp => {
-        console.log('published');
-        // Remove this when graphql mutations are added
-        window.location.reload();
-      });
+    publishRelease({variables: {release: release.id}});
   };
 
   const cancel = () => {
-    axios.delete(`${coordinatorApi}/releases/${release.kfId}`).then(resp => {
-      console.log('canceled');
-      // Remove this when graphql mutations are added
-      window.location.reload();
-    });
+    cancelRelease({variables: {release: release.id}});
   };
 
   return (
     <Grid.Row centered>
+      {(startReleaseError || publishReleaseError || cancelReleaseError) && (
+        <Message
+          negative
+          header="Error"
+          content={startReleaseError + publishReleaseError + cancelReleaseError}
+        />
+      )}
       <Button.Group size="large">
         <Button
           icon
           negative
           labelPosition="left"
           onClick={cancel}
-          loading={release.state === 'canceling'}
+          loading={release.state === 'canceling' || cancelReleaseLoading}
           disabled={
             release.state === 'published' ||
             release.state === 'publishing' ||
@@ -82,6 +101,7 @@ const ReleaseActions = ({release, user, history, match}) => {
           positive
           labelPosition="right"
           onClick={publish}
+          loading={publishReleaseLoading}
           disabled={release.state !== 'staged'}
         >
           Publish
@@ -91,9 +111,11 @@ const ReleaseActions = ({release, user, history, match}) => {
       <Confirm
         open={showConfirm}
         cancelButton="Cancel"
-        confirmButton="Start New Release"
+        confirmButton={
+          <Button loading={startReleaseLoading}>Start New Release</Button>
+        }
         onCancel={() => setShowConfirm(false)}
-        onConfirm={() => this.handleConfirm()}
+        onConfirm={handleConfirm}
         header={`Restart release: '${release.name}'`}
         content={
           <Modal.Content>
