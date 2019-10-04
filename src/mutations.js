@@ -101,3 +101,17 @@ export const CANCEL_RELEASE = gql`
     }
   }
 `;
+
+export const CREATE_SERVICE = gql`
+  mutation CreateService($input: TaskServiceInput!) {
+    createTaskService(input: $input) {
+      taskService {
+        id
+        kfId
+        name
+        createdAt
+        description
+      }
+    }
+  }
+`;
