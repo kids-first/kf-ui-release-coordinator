@@ -128,3 +128,22 @@ export const ALL_SERVICES = gql`
     }
   }
 `;
+
+export const ALL_TASKS = gql`
+  query AllTasks($first: Int) {
+    allTasks(first: $first) {
+      edges {
+        node {
+          id
+          kfId
+          state
+          createdAt
+          taskService {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+`;
