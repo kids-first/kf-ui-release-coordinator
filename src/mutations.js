@@ -111,6 +111,26 @@ export const CREATE_SERVICE = gql`
         name
         createdAt
         description
+        healthStatus
+        enabled
+        url
+      }
+    }
+  }
+`;
+
+export const UPDATE_SERVICE = gql`
+  mutation UpdateService($taskService: ID!, $input: TaskServiceInput!) {
+    updateTaskService(taskService: $taskService, input: $input) {
+      taskService {
+        id
+        kfId
+        name
+        createdAt
+        description
+        healthStatus
+        enabled
+        url
       }
     }
   }

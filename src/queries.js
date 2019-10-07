@@ -129,6 +129,22 @@ export const ALL_SERVICES = gql`
   }
 `;
 
+export const GET_SERVICE = gql`
+  query GetService($id: ID!) {
+    taskService(id: $id) {
+      id
+      author
+      kfId
+      name
+      createdAt
+      description
+      healthStatus
+      enabled
+      url
+    }
+  }
+`;
+
 export const ALL_TASKS = gql`
   query AllTasks($first: Int) {
     allTasks(first: $first) {
