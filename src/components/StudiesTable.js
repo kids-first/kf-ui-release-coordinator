@@ -85,6 +85,18 @@ const StudiesTable = ({
     }
   };
 
+  const flatStudies = studies.map(({node}) => {
+    const lastPublished = node.releases.edges.length
+      ? node.releases.edges[0].node.version
+      : null;
+    return {
+      node: {
+        ...node,
+        lastPublishedVersion: lastPublished,
+      },
+    };
+  });
+
   return (
     <Table sortable>
       <Table.Header>
@@ -110,7 +122,7 @@ const StudiesTable = ({
         </Table.Row>
       </Table.Header>
       <Table.Body>
-        {studies
+        {flatStudies
           .sort(sortFunc)
           .slice(
             (pageState.activePage - 1) * pageSize,
@@ -128,7 +140,7 @@ const StudiesTable = ({
               )}
               {columns.map(col => (
                 <Table.Cell
-                  key={node[col.accessor]}
+                  key={col.accessor}
                   textAlign={col.textAlign}
                   collapsing={col.collapsing}
                 >

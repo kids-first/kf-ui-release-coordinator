@@ -61,9 +61,17 @@ export const ALL_STUDIES = gql`
           kfId
           name
           createdAt
-          lastPublishedVersion
           visible
           deleted
+          releases(state:"published", first: 1, orderBy: "-created_at") {
+            edges {
+              node {
+                id
+                kfId
+                version
+              }
+            }
+          }
         }
       }
     }
