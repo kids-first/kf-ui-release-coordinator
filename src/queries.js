@@ -35,7 +35,11 @@ export const GET_RELEASE = gql`
 
 export const ALL_RELEASES = gql`
   query AllReleases($first: Int, $state: String) {
-    allReleases(first: $first, state: $state, orderBy: "-created_at") {
+    allReleases(
+      first: $first
+      state: $state
+      orderBy: "-created_at"
+    ) {
       edges {
         node {
           id
@@ -63,7 +67,7 @@ export const ALL_STUDIES = gql`
           createdAt
           visible
           deleted
-          releases(state:"published", first: 1, orderBy: "-created_at") {
+          releases(state: "published", first: 1, orderBy: "-created_at") {
             edges {
               node {
                 id
@@ -71,6 +75,31 @@ export const ALL_STUDIES = gql`
                 version
               }
             }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const GET_STUDY = gql`
+  query GetStudy($id: ID!) {
+    study(id: $id) {
+      id
+      kfId
+      name
+      createdAt
+      visible
+      deleted
+      releases(orderBy: "-created_at") {
+        edges {
+          node {
+            id
+            kfId
+            name
+            description
+            createdAt
+            version
           }
         }
       }
