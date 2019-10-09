@@ -1,9 +1,7 @@
-import React, {Fragment} from 'react';
+import React, {useState, Fragment} from 'react';
 import {connect} from 'react-redux';
-import {useQuery} from '@apollo/react-hooks';
+import {useQuery, useMutation} from '@apollo/react-hooks';
 import {
-  syncStudies,
-  fetchAllStudies,
   toggleStudy,
   toggleAllStudies,
 } from '../actions/studies';
@@ -11,13 +9,21 @@ import {Button, Icon, Loader, Message} from 'semantic-ui-react';
 import StudiesTable from '../components/StudiesTable';
 
 import {ALL_STUDIES} from '../queries';
+import {SYNC_STUDIES} from '../mutations';
 
 const StudiesContainer = props => {
+  const [syncMessage, setSyncMessage] = useState();
+
   const {
     loading: studiesLoading,
     error: studiesError,
     data: studiesData,
   } = useQuery(ALL_STUDIES);
+
+  const [
+    syncStudies,
+    {loading: syncStudiesLoading, error: syncStudiesError},
+  ] = useMutation(SYNC_STUDIES);
 
   const isSelected = key => {
     return props.selected.includes(key);
@@ -37,8 +43,17 @@ const StudiesContainer = props => {
   return (
     <Fragment>
       <Button
-        onClick={() => props.syncStudies()}
-        disabled={props.syncing}
+        onClick={() =>
+          syncStudies().then(resp => {
+            console.log(resp);
+            const created = resp.data.syncStudies.new.edges.length;
+            const deleted = resp.data.syncStudies.deleted.edges.length;
+            setSyncMessage(
+              `${created} new studies found, ${deleted} studies deleted`,
+            );
+          })
+        }
+        disabled={syncStudiesLoading}
         primary
         icon
         labelPosition="left"
@@ -46,7 +61,12 @@ const StudiesContainer = props => {
         <Icon name="refresh" />
         Sync
       </Button>
-      {props.syncMessage && props.syncMessage}
+      {syncStudiesError && (
+        <Message negative content={syncStudiesError.message} />
+      )}
+      {syncMessage && (
+        <Message info header="Studies Synchronized" content={syncMessage} />
+      )}
       <StudiesTable
         selectType="checkbox"
         toggleSelection={props.toggleStudy}
@@ -63,8 +83,6 @@ const StudiesContainer = props => {
 
 function mapDispatchToProps(dispatch) {
   return {
-    syncStudies: () => dispatch(syncStudies()),
-    fetchPage: (page, filters) => dispatch(fetchAllStudies(page, filters)),
     toggleStudy: studyId => dispatch(toggleStudy(studyId)),
     toggleAll: () => dispatch(toggleAllStudies()),
   };
@@ -76,9 +94,6 @@ function mapStateToProps(state) {
     studies: Object.values(state.studies.items),
     selected: state.studies.selected.items,
     selectAll: state.studies.selected.selectAll,
-    loading: state.studies.loading && state.studies.pages[1] === undefined,
-    syncing: state.studies.syncing,
-    syncMessage: state.studies.syncMessage,
   };
 }
 

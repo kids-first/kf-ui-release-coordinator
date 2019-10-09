@@ -135,3 +135,34 @@ export const UPDATE_SERVICE = gql`
     }
   }
 `;
+
+export const SYNC_STUDIES = gql`
+  mutation SyncStudies {
+    syncStudies {
+      new {
+        edges {
+          node {
+            id
+            kfId
+            name
+            createdAt
+            visible
+            deleted
+          }
+        }
+      }
+      deleted {
+        edges {
+          node {
+            id
+            kfId
+            name
+            createdAt
+            visible
+            deleted
+          }
+        }
+      }
+    }
+  }
+`;
