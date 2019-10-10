@@ -4,13 +4,7 @@ import {Checkbox, Icon, Pagination, Table} from 'semantic-ui-react';
 import TimeAgo from 'react-timeago';
 import {compareSemVer} from '../utils';
 
-const StudiesTable = ({
-  studies,
-  selectable,
-  isSelected,
-  toggleSelection,
-  toggleAll,
-}) => {
+const StudiesTable = ({studies, selectable, isSelected, toggleSelection}) => {
   const [sortState, setSortState] = useState({
     column: 'createdAt',
     direction: 'descending',
@@ -101,11 +95,7 @@ const StudiesTable = ({
     <Table sortable>
       <Table.Header>
         <Table.Row>
-          {selectable && (
-            <Table.HeaderCell>
-              <Checkbox checked={false} onChange={toggleAll} />
-            </Table.HeaderCell>
-          )}
+          {selectable && <Table.HeaderCell />}
           {columns.map(col => (
             <Table.HeaderCell
               key={col.accessor || col.name}

@@ -1,10 +1,5 @@
 import React, {useState, Fragment} from 'react';
-import {connect} from 'react-redux';
 import {useQuery, useMutation} from '@apollo/react-hooks';
-import {
-  toggleStudy,
-  toggleAllStudies,
-} from '../actions/studies';
 import {Button, Icon, Loader, Message} from 'semantic-ui-react';
 import StudiesTable from '../components/StudiesTable';
 
@@ -45,7 +40,6 @@ const StudiesContainer = props => {
       <Button
         onClick={() =>
           syncStudies().then(resp => {
-            console.log(resp);
             const created = resp.data.syncStudies.new.edges.length;
             const deleted = resp.data.syncStudies.deleted.edges.length;
             setSyncMessage(
@@ -70,8 +64,6 @@ const StudiesContainer = props => {
       <StudiesTable
         selectType="checkbox"
         toggleSelection={props.toggleStudy}
-        toggleAll={props.toggleAll}
-        selectAll={props.selectAll}
         isSelected={key => isSelected(key)}
         studies={studiesData ? studiesData.allStudies.edges : []}
         selectable={props.selectable}
@@ -81,23 +73,4 @@ const StudiesContainer = props => {
   );
 };
 
-function mapDispatchToProps(dispatch) {
-  return {
-    toggleStudy: studyId => dispatch(toggleStudy(studyId)),
-    toggleAll: () => dispatch(toggleAllStudies()),
-  };
-}
-
-function mapStateToProps(state) {
-  return {
-    pages: state.studies.pages,
-    studies: Object.values(state.studies.items),
-    selected: state.studies.selected.items,
-    selectAll: state.studies.selected.selectAll,
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(StudiesContainer);
+export default StudiesContainer;

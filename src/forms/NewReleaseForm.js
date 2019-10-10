@@ -1,6 +1,5 @@
 import React, {Fragment, useState} from 'react';
 import {useMutation, useQuery} from '@apollo/react-hooks';
-import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import {Formik, Field} from 'formik';
 import {
@@ -64,17 +63,27 @@ const NewReleaseForm = props => {
     data: services,
   } = useQuery(ALL_SERVICES);
 
+  const [studies, setStudies] = useState([]);
+
+  const toggleStudy = study => {
+    if (studies.indexOf(study) >= 0) {
+      setStudies(studies.filter(s => s !== study));
+    } else {
+      setStudies([...studies, study]);
+    }
+  };
+
   const handleSubmit = (values, actions) => {
     actions.setSubmitting(true);
 
-    const studies = props.studies.map(study =>
+    const studyIds = studies.map(study =>
       Buffer.from('StudyNode:' + study).toString('base64'),
     );
 
     let release = {
       name: values.title,
       description: '',
-      studies,
+      studies: studyIds,
       isMajor: values.isMajor,
     };
 
@@ -107,7 +116,7 @@ const NewReleaseForm = props => {
           if (!values.title) {
             errors.title = 'A title is required';
           }
-          if (props.studies.length <= 0) {
+          if (studies.length <= 0) {
             errors.studies = 'At least one study is required';
           }
           return errors;
@@ -148,6 +157,8 @@ const NewReleaseForm = props => {
             <Field
               name="studies"
               component={StudiesContainer}
+              toggleStudy={toggleStudy}
+              selected={studies}
               selectable
               defaultPageSize={10}
             />
@@ -231,18 +242,4 @@ const NewReleaseForm = props => {
   );
 };
 
-function mapDispatchToProps(dispatch) {
-  return {};
-}
-
-function mapStateToProps(state) {
-  return {
-    user: state.auth.user,
-    studies: state.studies.selected.items,
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withRouter(NewReleaseForm));
+export default withRouter(NewReleaseForm);
