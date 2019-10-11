@@ -29,7 +29,7 @@ const Login = props => (
         </Header>
         <Button.Group vertical size="large">
           <Button
-            onClick={() => props.auth.login(props.location.pathname)}
+            onClick={() => props.auth.login(props.location.state.from || '/')}
             size="large"
             positive
             icon
