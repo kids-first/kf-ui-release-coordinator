@@ -1,5 +1,6 @@
-import React, {Component} from 'react';
-import axios from 'axios';
+import React, {useState, useRef} from 'react';
+import {useQuery, useMutation} from '@apollo/react-hooks';
+import {withRouter} from 'react-router-dom';
 import TaskList from '../components/TaskList';
 import Events from '../components/Events';
 import {
@@ -16,221 +17,212 @@ import {
   Label,
   Loader,
   Message,
+  Modal,
 } from 'semantic-ui-react';
-import {coordinatorApi} from '../globalConfig';
 import paragraph from '../paragraph.png';
+import UpdateService from '../forms/UpdateService';
 
-class Service extends Component {
-  constructor(props) {
-    super(props);
+import {UPDATE_SERVICE} from '../mutations';
+import {GET_SERVICE, ALL_EVENTS} from '../queries';
 
-    this.state = {
-      loading: true,
-      error: '',
-      service: {},
-      events: [],
-      updating: false,
-      toggling: false,
-    };
+const Service = ({match}) => {
+  const [editing, setEditing] = useState(false);
+
+  const relayId = Buffer.from(
+    'TaskServiceNode:' + match.params.serviceId,
+  ).toString('base64');
+
+  const {
+    loading: serviceLoading,
+    error: serviceError,
+    data: serviceData,
+  } = useQuery(GET_SERVICE, {variables: {id: relayId}});
+
+  const {
+    loading: eventsLoading,
+    error: eventsError,
+    data: eventsData,
+  } = useQuery(ALL_EVENTS, {variables: {id: relayId}});
+
+  const service = serviceData && serviceData.taskService;
+
+  const [
+    updateService,
+    {loading: updateServiceLoading, error: updateServiceError},
+  ] = useMutation(UPDATE_SERVICE);
+
+  const formRef = useRef();
+
+  const toggle = ev => {
+    updateService({
+      variables: {
+        taskService: service.id,
+        input: {
+          name: service.name,
+          url: service.url,
+          enabled: !service.enabled,
+        },
+      },
+    });
+  };
+
+  if (serviceError) {
+    return <Message negative header="Error" content={serviceError} />;
   }
 
-  componentWillMount() {
-    axios
-      .all([
-        axios.get(
-          `${coordinatorApi}/task-services/${
-            this.props.match.params.serviceId
-          }`,
-        ),
-        axios.get(
-          `${coordinatorApi}/events?task_service=${
-            this.props.match.params.serviceId
-          }`,
-        ),
-      ])
-      .then(
-        axios.spread((service, events) => {
-          this.setState({
-            service: service.data,
-            events: events.data.results,
-            loading: false,
-            editing: false,
-          });
-        }),
-      )
-      .catch(error => console.log(error));
-  }
-
-  edit() {
-    this.setState({editing: true});
-  }
-
-  update() {
-    this.setState({editing: false, updating: true, error: ''});
-    axios
-      .patch(
-        `${coordinatorApi}/task-services/${this.state.service.kf_id}`,
-        this.state.service,
-      )
-      .then(resp => {
-        this.setState({updating: false});
-      })
-      .catch(err => {
-        this.setState({
-          updating: false,
-          editing: true,
-          error: JSON.stringify(err.response.data),
-        });
-      });
-  }
-
-  updateName(ev) {
-    let service = this.state.service;
-    service.name = ev.target.value;
-    this.setState({service: service});
-  }
-
-  updateDescription(ev) {
-    let service = this.state.service;
-    service.description = ev.target.value;
-    this.setState({service: service});
-  }
-
-  updateUrl(ev) {
-    let service = this.state.service;
-    service.url = ev.target.value;
-    this.setState({service: service});
-  }
-
-  toggle(ev) {
-    let enabled = !this.state.service.enabled;
-    this.setState({toggling: true});
-    axios
-      .patch(`${coordinatorApi}/task-services/${this.state.service.kf_id}`, {
-        enabled: enabled,
-      })
-      .then(resp => {
-        let service = this.state.service;
-        service.enabled = enabled;
-        this.setState({service: service, toggling: false});
-      });
-  }
-
-  render() {
-    if (this.state.loading) {
-      return (
-        <Segment basic>
-          <Card fluid>
-            <Card.Content>
-              <Dimmer active inverted>
-                <Loader active inverted>
-                  Loading Service
-                </Loader>
-              </Dimmer>
-              <Image src={paragraph} alt="loading" />
-            </Card.Content>
-          </Card>
-        </Segment>
-      );
-    }
-
+  if (!service || serviceLoading) {
     return (
       <Segment basic>
         <Card fluid>
           <Card.Content>
-            <Grid>
-              <Grid.Row>
-                <Grid.Column width={8}>
-                  <Header as="h2">
-                    {this.state.service.name}
-                    <Header.Subheader>
-                      <Label basic>
-                        <Icon name="settings" />
-                        {this.state.service.kf_id}
-                      </Label>
-                    </Header.Subheader>
-                  </Header>
-                </Grid.Column>
-                <Grid.Column width={8} floated="right" textAlign="right">
-                  <Form>
-                    <Form.Field>
-                      <label>Enabled: </label>
-                      <Form.Checkbox
-                        toggle
-                        checked={this.state.service.enabled}
-                        onChange={ev => this.toggle(ev)}
-                      />
-                    </Form.Field>
-                  </Form>
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
-
-            <Form>
-              <Form.Field>
-                <label>Status:</label>
-                <Label basic>{this.state.service.health_status}</Label>
-              </Form.Field>
-              <Form.Field>
-                <label>Author</label>
-                {this.state.service.author}
-              </Form.Field>
-              <Form.Group widths="equal">
-                <Form.Field>
-                  <label>Name</label>
-                  <input
-                    disabled={!this.state.editing}
-                    name="name"
-                    type="text"
-                    value={this.state.service.name}
-                    onChange={ev => this.updateName(ev)}
-                  />
-                </Form.Field>
-                <Form.Field>
-                  <label>Endpoint</label>
-                  <input
-                    disabled={!this.state.editing}
-                    name="url"
-                    type="text"
-                    value={this.state.service.url}
-                    onChange={ev => this.updateUrl(ev)}
-                  />
-                </Form.Field>
-              </Form.Group>
-              <Form.Field>
-                <label>Description</label>
-                <Form.TextArea
-                  disabled={!this.state.editing}
-                  value={this.state.service.description}
-                  onChange={ev => this.updateDescription(ev)}
-                />
-              </Form.Field>
-              {!this.state.editing ? (
-                <Button onClick={() => this.edit()}>Edit</Button>
-              ) : (
-                <Button
-                  loading={this.state.updating}
-                  onClick={() => this.update()}
-                >
-                  Save
-                </Button>
-              )}
-              {this.state.error && (
-                <Message negative content={this.state.error} />
-              )}
-            </Form>
-            <Divider />
-            <h2>Recent Tasks</h2>
-            <TaskList serviceId={this.state.service.kf_id} />
-
-            <Divider />
-            <h2>Recent Events</h2>
-            <Events events={this.state.events} />
+            <Dimmer active inverted>
+              <Loader active inverted>
+                Loading Service
+              </Loader>
+            </Dimmer>
+            <Image src={paragraph} alt="loading" />
           </Card.Content>
         </Card>
       </Segment>
     );
   }
-}
 
-export default Service;
+  return (
+    <Segment basic>
+      <Card fluid>
+        <Card.Content>
+          <Grid>
+            <Grid.Row>
+              <Grid.Column width={8}>
+                <Header as="h2">
+                  {service.name}
+                  <Header.Subheader>
+                    <Button onClick={ev => setEditing(true)}>Edit</Button>
+                    <Label basic>
+                      <Icon name="settings" />
+                      {service.kfId}
+                    </Label>
+                  </Header.Subheader>
+                </Header>
+              </Grid.Column>
+              <Grid.Column width={8} textAlign="right">
+                <Form.Group grouped>
+                  <Form.Field inline>
+                    <label>Status:</label>
+                    <Label basic>{service.healthStatus}</Label>
+                  </Form.Field>
+                  <Form.Field inline>
+                    <Form.Checkbox
+                      toggle
+                      label="Enabled"
+                      checked={service.enabled}
+                      onChange={ev => toggle(ev)}
+                    />
+                  </Form.Field>
+                </Form.Group>
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row>
+              <Grid.Column width={16}>
+                <Form>
+                  <Form.Group grouped widths="equal">
+                    <Form.Field>
+                      <label>Author</label>
+                      <input
+                        disabled
+                        name="author"
+                        type="text"
+                        value={service.author}
+                      />
+                    </Form.Field>
+                    <Form.Field>
+                      <label>Name</label>
+                      <input
+                        disabled
+                        name="name"
+                        type="text"
+                        value={service.name}
+                      />
+                    </Form.Field>
+                    <Form.Field>
+                      <label>Endpoint</label>
+                      <input
+                        disabled
+                        name="url"
+                        type="text"
+                        value={service.url}
+                      />
+                    </Form.Field>
+                  </Form.Group>
+                  <Form.Field>
+                    <label>Description</label>
+                    <Form.TextArea disabled value={service.description} />
+                  </Form.Field>
+                </Form>
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row>
+              <Modal open={editing}>
+                <Modal.Header>Edit Task Service</Modal.Header>
+                <Modal.Content>
+                  <Modal.Description>
+                    <UpdateService
+                      service={service}
+                      formRef={formRef}
+                      onSubmit={values =>
+                        updateService({
+                          variables: {
+                            taskService: values.id,
+                            input: {
+                              name: values.name,
+                              description: values.description,
+                              url: values.url,
+                            },
+                          },
+                        }).then(resp => {
+                          setEditing(false);
+                        })
+                      }
+                    />
+                  </Modal.Description>
+                </Modal.Content>
+                <Modal.Actions>
+                  {updateServiceError && (
+                    <Message negative content={updateServiceError.message} />
+                  )}
+                  <Button onClick={ev => setEditing(false)}>Cancel</Button>
+                  <Button
+                    primary
+                    type="submit"
+                    onClick={(...args) => formRef.current.handleSubmit(...args)}
+                    loading={updateServiceLoading}
+                  >
+                    <Icon name="save" /> Save
+                  </Button>
+                </Modal.Actions>
+              </Modal>
+
+              {serviceError && <Message negative content={serviceError} />}
+            </Grid.Row>
+          </Grid>
+
+          <Divider />
+          <h2>Recent Tasks</h2>
+          <TaskList serviceId={service.kfId} />
+
+          <Divider />
+          <h2>Recent Events</h2>
+          {eventsData && (
+            <Events
+              events={eventsData.allEvents.edges}
+              loading={eventsLoading}
+              error={eventsError}
+            />
+          )}
+        </Card.Content>
+      </Card>
+    </Segment>
+  );
+};
+
+export default withRouter(Service);

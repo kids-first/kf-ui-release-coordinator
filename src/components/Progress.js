@@ -12,6 +12,16 @@ const Progress = props => {
   const state = stateOrder[props.release.state];
 
   const stateDescription = {
+    waiting: {
+      header: 'The release is waiting',
+      content:
+        'The release is waiting to be picked up by the Coordinator',
+    },
+    initializing: {
+      header: 'The release is initializing',
+      content:
+        'The Coordinator is initializing Task services for the release',
+    },
     pending: {
       header: 'The release is pending',
       content:

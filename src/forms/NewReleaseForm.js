@@ -1,7 +1,6 @@
 import React, {Fragment, useState} from 'react';
-import {connect} from 'react-redux';
+import {useMutation, useQuery} from '@apollo/react-hooks';
 import {withRouter} from 'react-router-dom';
-import axios from 'axios';
 import {Formik, Field} from 'formik';
 import {
   Button,
@@ -10,11 +9,14 @@ import {
   Form,
   Icon,
   Label,
+  Message,
   Modal,
 } from 'semantic-ui-react';
-import {coordinatorApi} from '../globalConfig';
 import StudiesContainer from '../containers/StudiesContainer';
 import ServiceList from '../components/ServiceList';
+
+import {START_RELEASE} from '../mutations';
+import {ALL_SERVICES} from '../queries';
 
 const SemanticField = ({component, ...fieldProps}) => (
   <Field
@@ -50,16 +52,41 @@ const NewReleaseForm = props => {
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [release, setRelease] = useState({});
 
+  const [
+    startRelease,
+    {loading: startReleaseLoading, error: startReleaseError},
+  ] = useMutation(START_RELEASE);
+
+  const {
+    loading: servicesLoading,
+    error: servicesError,
+    data: services,
+  } = useQuery(ALL_SERVICES);
+
+  const [studies, setStudies] = useState([]);
+
+  const toggleStudy = study => {
+    if (studies.indexOf(study) >= 0) {
+      setStudies(studies.filter(s => s !== study));
+    } else {
+      setStudies([...studies, study]);
+    }
+  };
+
   const handleSubmit = (values, actions) => {
     actions.setSubmitting(true);
+
+    const studyIds = studies.map(study =>
+      Buffer.from('StudyNode:' + study).toString('base64'),
+    );
+
     let release = {
       name: values.title,
       description: '',
-      studies: props.studies,
-      tags: [],
-      is_major: values.isMajor,
-      author: props.user.name,
+      studies: studyIds,
+      isMajor: values.isMajor,
     };
+
     setRelease(release);
 
     setConfirmOpen(true);
@@ -71,10 +98,9 @@ const NewReleaseForm = props => {
   };
 
   const handleConfirm = () => {
-    axios
-      .post(`${coordinatorApi}/releases`, release)
+    startRelease({variables: {input: release}})
       .then(resp => {
-        props.history.push(`/releases/${resp.data.kf_id}`);
+        props.history.push(`/releases/${resp.data.startRelease.release.kfId}`);
       })
       .catch(err => {
         console.log(err);
@@ -90,7 +116,7 @@ const NewReleaseForm = props => {
           if (!values.title) {
             errors.title = 'A title is required';
           }
-          if (props.studies.length <= 0) {
+          if (studies.length <= 0) {
             errors.studies = 'At least one study is required';
           }
           return errors;
@@ -131,6 +157,8 @@ const NewReleaseForm = props => {
             <Field
               name="studies"
               component={StudiesContainer}
+              toggleStudy={toggleStudy}
+              selected={studies}
               selectable
               defaultPageSize={10}
             />
@@ -140,8 +168,18 @@ const NewReleaseForm = props => {
               </Label>
             )}
 
-            <label>Services to be run for this release</label>
-            <ServiceList />
+            <Form.Field>
+              <label>Services to be run for this release</label>
+              <ServiceList
+                loading={servicesLoading}
+                error={servicesError}
+                services={
+                  services &&
+                  services.allTaskServices &&
+                  services.allTaskServices.edges
+                }
+              />
+            </Form.Field>
 
             <Button
               type="submit"
@@ -163,7 +201,9 @@ const NewReleaseForm = props => {
       <Confirm
         open={confirmOpen}
         cancelButton="Noooooo"
-        confirmButton="Let 'er rip"
+        confirmButton={
+          <Button loading={startReleaseLoading}>Let 'er rip</Button>
+        }
         onCancel={handleCancel}
         onConfirm={handleConfirm}
         header={`About to start release: '${release.name}'`}
@@ -185,6 +225,16 @@ const NewReleaseForm = props => {
                 ))}
               </Label.Group>
             )}
+            {startReleaseError && (
+              <Message
+                negative
+                header="Error"
+                content={
+                  startReleaseError.networkError +
+                  startReleaseError.graphQLErrors
+                }
+              />
+            )}
           </Modal.Content>
         }
       />
@@ -192,18 +242,4 @@ const NewReleaseForm = props => {
   );
 };
 
-function mapDispatchToProps(dispatch) {
-  return {};
-}
-
-function mapStateToProps(state) {
-  return {
-    user: state.auth.user,
-    studies: state.studies.selected.items,
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withRouter(NewReleaseForm));
+export default withRouter(NewReleaseForm);

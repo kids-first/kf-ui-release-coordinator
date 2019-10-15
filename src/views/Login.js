@@ -1,5 +1,4 @@
 import React from 'react';
-import {connect} from 'react-redux';
 import {
   Button,
   Grid,
@@ -9,9 +8,6 @@ import {
   Message,
   Segment,
 } from 'semantic-ui-react';
-import {GoogleLogin} from 'react-google-login';
-import {googleAppId} from '../globalConfig';
-import {loginUser} from '../actions/auth';
 import brand from '../logo.svg';
 
 const Login = props => (
@@ -25,7 +21,7 @@ const Login = props => (
     textAlign="center"
     verticalAlign="middle"
   >
-    <Grid.Column computer="8" tablet="12" mobile="15">
+    <Grid.Column computer="6" tablet="6" mobile="15">
       <Segment>
         <Header as="h1">
           <Image src={brand} />
@@ -33,7 +29,7 @@ const Login = props => (
         </Header>
         <Button.Group vertical size="large">
           <Button
-            onClick={() => props.auth.login()}
+            onClick={() => props.auth.login(props.location.state.from || '/')}
             size="large"
             positive
             icon
@@ -42,25 +38,6 @@ const Login = props => (
             Login with Auth0
             <Icon name="chevron right" />
           </Button>
-          <GoogleLogin
-            clientId={googleAppId}
-            render={renderProps => (
-              <Button
-                onClick={renderProps.onClick}
-                size="large"
-                icon
-                labelPosition="right"
-              >
-                Login with Ego
-                <Icon name="chevron right" />
-              </Button>
-            )}
-            onSuccess={googleUser => {
-              const {id_token} = googleUser.getAuthResponse();
-              props.login(id_token);
-            }}
-            onFailure={error => console.log('login fail', error)}
-          />
         </Button.Group>
         <Message content="Log in to the release coordinator to track and create new data releases for Kids First." />
       </Segment>
@@ -68,17 +45,4 @@ const Login = props => (
   </Grid>
 );
 
-function mapDispatchToProps(dispatch) {
-  return {
-    login: user => dispatch(loginUser(user)),
-  };
-}
-
-function mapStateToProps(state) {
-  return {};
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Login);
+export default Login;

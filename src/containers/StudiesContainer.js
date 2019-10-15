@@ -1,90 +1,76 @@
-import React, {Component, Fragment} from 'react';
-import {connect} from 'react-redux';
-import {
-  syncStudies,
-  fetchAllStudies,
-  toggleStudy,
-  toggleAllStudies,
-} from '../actions/studies';
-import {Button, Icon} from 'semantic-ui-react';
+import React, {useState, Fragment} from 'react';
+import {useQuery, useMutation} from '@apollo/react-hooks';
+import {Button, Icon, Loader, Message} from 'semantic-ui-react';
 import StudiesTable from '../components/StudiesTable';
 
-class StudiesContainer extends Component {
-  constructor() {
-    super();
+import {ALL_STUDIES} from '../queries';
+import {SYNC_STUDIES} from '../mutations';
 
-    this.state = {
-      selection: [],
-    };
+const StudiesContainer = props => {
+  const [syncMessage, setSyncMessage] = useState();
+
+  const {
+    loading: studiesLoading,
+    error: studiesError,
+    data: studiesData,
+  } = useQuery(ALL_STUDIES);
+
+  const [
+    syncStudies,
+    {loading: syncStudiesLoading, error: syncStudiesError},
+  ] = useMutation(SYNC_STUDIES);
+
+  const isSelected = key => {
+    return props.selected.includes(key);
+  };
+
+  if (studiesError) {
+    return <Message negative header="Error" content={studiesError.message} />;
   }
-
-  componentDidMount() {
-    const currPage = this.props.pages.currentPage;
-    if (
-      currPage === undefined ||
-      this.props.pages[currPage] === undefined ||
-      this.props.pages[currPage].next !== null
-    ) {
-      this.props.fetchPage(1, {});
-    }
-  }
-
-  isSelected(key) {
-    return this.props.selected.includes(key);
-  }
-
-  render() {
+  if (studiesLoading) {
     return (
-      <Fragment>
-        <Button
-          onClick={() => this.props.syncStudies()}
-          disabled={this.props.syncing}
-          primary
-          icon
-          labelPosition="left"
-        >
-          <Icon name="refresh" />
-          Sync
-        </Button>
-        {this.props.syncMessage && this.props.syncMessage}
-        <StudiesTable
-          selectType="checkbox"
-          toggleSelection={this.props.toggleStudy}
-          toggleAll={this.props.toggleAll}
-          selectAll={this.props.selectAll}
-          isSelected={key => this.isSelected(key)}
-          loading={this.props.loading}
-          studies={this.props.studies}
-          selectable={this.props.selectable}
-          defaultPageSize={this.props.defaultPageSize}
-        />
-      </Fragment>
+      <Loader active inline="centered">
+        Loading Studies
+      </Loader>
     );
   }
-}
 
-function mapDispatchToProps(dispatch) {
-  return {
-    syncStudies: () => dispatch(syncStudies()),
-    fetchPage: (page, filters) => dispatch(fetchAllStudies(page, filters)),
-    toggleStudy: studyId => dispatch(toggleStudy(studyId)),
-    toggleAll: () => dispatch(toggleAllStudies()),
-  };
-}
+  return (
+    <Fragment>
+      <Button
+        onClick={() =>
+          syncStudies().then(resp => {
+            const created = resp.data.syncStudies.new.edges.length;
+            const deleted = resp.data.syncStudies.deleted.edges.length;
+            setSyncMessage(
+              `${created} new studies found, ${deleted} studies deleted`,
+            );
+          })
+        }
+        disabled={syncStudiesLoading}
+        primary
+        icon
+        labelPosition="left"
+      >
+        <Icon name="refresh" />
+        Sync
+      </Button>
+      {syncStudiesError && (
+        <Message negative content={syncStudiesError.message} />
+      )}
+      {syncMessage && (
+        <Message info header="Studies Synchronized" content={syncMessage} />
+      )}
+      <StudiesTable
+        selectType="checkbox"
+        toggleSelection={props.toggleStudy}
+        isSelected={key => isSelected(key)}
+        studies={studiesData ? studiesData.allStudies.edges : []}
+        selectable={props.selectable}
+        defaultPageSize={props.defaultPageSize}
+      />
+    </Fragment>
+  );
+};
 
-function mapStateToProps(state) {
-  return {
-    pages: state.studies.pages,
-    studies: Object.values(state.studies.items),
-    selected: state.studies.selected.items,
-    selectAll: state.studies.selected.selectAll,
-    loading: state.studies.loading && state.studies.pages[1] === undefined,
-    syncing: state.studies.syncing,
-    syncMessage: state.studies.syncMessage,
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(StudiesContainer);
+export default StudiesContainer;

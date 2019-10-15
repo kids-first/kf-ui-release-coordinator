@@ -1,10 +1,13 @@
 import React, {useState} from 'react';
 import {Link} from 'react-router-dom';
-import {Icon, Label, Pagination, Table} from 'semantic-ui-react';
+import {Icon, Label, Loader, Pagination, Table} from 'semantic-ui-react';
 import TimeAgo from 'react-timeago';
 import {compareSemVer} from '../utils';
 
 const ReleaseList = ({loading, releases}) => {
+  if (!releases || loading) {
+    return <Loader>Loading...</Loader>;
+  }
   const stateColors = {
     initialized: 'blue',
     running: 'teal',
@@ -16,7 +19,7 @@ const ReleaseList = ({loading, releases}) => {
   };
 
   const [sortState, setSortState] = useState({
-    column: 'created_at',
+    column: 'createdAt',
     direction: 'ascending',
   });
 
@@ -31,15 +34,17 @@ const ReleaseList = ({loading, releases}) => {
   };
 
   const sortFunc = (row1, row2) => {
+    const node1 = row1.node;
+    const node2 = row2.node;
     const col = sortState.column;
     if (sortState.column === 'version') {
       return sortState.direction === 'ascending'
-        ? compareSemVer(row1[col], row2[col])
-        : compareSemVer(row2[col], row1[col]);
+        ? compareSemVer(node1[col], node2[col])
+        : compareSemVer(node2[col], node1[col]);
     }
     return sortState.direction === 'ascending'
-      ? row1[col] < row2[col]
-      : row1[col] > row2[col];
+      ? node1[col] < node2[col]
+      : node1[col] > node2[col];
   };
 
   const handleSort = selectedCol => {
@@ -57,7 +62,7 @@ const ReleaseList = ({loading, releases}) => {
   const columns = [
     {
       name: 'Release',
-      accessor: 'kf_id',
+      accessor: 'kfId',
       Cell: value => <Link to={`/releases/${value}`}>{value}</Link>,
       collapsing: true,
     },
@@ -71,7 +76,7 @@ const ReleaseList = ({loading, releases}) => {
       Cell: value => (
         <Label basic>
           <Icon name="user" />
-          {value.split('@')[0]}
+          {value && value.split('@')[0]}
         </Label>
       ),
       textAlign: 'center',
@@ -102,7 +107,7 @@ const ReleaseList = ({loading, releases}) => {
     },
     {
       name: 'Created',
-      accessor: 'created_at',
+      accessor: 'createdAt',
       Cell: value => <TimeAgo date={value} />,
       textAlign: 'center',
       collapsing: true,
@@ -135,15 +140,15 @@ const ReleaseList = ({loading, releases}) => {
             (pageState.activePage - 1) * pageSize,
             pageState.activePage * pageSize,
           )
-          .map(row => (
-            <Table.Row key={row.kf_id}>
+          .map(({node}) => (
+            <Table.Row key={node.kfId}>
               {columns.map(col => (
                 <Table.Cell
-                  key={row[col.accessor]}
+                  key={col.accessor}
                   textAlign={col.textAlign}
                   collapsing={col.collapsing}
                 >
-                  {col.Cell ? col.Cell(row[col.accessor]) : row[col.accessor]}
+                  {col.Cell ? col.Cell(node[col.accessor]) : node[col.accessor]}
                 </Table.Cell>
               ))}
             </Table.Row>

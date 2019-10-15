@@ -20,17 +20,18 @@ export default class Auth {
     scope: 'openid profile email',
   });
 
-  login() {
-    this.auth0.authorize();
+  login(originalUrl) {
+    this.auth0.authorize({
+      redirectUri: auth0RedirectUri + '?from=' + originalUrl,
+    });
   }
 
-  handleAuthentication(props, callback) {
+  handleAuthentication(props, from) {
     if (/access_token|id_token|error/.test(props.location.hash)) {
       this.auth0.parseHash((err, authResult) => {
         if (authResult && authResult.accessToken && authResult.idToken) {
           this.setSession(authResult);
-          callback(authResult.accessToken, authResult.idToken);
-          props.history.push('/');
+          props.history.push(from || '/');
         } else if (err) {
           console.log(err);
           alert(`Error: ${err.error}. Check the console for further details.`);
@@ -50,6 +51,9 @@ export default class Auth {
   setSession(authResult) {
     // Set isLoggedIn flag in localStorage
     localStorage.setItem('isLoggedIn', 'true');
+    // Save access token to localStorage
+    localStorage.setItem('accessToken', authResult.accessToken);
+    localStorage.setItem('idToken', authResult.idToken);
 
     // Set the time that the access token will expire at
     let expiresAt = authResult.expiresIn * 1000 + new Date().getTime();
@@ -80,6 +84,8 @@ export default class Auth {
 
     // Remove isLoggedIn flag from localStorage
     localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('idToken');
   }
 
   isAuthenticated() {

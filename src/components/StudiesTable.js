@@ -4,16 +4,9 @@ import {Checkbox, Icon, Pagination, Table} from 'semantic-ui-react';
 import TimeAgo from 'react-timeago';
 import {compareSemVer} from '../utils';
 
-const StudiesTable = ({
-  loading,
-  studies,
-  selectable,
-  isSelected,
-  toggleSelection,
-  toggleAll,
-}) => {
+const StudiesTable = ({studies, selectable, isSelected, toggleSelection}) => {
   const [sortState, setSortState] = useState({
-    column: 'created_at',
+    column: 'createdAt',
     direction: 'descending',
   });
 
@@ -30,7 +23,7 @@ const StudiesTable = ({
   const columns = [
     {
       name: 'Study',
-      accessor: 'kf_id',
+      accessor: 'kfId',
       Cell: value => <Link to={`/studies/${value}`}>{value}</Link>,
       collapsing: true,
     },
@@ -41,7 +34,7 @@ const StudiesTable = ({
     },
     {
       name: 'Public Version',
-      accessor: 'last_pub_version',
+      accessor: 'lastPublishedVersion',
       Cell: value =>
         value === null ? (
           '---'
@@ -55,7 +48,7 @@ const StudiesTable = ({
     },
     {
       name: 'Created',
-      accessor: 'created_at',
+      accessor: 'createdAt',
       Cell: value => <TimeAgo date={value} />,
       width: 2,
       textAlign: 'right',
@@ -64,7 +57,7 @@ const StudiesTable = ({
 
   const sortFunc = (row1, row2) => {
     const col = sortState.column;
-    if (sortState.column === 'last_pub_version') {
+    if (sortState.column === 'lastPubVersion') {
       return sortState.direction === 'ascending'
         ? compareSemVer(row1[col], row2[col])
         : compareSemVer(row2[col], row1[col]);
@@ -86,15 +79,23 @@ const StudiesTable = ({
     }
   };
 
+  const flatStudies = studies.map(({node}) => {
+    const lastPublished = node.releases.edges.length
+      ? node.releases.edges[0].node.version
+      : null;
+    return {
+      node: {
+        ...node,
+        lastPublishedVersion: lastPublished,
+      },
+    };
+  });
+
   return (
     <Table sortable>
       <Table.Header>
         <Table.Row>
-          {selectable && (
-            <Table.HeaderCell>
-              <Checkbox checked={false} onChange={toggleAll} />
-            </Table.HeaderCell>
-          )}
+          {selectable && <Table.HeaderCell />}
           {columns.map(col => (
             <Table.HeaderCell
               key={col.accessor || col.name}
@@ -111,29 +112,29 @@ const StudiesTable = ({
         </Table.Row>
       </Table.Header>
       <Table.Body>
-        {studies
+        {flatStudies
           .sort(sortFunc)
           .slice(
             (pageState.activePage - 1) * pageSize,
             pageState.activePage * pageSize,
           )
-          .map(row => (
-            <Table.Row key={row.kf_id}>
+          .map(({node}) => (
+            <Table.Row key={node.kfId}>
               {selectable && (
                 <Table.Cell collapsing>
                   <Checkbox
-                    checked={isSelected(row.kf_id)}
-                    onChange={() => toggleSelection(row.kf_id)}
+                    checked={isSelected(node.kfId)}
+                    onChange={() => toggleSelection(node.kfId)}
                   />
                 </Table.Cell>
               )}
               {columns.map(col => (
                 <Table.Cell
-                  key={row[col.accessor]}
+                  key={col.accessor}
                   textAlign={col.textAlign}
                   collapsing={col.collapsing}
                 >
-                  {col.Cell ? col.Cell(row[col.accessor]) : row[col.accessor]}
+                  {col.Cell ? col.Cell(node[col.accessor]) : node[col.accessor]}
                 </Table.Cell>
               ))}
             </Table.Row>

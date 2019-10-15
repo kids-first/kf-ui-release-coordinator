@@ -1,14 +1,9 @@
-import React, {useState, useEffect} from 'react';
-import axios from 'axios';
+import React from 'react';
 import {Link} from 'react-router-dom';
 import TimeAgo from 'react-timeago';
-import {coordinatorApi} from '../globalConfig';
 import {Grid, Icon, Item, Label, Loader} from 'semantic-ui-react';
 
-const LatestReleases = props => {
-  const [loading, setLoading] = useState(true);
-  const [releases, setReleases] = useState([]);
-
+const LatestReleases = ({releases, loading, error}) => {
   const stateColors = {
     initialized: 'blue',
     running: 'teal',
@@ -18,16 +13,6 @@ const LatestReleases = props => {
     canceled: 'grey',
     failed: 'red',
   };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await axios(`${coordinatorApi}/releases?limit=5`);
-      setReleases(result.data.results.reverse());
-      setLoading(false);
-    };
-
-    fetchData();
-  }, []);
 
   if (loading) {
     return (
@@ -45,35 +30,43 @@ const LatestReleases = props => {
         </Grid.Row>
       </Grid>
     );
-  } else {
+  }
+
+  if (!releases || releases.length === 0) {
     return (
       <Grid columns={5} divided>
-        <Grid.Row>
-          {releases.map((release, i) => (
-            <Grid.Column key={i} textAlign="center">
-              <Item as={Link} to={`/releases/${release.kf_id}`}>
-                <Item.Content>
-                  <Item.Header>{release.name}</Item.Header>
-                  <Item.Meta>
-                    <TimeAgo date={new Date(release.created_at)} />
-                  </Item.Meta>
-                  <Item.Description>
-                    <Label basic>
-                      <Icon name="tag" />
-                      {release.version}
-                    </Label>
-                    <Label basic color={stateColors[release.state]}>
-                      {release.state}
-                    </Label>
-                  </Item.Description>
-                </Item.Content>
-              </Item>
-            </Grid.Column>
-          ))}
-        </Grid.Row>
+        <Grid.Row>No releases yet.</Grid.Row>
       </Grid>
     );
   }
+
+  return (
+    <Grid columns={5} divided>
+      <Grid.Row>
+        {releases.map(({node}) => (
+          <Grid.Column key={node.kfId} textAlign="center">
+            <Item as={Link} to={`/releases/${node.kfId}`}>
+              <Item.Content>
+                <Item.Header>{node.name}</Item.Header>
+                <Item.Meta>
+                  <TimeAgo date={new Date(node.createdAt)} />
+                </Item.Meta>
+                <Item.Description>
+                  <Label basic>
+                    <Icon name="tag" />
+                    {node.version}
+                  </Label>
+                  <Label basic color={stateColors[node.state]}>
+                    {node.state}
+                  </Label>
+                </Item.Description>
+              </Item.Content>
+            </Item>
+          </Grid.Column>
+        ))}
+      </Grid.Row>
+    </Grid>
+  );
 };
 
 export default LatestReleases;

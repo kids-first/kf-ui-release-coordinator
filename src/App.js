@@ -1,10 +1,12 @@
-import React, {Component} from 'react';
+import React from 'react';
+import {ApolloProvider} from '@apollo/react-hooks';
 import Root from './containers/Root';
+import client from './client';
 
-class App extends Component {
-  render() {
-    return <Root />;
-  }
-}
+const App = () => (
+  <ApolloProvider client={client}>
+    <Root />
+  </ApolloProvider>
+);
 
 export default App;

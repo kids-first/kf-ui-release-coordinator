@@ -1,83 +1,64 @@
-import React, {Component} from 'react';
-import axios from 'axios';
-import {Icon, Label, List, Loader} from 'semantic-ui-react';
-import {coordinatorApi} from '../globalConfig';
+import React from 'react';
+import {useQuery} from '@apollo/react-hooks';
+import {Icon, Label, List, Loader, Message} from 'semantic-ui-react';
 
-class TaskList extends Component {
-  constructor(props) {
-    super(props);
+import {ALL_TASKS} from '../queries';
 
-    this.state = {
-      loading: true,
-      releaseId: props.releaseId | null,
-      serviceId: props.serivceId | null,
-      tasks: [],
-    };
+const TaskList = props => {
+  const {loading: tasksLoading, error: tasksError, data: tasksData} = useQuery(
+    ALL_TASKS,
+    {variables: {first: 10}},
+  );
+
+  const tasks = tasksData && tasksData.allTasks.edges;
+
+  const stateColors = {
+    initialized: 'blue',
+    running: 'teal',
+    staged: 'purple',
+    publishing: 'teal',
+    published: 'green',
+    canceled: 'grey',
+    failed: 'red',
+  };
+
+  if (tasksLoading) {
+    return <Loader active>Loading...</Loader>;
   }
 
-  componentDidMount() {
-    this.getData();
+  if (tasksError) {
+    return <Message negative header="Error" content={tasksError.message} />;
   }
 
-  shouldComponentUpdate(nextProps) {
-    if (nextProps !== this.props) {
-      this.getData();
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  getData() {
-    let _id = this.props.serviceId
-      ? this.props.serviceId
-      : this.props.releaseId;
-    let resource = this.props.serviceId
-      ? '/tasks?task_service='
-      : '/tasks?release=';
-    axios.get(`${coordinatorApi}${resource}${_id}`).then(resp => {
-      let data = resp.data.results;
-      this.setState({tasks: data, loading: false});
-      this.forceUpdate();
-    });
-  }
-
-  render() {
-    const stateColors = {
-      initialized: 'blue',
-      running: 'teal',
-      staged: 'purple',
-      publishing: 'teal',
-      published: 'green',
-      canceled: 'grey',
-      failed: 'red',
-    };
-
-    if (this.state.loading) {
-      return <Loader active>Loading...</Loader>;
-    }
-
+  if (!tasks) {
     return (
-      <List>
-        {this.state.tasks.map((task, i) => (
-          <List.Item>
-            <List.Content floated="right">
-              <Label basic horizontal color={stateColors[task.state]}>
-                {task.state}
-              </Label>
-            </List.Content>
-            <List.Content>
-              <Label basic horizontal>
-                <Icon name="calendar check" />
-                {task.kf_id}
-              </Label>
-              {task.service_name}
-            </List.Content>
-          </List.Item>
-        ))}
-      </List>
+      <Message
+        header="No Tasks Yet"
+        content="This service hasn't been run in a release yet"
+      />
     );
   }
-}
+
+  return (
+    <List>
+      {tasks.map(({node}, i) => (
+        <List.Item key={node.kfId}>
+          <List.Content floated="right">
+            <Label basic horizontal color={stateColors[node.state]}>
+              {node.state}
+            </Label>
+          </List.Content>
+          <List.Content>
+            <Label basic horizontal>
+              <Icon name="calendar check" />
+              {node.kfId}
+            </Label>
+            {node.taskService.name}
+          </List.Content>
+        </List.Item>
+      ))}
+    </List>
+  );
+};
 
 export default TaskList;

@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
 import propTypes from 'prop-types';
 import axios from 'axios';
 import {Button} from 'semantic-ui-react';
@@ -241,17 +240,10 @@ class MarkdownEditor extends Component {
           }}
         />
         <div className="p-4 w-full flex justify-end">
-          <Button
-            color="secondary"
-            outline
-            onClick={() => this.editToggle()}
-            className="mx-2"
-          >
+          <Button secondary onClick={() => this.editToggle()}>
             Cancel
           </Button>
-          <Button onClick={() => this.save()} className="mx-2">
-            Save
-          </Button>
+          <Button onClick={() => this.save()}>Save</Button>
         </div>
       </div>
     );
@@ -271,13 +263,5 @@ MarkdownEditor.defaultProps = {
   type: 'release',
   description: null,
 };
-function mapDispatchToProps(dispatch) {
-  return {};
-}
-function mapStateToProps(state) {
-  return {user: state.auth.user};
-}
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(MarkdownEditor);
+
+export default MarkdownEditor;

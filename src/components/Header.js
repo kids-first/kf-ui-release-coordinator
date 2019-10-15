@@ -1,13 +1,38 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useState, useEffect} from 'react';
 import {NavLink} from 'react-router-dom';
-import {Container, Dropdown, Icon, Menu} from 'semantic-ui-react';
+import {Container, Dropdown, Label, Icon, Menu} from 'semantic-ui-react';
+import axios from 'axios';
 
 import logo from '../logo.svg';
 
 const Nav = props => <NavLink exact {...props} activeClassName="active" />;
 
-export const Header = ({profile}) => {
-  const [loggedIn, setLoggedIn] = useState(profile !== undefined);
+export const Header = () => {
+  const [user, setUser] = useState();
+  const [loggedIn, setLoggedIn] = useState(user !== undefined);
+
+  const getProfile = () => {
+    const token = localStorage.getItem('accessToken');
+
+    if (!token) {
+      // Bit of a hack because the header may render before there is a token
+      // in localStorage.
+      setTimeout(getProfile, 1000);
+    } else {
+      axios
+        .get('https://kids-first.auth0.com/userinfo', {
+          headers: {Authorization: 'Bearer ' + token},
+        })
+        .then(resp => {
+          setLoggedIn(true);
+          setUser(resp.data);
+        });
+    }
+  };
+
+  useEffect(() => {
+    getProfile();
+  }, []);
 
   return (
     <Menu attached="top" size="large">
@@ -22,7 +47,7 @@ export const Header = ({profile}) => {
         <Menu.Item header as={NavLink} to="/" activeClassName="">
           Release Coordinator
         </Menu.Item>
-        {loggedIn && (
+        {loggedIn && user && (
           <Fragment>
             <Menu.Item as={Nav} to="/" content="Status" />
             <Menu.Item as={Nav} to="/planner" content="Planner" />
@@ -35,16 +60,26 @@ export const Header = ({profile}) => {
                 trigger={
                   <Fragment>
                     <Icon circular name="user" />
-                    {profile.username}
+                    {user.nickname}
                   </Fragment>
                 }
                 className="link item"
               >
                 <Dropdown.Menu>
-                  <Dropdown.Item as={Nav} to="/profile">
-                    <Icon name="user" />
-                    Profile
-                  </Dropdown.Item>
+                  <Dropdown.Header>
+                    {user['https://kidsfirstdrc.org/roles'].map((role, i) => (
+                      <Label basic key={i} color="blue">
+                        {role}
+                      </Label>
+                    ))}
+                  </Dropdown.Header>
+                  <Dropdown.Header>
+                    {user['https://kidsfirstdrc.org/groups'].map((role, i) => (
+                      <Label basic key={i} color="green">
+                        {role}
+                      </Label>
+                    ))}
+                  </Dropdown.Header>
                   <Dropdown.Item
                     as={Nav}
                     to="/login"
