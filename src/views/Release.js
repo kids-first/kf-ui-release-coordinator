@@ -1,6 +1,5 @@
 import React from 'react';
 import {useQuery} from '@apollo/react-hooks';
-import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import {
   Accordion,
@@ -312,10 +311,4 @@ const StudyNote = ({releaseId, studyId, noteId, description}) => (
   </div>
 );
 
-function mapStateToProps(state) {
-  return {
-    user: state.auth.user,
-  };
-}
-
-export default connect(mapStateToProps)(withRouter(Release));
+export default withRouter(Release);
