@@ -1,22 +1,22 @@
 import React from 'react';
 import {useQuery} from '@apollo/react-hooks';
-import {withRouter} from 'react-router-dom';
+import {withRouter, Link} from 'react-router-dom';
 import {
-  Accordion,
+  Button,
   Dimmer,
-  Grid,
   Header,
   Image,
   Icon,
   Message,
   Segment,
-  Label,
+  List,
   Loader,
 } from 'semantic-ui-react';
 import TimeAgo from 'react-timeago';
 import Progress from '../components/Progress';
 import TaskList from '../components/TaskList';
 import Events from '../components/Events';
+import ReleaseHeader from '../components/ReleaseHeader';
 import ReleaseTimeline from '../components/ReleaseTimeline';
 import MarkdownEditor from '../components/MarkdownEditor';
 import ReleaseActions from '../components/ReleaseActions';
@@ -83,6 +83,22 @@ const Release = ({user, history, match}) => {
 
   const {release} = releaseData;
 
+  if (!release) {
+    return (
+      <Segment placeholder basic>
+        <Header icon>
+          <Icon name="warning sign" />
+          Release Not Found
+        </Header>
+        <Segment.Inline>
+          <Button primary onClick={() => history.push('/releases')}>
+            Back to Releases
+          </Button>
+        </Segment.Inline>
+      </Segment>
+    );
+  }
+
   if (release.state === 'published') {
     style.backgroundColor = '#efffe8';
     style.padding = 20;
@@ -124,127 +140,75 @@ const Release = ({user, history, match}) => {
     });
 
   return (
-    <Segment basic>
-      <Grid columns={3}>
-        <Grid.Row centered>
-          <Header as="h2">
-            <Header.Content>{release.name}</Header.Content>
-            <Header.Subheader>
-              <TimeAgo date={new Date(release.createdAt)} />
-            </Header.Subheader>
-          </Header>
-        </Grid.Row>
-        <Grid.Row>
-          <Grid.Column>
-            <Header as="h3">Tags</Header>
-            <Label basic>
-              <Icon name="tag" />
-              {release.version}
-            </Label>
-            <Label basic>
-              <Icon name="tag" />
-              {release.kfId}
-            </Label>
-          </Grid.Column>
+    <>
+      <ReleaseHeader release={release} loading={releaseLoading} />
+      <Segment vertical>
+        <Progress release={release} />
+      </Segment>
 
-          <Grid.Column textAlign="center">
-            <Header as="h3">Authored By</Header>
-            <Label basic>
-              <Icon name="user" />
-              {release.author}
-            </Label>
-          </Grid.Column>
-
-          <Grid.Column textAlign="right">
-            <Header as="h3">Studies in this Release</Header>
-            <Accordion>
-              <Accordion.Title active={true}>
-                <Label>
-                  <Icon name="eye" />
-                  View all {release.studies.edges.length} studies
-                  <Icon name="dropdown" />
-                </Label>
-              </Accordion.Title>
-            </Accordion>
-          </Grid.Column>
-        </Grid.Row>
-        {true && (
-          <Grid.Row centered>
-            <Label.Group>
-              {release.studies.edges.map(({node}) => (
-                <Label key={node.kfId} basic>
-                  <Icon name="database" />
-                  {node.kfId}
-                </Label>
-              ))}
-            </Label.Group>
-          </Grid.Row>
-        )}
-
-        <Grid.Row centered columns={1}>
-          {release.state !== 'canceled' && release.state !== 'failed' ? (
-            <Progress release={release} />
-          ) : (
-            <h2>
-              <Icon kind="reset" /> {release.state}
-            </h2>
-          )}
-        </Grid.Row>
-
-        {release && (
-          <Grid.Row centered>
-            <ReleaseActions
-              release={release}
-              user={user}
-              history={history}
-              match={match}
-            />
-          </Grid.Row>
-        )}
-
-        {['staged', 'publishing', 'published', 'canceled', 'failed'].includes(
-          release.state,
-        ) && (
-          <Grid.Row>
-            <ReleaseReportSummary
-              releaseId={release.kfId}
-              releaseState={release.state}
-            />
-          </Grid.Row>
-        )}
-
-        <Grid.Row>
-          <Header>Release Notes</Header>
-        </Grid.Row>
-        <Grid.Row>
-          <MarkdownEditor
-            type="release"
-            releaseId={release.kfId}
-            description={release.description}
+      {release && (
+        <Segment vertical textAlign="center">
+          <ReleaseActions
+            release={release}
+            user={user}
+            history={history}
+            match={match}
           />
-          {studyNotes}
-        </Grid.Row>
+        </Segment>
+      )}
 
-        <Grid.Row>
-          <Header>Release Timeline</Header>
-        </Grid.Row>
-        {events && (
-          <Grid.Row>
-            <ReleaseTimeline events={events.allEvents.edges} />
-          </Grid.Row>
-        )}
-        <Grid.Row>
-          <Grid.Column width="8">
-            <Header>Task Status</Header>
-            <TaskList releaseId={release.kfId} />
-          </Grid.Column>
-          <Grid.Column width="8">
-            <Header>Event History</Header>
-            <Events events={events && events.allEvents.edges} />
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
-    </Segment>
+      {['staged', 'publishing', 'published', 'canceled', 'failed'].includes(
+        release.state,
+      ) && (
+        <Segment vertical>
+          <ReleaseReportSummary
+            releaseId={release.kfId}
+            releaseState={release.state}
+          />
+        </Segment>
+      )}
+
+      <Segment vertical>
+        <Header>Studies in this Release</Header>
+        <List divided relaxed>
+          {release.studies.edges.map(({node}) => (
+            <List.Item key={node.kfId}>
+              <List.Icon name="database" size="large" verticalAlign="middle" />
+              <List.Content>
+                <Link to={`/studies/${node.kfId}`}>{node.kfId}</Link> -{' '}
+                {node.name}
+                <List.Description>
+                  Created <TimeAgo date={node.createdAt} />
+                </List.Description>
+              </List.Content>
+            </List.Item>
+          ))}
+        </List>
+      </Segment>
+
+      <Segment vertical>
+        <Header>Release Notes</Header>
+        <MarkdownEditor
+          type="release"
+          releaseId={release.kfId}
+          description={release.description}
+        />
+        {studyNotes}
+      </Segment>
+
+      <Segment vertical>
+        <Header>Release Timeline</Header>
+        {events && <ReleaseTimeline events={events.allEvents.edges} />}
+      </Segment>
+      <Segment vertical>
+        <Header>Task Status</Header>
+        <TaskList releaseId={release.kfId} />
+      </Segment>
+      <Segment vertical>
+        <Header>Event History</Header>
+        <Events events={events && events.allEvents.edges} />
+      </Segment>
+    </>
   );
 };
 

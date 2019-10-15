@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import propTypes from 'prop-types';
 import axios from 'axios';
-import {Button} from 'semantic-ui-react';
+import {Button, Icon, Segment} from 'semantic-ui-react';
 import ReactMarkdown from 'react-markdown';
 import {coordinatorApi} from '../globalConfig';
 
@@ -150,19 +150,24 @@ class MarkdownEditor extends Component {
     if (!this.state.editing) {
       if (this.state.description) {
         return (
-          <div>
-            <ReactMarkdown source={this.state.description} />
-            <div className="p-4 w-full flex justify-end">
-              <Button onClick={() => this.editToggle()} className="mx-2">
-                Edit
-              </Button>
-            </div>
-          </div>
+          <>
+            <Segment stacked>
+              <ReactMarkdown source={this.state.description} />
+            </Segment>
+            <Button onClick={() => this.editToggle()}>Edit</Button>
+          </>
         );
       } else {
         return (
           <center>
-            <Button onClick={() => this.editToggle()}>
+            <Button
+              icon
+              primary
+              labelPosition="left"
+              size="large"
+              onClick={() => this.editToggle()}
+            >
+              <Icon name="pencil" />
               {this.props.type === 'release'
                 ? ' Add a release summary'
                 : ` Add a new note for ${this.state.studyId}`}
@@ -188,8 +193,8 @@ class MarkdownEditor extends Component {
     return (
       <div>
         <Editor
-          wrapperClassName="wrapper-class"
-          editorClassName="border border-2 px-2 border-darkGrey"
+          wrapperClassName=""
+          editorClassName=""
           editorStyle={editorStyle}
           editorState={editorState}
           onEditorStateChange={this.onEditorStateChange}

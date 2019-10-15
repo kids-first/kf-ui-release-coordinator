@@ -5,9 +5,6 @@ import TimeAgo from 'react-timeago';
 import {compareSemVer} from '../utils';
 
 const ReleaseList = ({loading, releases}) => {
-  if (!releases || loading) {
-    return <Loader>Loading...</Loader>;
-  }
   const stateColors = {
     initialized: 'blue',
     running: 'teal',
@@ -23,11 +20,16 @@ const ReleaseList = ({loading, releases}) => {
     direction: 'ascending',
   });
 
-  const pageSize = 15;
-  const totalPages = Math.ceil(releases.length / pageSize);
   const [pageState, setPageState] = useState({
     activePage: 1,
   });
+
+  if (!releases || loading) {
+    return <Loader>Loading...</Loader>;
+  }
+
+  const pageSize = 15;
+  const totalPages = Math.ceil(releases.length / pageSize);
 
   const onPageChange = (ev, data) => {
     setPageState({activePage: data.activePage});

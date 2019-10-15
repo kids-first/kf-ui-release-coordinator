@@ -24,15 +24,15 @@
     "formik": "^1.5.7",
     "graphql": "^14.5.8",
     "jwt-decode": "^2.2.0",
-    "react": "^16.4.0",
-    "react-app-rewired": "^1.5.2",
-    "react-dom": "^16.4.0",
+    "react": "^16.10.2",
+    "react-app-rewired": "^2.0.0",
+    "react-dom": "^16.10.2",
     "react-draft-wysiwyg": "^1.12.13",
     "react-markdown": "^3.4.1",
     "react-progress-steps": "^0.0.8",
     "react-router-dom": "^4.2.2",
-    "react-scripts": "1.1.4",
-    "react-timeago": "^3.4.3",
+    "react-scripts": "3.2.0",
+    "react-timeago": "^4.4.0",
     "semantic-ui-react": "^0.87.1",
     "victory": "^30.5.0"
   },
@@ -43,5 +43,17 @@
   },
   "devDependencies": {
     "prettier": "^1.16.4"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
