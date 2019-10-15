@@ -11,16 +11,27 @@ export const Header = () => {
   const [user, setUser] = useState();
   const [loggedIn, setLoggedIn] = useState(user !== undefined);
 
-  useEffect(() => {
+  const getProfile = () => {
     const token = localStorage.getItem('accessToken');
-    axios
-      .get('https://kids-first.auth0.com/userinfo', {
-        headers: {Authorization: 'Bearer ' + token},
-      })
-      .then(resp => {
-        setLoggedIn(true);
-        setUser(resp.data);
-      });
+
+    if (!token) {
+      // Bit of a hack because the header may render before there is a token
+      // in localStorage.
+      setTimeout(getProfile, 1000);
+    } else {
+      axios
+        .get('https://kids-first.auth0.com/userinfo', {
+          headers: {Authorization: 'Bearer ' + token},
+        })
+        .then(resp => {
+          setLoggedIn(true);
+          setUser(resp.data);
+        });
+    }
+  };
+
+  useEffect(() => {
+    getProfile();
   }, []);
 
   return (
