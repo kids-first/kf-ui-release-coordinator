@@ -18,6 +18,7 @@ export const GET_RELEASE = gql`
             id
             kfId
             name
+            createdAt
           }
         }
       }
