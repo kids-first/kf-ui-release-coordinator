@@ -1,4 +1,4 @@
-import React, {Fragment, useState, useEffect} from 'react';
+import React, {Fragment, useState, useEffect, useCallback} from 'react';
 import {NavLink} from 'react-router-dom';
 import {Container, Dropdown, Label, Icon, Menu} from 'semantic-ui-react';
 import axios from 'axios';
@@ -11,7 +11,7 @@ export const Header = () => {
   const [user, setUser] = useState();
   const [loggedIn, setLoggedIn] = useState(user !== undefined);
 
-  const getProfile = () => {
+  const getProfile = useCallback(() => {
     const token = localStorage.getItem('accessToken');
 
     if (!token) {
@@ -28,11 +28,11 @@ export const Header = () => {
           setUser(resp.data);
         });
     }
-  };
+  }, []);
 
   useEffect(() => {
     getProfile();
-  }, []);
+  }, [getProfile]);
 
   return (
     <Menu attached="top" size="large">
