@@ -33,7 +33,7 @@ const Service = ({item}) => {
       <List.Content floated="right">
         {updateServiceLoading && <Loader active inline size="tiny" />}
         {updateServiceError && (
-          <Message header="Error" content={updateServiceError} />
+          <Message header="Error" content={updateServiceError.message} />
         )}
         <Radio
           toggle

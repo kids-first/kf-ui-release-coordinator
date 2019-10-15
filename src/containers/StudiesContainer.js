@@ -25,7 +25,7 @@ const StudiesContainer = props => {
   };
 
   if (studiesError) {
-    return <Message negative header="Error" content={studiesError} />;
+    return <Message negative header="Error" content={studiesError.message} />;
   }
   if (studiesLoading) {
     return (
