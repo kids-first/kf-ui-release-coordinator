@@ -1,7 +1,7 @@
 import React from 'react';
 import {useQuery} from '@apollo/react-hooks';
 import {Link} from 'react-router-dom';
-import {Button, Card, Segment, Image} from 'semantic-ui-react';
+import {Button, Card, Header, Icon, Segment} from 'semantic-ui-react';
 import ServiceList from '../components/ServiceList';
 import Events from '../components/Events';
 import LatestPublish from '../components/LatestPublish';
@@ -61,13 +61,14 @@ const Status = () => {
 
       <Card.Group itemsPerRow={3}>
         <Card>
-          <Image src="https://images.unsplash.com/photo-1520500807606-4ac9ae633574?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60" />
           <Card.Content>
-            <Card.Header>Register a Task Service</Card.Header>
-            <Card.Description>
-              Task Services follow a common HTTP API spec to process work for a
-              release. Register an API endpoint for a task service below.
-            </Card.Description>
+            <Header icon>
+              <Icon name="settings" />
+              Register a Task Service
+              <Header.Subheader>
+                Register an API endpoint for a new task service.
+              </Header.Subheader>
+            </Header>
           </Card.Content>
           <Card.Content extra textAlign="center">
             <Link to="/service/new">
@@ -77,13 +78,15 @@ const Status = () => {
         </Card>
 
         <Card>
-          <Image src="https://images.unsplash.com/photo-1490724500206-cd5482e02b9e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60" />
           <Card.Content>
-            <Card.Header>Plan a Release</Card.Header>
-            <Card.Description>
-              Select studies to be released and submit for review and
-              processing.
-            </Card.Description>
+            <Header icon>
+              <Icon name="calendar outline" />
+              Plan a Release
+              <Header.Subheader>
+                Select studies to be released and submit for review and
+                processing.
+              </Header.Subheader>
+            </Header>
           </Card.Content>
           <Card.Content extra textAlign="center">
             <Link to="/planner">
@@ -93,12 +96,14 @@ const Status = () => {
         </Card>
 
         <Card>
-          <Image src="https://images.unsplash.com/photo-1506784881475-0e408bbca849?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60" />
           <Card.Content>
-            <Card.Header>View Past Releases</Card.Header>
-            <Card.Description>
-              View a history and status of past releases.
-            </Card.Description>
+            <Header icon>
+              <Icon name="tag" />
+              View Past Releases
+              <Header.Subheader>
+                View a history and status of past releases.
+              </Header.Subheader>
+            </Header>
           </Card.Content>
           <Card.Content extra textAlign="center">
             <Link to="/releases">
