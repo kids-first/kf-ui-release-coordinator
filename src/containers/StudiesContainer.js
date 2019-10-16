@@ -1,4 +1,4 @@
-import React, {useState, Fragment} from 'react';
+import React, {useState} from 'react';
 import {useQuery, useMutation} from '@apollo/react-hooks';
 import {Button, Icon, Loader, Message} from 'semantic-ui-react';
 import StudiesTable from '../components/StudiesTable';
@@ -36,25 +36,27 @@ const StudiesContainer = props => {
   }
 
   return (
-    <Fragment>
-      <Button
-        onClick={() =>
-          syncStudies().then(resp => {
-            const created = resp.data.syncStudies.new.edges.length;
-            const deleted = resp.data.syncStudies.deleted.edges.length;
-            setSyncMessage(
-              `${created} new studies found, ${deleted} studies deleted`,
-            );
-          })
-        }
-        disabled={syncStudiesLoading}
-        primary
-        icon
-        labelPosition="left"
-      >
-        <Icon name="refresh" />
-        Sync
-      </Button>
+    <>
+      {!props.hideSync && (
+        <Button
+          onClick={() =>
+            syncStudies().then(resp => {
+              const created = resp.data.syncStudies.new.edges.length;
+              const deleted = resp.data.syncStudies.deleted.edges.length;
+              setSyncMessage(
+                `${created} new studies found, ${deleted} studies deleted`,
+              );
+            })
+          }
+          disabled={syncStudiesLoading}
+          primary
+          icon
+          labelPosition="left"
+        >
+          <Icon name="refresh" />
+          Sync
+        </Button>
+      )}
       {syncStudiesError && (
         <Message negative content={syncStudiesError.message} />
       )}
@@ -69,7 +71,7 @@ const StudiesContainer = props => {
         selectable={props.selectable}
         defaultPageSize={props.defaultPageSize}
       />
-    </Fragment>
+    </>
   );
 };
 
