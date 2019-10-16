@@ -19,7 +19,11 @@ const Services = props => {
         <Grid columns={2} doubling>
           <Grid.Row>
             <Grid.Column width={12}>
-              <Header as="h2">Kids First Release Task Services</Header>
+              <Header
+                as="h2"
+                icon="settings"
+                content="Kids First Release Task Services"
+              />
             </Grid.Column>
             <Grid.Column width={4} textAlign="right">
               <Button

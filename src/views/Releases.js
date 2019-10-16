@@ -27,6 +27,7 @@ const Releases = props => {
             <Grid.Column width={12}>
               <Header
                 as="h2"
+                icon="tag"
                 content="Kids First Data Releases"
                 subheader="A list of all releases created within Kids First"
               />

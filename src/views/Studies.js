@@ -21,6 +21,7 @@ const Studies = () => {
             <Grid.Column width={12}>
               <Header
                 as="h2"
+                icon="database"
                 content="Kids First Studies"
                 subheader="All studies that the coordinator is aware of. New studies in the Data Service may require synchronizing"
               />
