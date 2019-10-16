@@ -5,7 +5,7 @@ import NewReleaseForm from '../forms/NewReleaseForm';
 const Planner = () => (
   <>
     <Segment vertical>
-      <Header as="h2">Plan a New Release</Header>
+      <Header as="h2" icon="calendar outline" content="Plan a New Release" />
     </Segment>
     <Segment vertical>
       <NewReleaseForm />
