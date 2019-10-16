@@ -2,7 +2,6 @@ import React from 'react';
 import {useQuery} from '@apollo/react-hooks';
 import {
   Segment,
-  Card,
   Feed,
   Header,
   Icon,
@@ -67,29 +66,28 @@ const Study = props => {
   );
 
   return (
-    <Segment basic>
-      <Card fluid>
-        <Card.Content>
-          <Header as="h2">{study.name}</Header>
-          <Label color="pink">
-            <Icon name="database" />
-            {study.kfId}
+    <>
+      <Segment basic secondary>
+        <Header as="h2">{study.name}</Header>
+        <Label basic>
+          <Icon name="database" />
+          {study.kfId}
+        </Label>
+        Latest Version:
+        {!study.releases.edges ? (
+          <Label color="orange">
+            <Icon name="tag" />
+            {study.releases.edges[0].node.version}
           </Label>
-          Latest Version:
-          {!study.releases.edges ? (
-            <Label color="orange">
-              <Icon name="tag" />
-              {study.releases.edges[0].node.version}
-            </Label>
-          ) : (
-            <span> No releases yet</span>
-          )}
-          <hr />
-          <Header as="h2">Release Timeline</Header>
-          <Feed>{releases}</Feed>
-        </Card.Content>
-      </Card>
-    </Segment>
+        ) : (
+          <span> No releases yet</span>
+        )}
+      </Segment>
+      <Segment vertical>
+        <Header as="h2">Release Timeline</Header>
+        <Feed>{releases}</Feed>
+      </Segment>
+    </>
   );
 };
 

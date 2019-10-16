@@ -1,22 +1,16 @@
-import React, {Component} from 'react';
-import {Segment, Card, Header} from 'semantic-ui-react';
+import React from 'react';
+import {Segment, Header} from 'semantic-ui-react';
 import NewReleaseForm from '../forms/NewReleaseForm';
 
-class Planner extends Component {
-  render() {
-    return (
-      <Segment basic>
-        <Card fluid>
-          <Card.Content>
-            <Header as="h2">Plan a New Release</Header>
-          </Card.Content>
-          <Card.Content>
-            <NewReleaseForm />
-          </Card.Content>
-        </Card>
-      </Segment>
-    );
-  }
-}
+const Planner = () => (
+  <>
+    <Segment vertical>
+      <Header as="h2">Plan a New Release</Header>
+    </Segment>
+    <Segment vertical>
+      <NewReleaseForm />
+    </Segment>
+  </>
+);
 
 export default Planner;
