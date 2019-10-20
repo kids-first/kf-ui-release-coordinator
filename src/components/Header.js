@@ -1,11 +1,12 @@
 import React, {Fragment} from 'react';
 import {useQuery} from '@apollo/react-hooks';
 import {NavLink} from 'react-router-dom';
-import {Container, Dropdown, Label, Icon, Menu} from 'semantic-ui-react';
+import {Container, Dropdown, Icon, Image, Menu} from 'semantic-ui-react';
 
 import {MY_PROFILE} from '../queries';
 
 import logo from '../logo.svg';
+import defaultAvatar from '../assets/defaultAvatar.png';
 
 const Nav = props => <NavLink exact {...props} activeClassName="active" />;
 
@@ -21,6 +22,9 @@ export const Header = () => {
   if (profileError) {
     console.log(profileError);
   }
+
+  const picUrl = profile && profile.picture ? profile.picture : defaultAvatar;
+  const picAlt = profile && profile.username ? profile.username : 'profile';
 
   return (
     <Menu attached="top" size="large">
@@ -46,28 +50,18 @@ export const Header = () => {
             <Menu.Menu position="right">
               <Dropdown
                 trigger={
-                  <Fragment>
-                    <Icon circular name="user" />
+                  <>
+                    <Image avatar src={picUrl} alt={picAlt} />
                     {profile.username}
-                  </Fragment>
+                  </>
                 }
                 className="link item"
               >
                 <Dropdown.Menu>
-                  <Dropdown.Header>
-                    {profile.roles.map((role, i) => (
-                      <Label basic key={i} color="blue">
-                        {role}
-                      </Label>
-                    ))}
-                  </Dropdown.Header>
-                  <Dropdown.Header>
-                    {profile.groups.map((group, i) => (
-                      <Label basic key={i} color="green">
-                        {group}
-                      </Label>
-                    ))}
-                  </Dropdown.Header>
+                  <Dropdown.Item as={Nav} to="/profile">
+                    <Icon name="user" />
+                    Profile
+                  </Dropdown.Item>
                   <Dropdown.Item
                     as={Nav}
                     to="/login"

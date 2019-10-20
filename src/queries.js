@@ -213,6 +213,8 @@ export const MY_PROFILE = gql`
       picture
       slackNotify
       slackMemberId
+      firstName
+      lastName
     }
   }
 `;
