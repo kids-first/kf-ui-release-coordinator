@@ -1,38 +1,26 @@
-import React, {Fragment, useState, useEffect, useCallback} from 'react';
+import React, {Fragment} from 'react';
+import {useQuery} from '@apollo/react-hooks';
 import {NavLink} from 'react-router-dom';
 import {Container, Dropdown, Label, Icon, Menu} from 'semantic-ui-react';
-import axios from 'axios';
+
+import {MY_PROFILE} from '../queries';
 
 import logo from '../logo.svg';
 
 const Nav = props => <NavLink exact {...props} activeClassName="active" />;
 
 export const Header = () => {
-  const [user, setUser] = useState();
-  const [loggedIn, setLoggedIn] = useState(user !== undefined);
+  const {
+    loading: profileLoading,
+    error: profileError,
+    data: profileData,
+  } = useQuery(MY_PROFILE);
 
-  const getProfile = useCallback(() => {
-    const token = localStorage.getItem('accessToken');
+  const profile = profileData && profileData.myProfile;
 
-    if (!token) {
-      // Bit of a hack because the header may render before there is a token
-      // in localStorage.
-      setTimeout(getProfile, 1000);
-    } else {
-      axios
-        .get('https://kids-first.auth0.com/userinfo', {
-          headers: {Authorization: 'Bearer ' + token},
-        })
-        .then(resp => {
-          setLoggedIn(true);
-          setUser(resp.data);
-        });
-    }
-  }, []);
-
-  useEffect(() => {
-    getProfile();
-  }, [getProfile]);
+  if (profileError) {
+    console.log(profileError);
+  }
 
   return (
     <Menu attached="top" size="large">
@@ -47,7 +35,7 @@ export const Header = () => {
         <Menu.Item header as={NavLink} to="/" activeClassName="">
           Release Coordinator
         </Menu.Item>
-        {loggedIn && user && (
+        {profile && !profileLoading && !profileError && (
           <Fragment>
             <Menu.Item as={Nav} to="/" content="Status" />
             <Menu.Item as={Nav} to="/planner" content="Planner" />
@@ -60,23 +48,23 @@ export const Header = () => {
                 trigger={
                   <Fragment>
                     <Icon circular name="user" />
-                    {user.nickname}
+                    {profile.username}
                   </Fragment>
                 }
                 className="link item"
               >
                 <Dropdown.Menu>
                   <Dropdown.Header>
-                    {user['https://kidsfirstdrc.org/roles'].map((role, i) => (
+                    {profile.roles.map((role, i) => (
                       <Label basic key={i} color="blue">
                         {role}
                       </Label>
                     ))}
                   </Dropdown.Header>
                   <Dropdown.Header>
-                    {user['https://kidsfirstdrc.org/groups'].map((role, i) => (
+                    {profile.groups.map((group, i) => (
                       <Label basic key={i} color="green">
-                        {role}
+                        {group}
                       </Label>
                     ))}
                   </Dropdown.Header>
@@ -84,7 +72,6 @@ export const Header = () => {
                     as={Nav}
                     to="/login"
                     onClick={() => {
-                      setLoggedIn(false);
                       localStorage.removeItem('accessToken');
                       localStorage.removeItem('idToken');
                       localStorage.removeItem('egoToken');
