@@ -1,38 +1,30 @@
-import React, {Fragment, useState, useEffect, useCallback} from 'react';
+import React, {Fragment} from 'react';
+import {useQuery} from '@apollo/react-hooks';
 import {NavLink} from 'react-router-dom';
-import {Container, Dropdown, Label, Icon, Menu} from 'semantic-ui-react';
-import axios from 'axios';
+import {Container, Dropdown, Icon, Image, Menu} from 'semantic-ui-react';
+
+import {MY_PROFILE} from '../queries';
 
 import logo from '../logo.svg';
+import defaultAvatar from '../assets/defaultAvatar.png';
 
 const Nav = props => <NavLink exact {...props} activeClassName="active" />;
 
 export const Header = () => {
-  const [user, setUser] = useState();
-  const [loggedIn, setLoggedIn] = useState(user !== undefined);
+  const {
+    loading: profileLoading,
+    error: profileError,
+    data: profileData,
+  } = useQuery(MY_PROFILE);
 
-  const getProfile = useCallback(() => {
-    const token = localStorage.getItem('accessToken');
+  const profile = profileData && profileData.myProfile;
 
-    if (!token) {
-      // Bit of a hack because the header may render before there is a token
-      // in localStorage.
-      setTimeout(getProfile, 1000);
-    } else {
-      axios
-        .get('https://kids-first.auth0.com/userinfo', {
-          headers: {Authorization: 'Bearer ' + token},
-        })
-        .then(resp => {
-          setLoggedIn(true);
-          setUser(resp.data);
-        });
-    }
-  }, []);
+  if (profileError) {
+    console.log(profileError);
+  }
 
-  useEffect(() => {
-    getProfile();
-  }, [getProfile]);
+  const picUrl = profile && profile.picture ? profile.picture : defaultAvatar;
+  const picAlt = profile && profile.username ? profile.username : 'profile';
 
   return (
     <Menu attached="top" size="large">
@@ -47,7 +39,7 @@ export const Header = () => {
         <Menu.Item header as={NavLink} to="/" activeClassName="">
           Release Coordinator
         </Menu.Item>
-        {loggedIn && user && (
+        {profile && !profileLoading && !profileError && (
           <Fragment>
             <Menu.Item as={Nav} to="/" content="Status" />
             <Menu.Item as={Nav} to="/planner" content="Planner" />
@@ -58,33 +50,22 @@ export const Header = () => {
             <Menu.Menu position="right">
               <Dropdown
                 trigger={
-                  <Fragment>
-                    <Icon circular name="user" />
-                    {user.nickname}
-                  </Fragment>
+                  <>
+                    <Image avatar src={picUrl} alt={picAlt} />
+                    {profile.username}
+                  </>
                 }
                 className="link item"
               >
                 <Dropdown.Menu>
-                  <Dropdown.Header>
-                    {user['https://kidsfirstdrc.org/roles'].map((role, i) => (
-                      <Label basic key={i} color="blue">
-                        {role}
-                      </Label>
-                    ))}
-                  </Dropdown.Header>
-                  <Dropdown.Header>
-                    {user['https://kidsfirstdrc.org/groups'].map((role, i) => (
-                      <Label basic key={i} color="green">
-                        {role}
-                      </Label>
-                    ))}
-                  </Dropdown.Header>
+                  <Dropdown.Item as={Nav} to="/profile">
+                    <Icon name="user" />
+                    Profile
+                  </Dropdown.Item>
                   <Dropdown.Item
                     as={Nav}
                     to="/login"
                     onClick={() => {
-                      setLoggedIn(false);
                       localStorage.removeItem('accessToken');
                       localStorage.removeItem('idToken');
                       localStorage.removeItem('egoToken');

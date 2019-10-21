@@ -201,3 +201,20 @@ export const ALL_TASKS = gql`
     }
   }
 `;
+
+export const MY_PROFILE = gql`
+  query profile {
+    myProfile {
+      id
+      username
+      email
+      roles
+      groups
+      picture
+      slackNotify
+      slackMemberId
+      firstName
+      lastName
+    }
+  }
+`;

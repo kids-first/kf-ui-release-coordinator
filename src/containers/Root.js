@@ -4,6 +4,7 @@ import HeaderContainer from '../containers/HeaderContainer';
 import Login from '../views/Login';
 import Status from '../views/Status';
 import Planner from '../views/Planner';
+import Profile from '../views/Profile';
 import Release from '../views/Release';
 import Releases from '../views/Releases';
 import Studies from '../views/Studies';
@@ -39,6 +40,7 @@ const Root = props => (
           }}
         />
         <AdminRoute exact path="/" component={Status} />
+        <AdminRoute path="/profile" component={Profile} />
         <AdminRoute path="/planner" component={Planner} />
         <AdminRoute exact path="/releases" component={Releases} />
         <AdminRoute exact path="/releases/:releaseId" component={Release} />
