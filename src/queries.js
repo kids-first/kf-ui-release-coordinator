@@ -161,6 +161,7 @@ export const ALL_SERVICES = gql`
           enabled
           url
           author
+          healthStatus
         }
       }
     }
