@@ -7,7 +7,7 @@ import {ALL_TASKS} from '../queries';
 const TaskList = props => {
   const {loading: tasksLoading, error: tasksError, data: tasksData} = useQuery(
     ALL_TASKS,
-    {variables: {first: 10}},
+    {variables: {first: 10, release: props.releaseId}},
   );
 
   const tasks = tasksData && tasksData.allTasks.edges;

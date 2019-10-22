@@ -184,8 +184,8 @@ export const GET_SERVICE = gql`
 `;
 
 export const ALL_TASKS = gql`
-  query AllTasks($first: Int) {
-    allTasks(first: $first) {
+  query AllTasks($first: Int, $release: String) {
+    allTasks(first: $first, release: $release) {
       edges {
         node {
           id
