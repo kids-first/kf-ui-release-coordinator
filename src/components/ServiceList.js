@@ -43,7 +43,7 @@ const Service = ({item}) => {
           onChange={ev => toggle()}
         />
       </List.Content>
-      {service.health_status === 'ok' ? (
+      {service.healthStatus === 'ok' ? (
         <Icon name="check" size="large" color="green" />
       ) : (
         <Icon name="close" size="large" color="red" />

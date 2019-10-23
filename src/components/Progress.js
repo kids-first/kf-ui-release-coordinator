@@ -66,6 +66,11 @@ const Progress = props => {
         'The release was canceled due to a request from the user or a problem during the release process',
       color: 'red',
     },
+    failed: {
+      header: 'The release failed',
+      content: 'A task in the release has failed',
+      color: 'red',
+    },
   };
 
   return (
