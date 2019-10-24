@@ -36,11 +36,7 @@ export const GET_RELEASE = gql`
 
 export const ALL_RELEASES = gql`
   query AllReleases($first: Int, $state: String) {
-    allReleases(
-      first: $first
-      state: $state
-      orderBy: "-created_at"
-    ) {
+    allReleases(first: $first, state: $state, orderBy: "-created_at") {
       edges {
         node {
           id
@@ -124,8 +120,8 @@ export const ALL_NOTES = gql`
 `;
 
 export const ALL_EVENTS = gql`
-  query AllEvents($release: ID) {
-    allEvents(release: $release, orderBy: "-created_at") {
+  query AllEvents($release: ID, $first: Int) {
+    allEvents(release: $release, orderBy: "-created_at", first: $first) {
       edges {
         node {
           id
@@ -134,10 +130,12 @@ export const ALL_EVENTS = gql`
           release {
             id
             kfId
+            name
           }
           taskService {
             id
             kfId
+            name
           }
           task {
             id

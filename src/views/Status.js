@@ -12,6 +12,7 @@ import {ALL_EVENTS, ALL_RELEASES, ALL_SERVICES} from '../queries';
 const Status = () => {
   const {loading: eventsLoading, error: eventsError, data: events} = useQuery(
     ALL_EVENTS,
+    {variables: {first: 10}},
   );
 
   const {
