@@ -1,42 +1,62 @@
 import React from 'react';
-import {Feed, Icon, Label} from 'semantic-ui-react';
+import TimeAgo from 'react-timeago';
+import {Link} from 'react-router-dom';
+import {Table, Icon, Popup} from 'semantic-ui-react';
 
 const Events = ({events, loading, error}) => {
   if (error) return <div>Error Loading Events</div>;
   if (loading || !events) return <div>Loading Events...</div>;
 
   return (
-    <Feed>
-      {events.map(({node}, i) => (
-        <Feed.Event key={i}>
-          <Feed.Content>
-            <Feed.Extra text>{node.message}</Feed.Extra>
-            <Label.Group>
+    <Table striped compact basic="very">
+      <Table.Body>
+        {events.map(({node}, i) => (
+          <Table.Row key={i}>
+            <Table.Cell>
               {node.release && (
-                <Label basic>
-                  <Icon name="tag" /> {node.release.kfId}
-                </Label>
+                <Popup
+                  content={node.release.name}
+                  trigger={
+                    <Link to={`/releases/${node.release.kfId}`}>
+                      <Icon name="tag" />
+                    </Link>
+                  }
+                  position="top center"
+                />
               )}
+            </Table.Cell>
+            <Table.Cell>
               {node.taskService && (
-                <Label basic>
-                  <Icon name="settings" /> {node.taskService.kfId}
-                </Label>
+                <Popup
+                  content={node.taskService.name}
+                  trigger={
+                    <Link to={`/services/${node.taskService.kfId}`}>
+                      <Icon name="settings" />
+                    </Link>
+                  }
+                  position="top center"
+                />
               )}
+            </Table.Cell>
+            <Table.Cell>
               {node.task && (
-                <Label basic>
-                  <Icon name="calendar check" /> {node.task.kfId}
-                </Label>
+                <Popup
+                  content={node.task.kfId}
+                  trigger={<Icon name="calendar outline" />}
+                  position="top center"
+                />
               )}
-            </Label.Group>
-            <Feed.Summary>
-              <Feed.Date>
-                {new Date(node.createdAt).toLocaleString('en-US')}
-              </Feed.Date>
-            </Feed.Summary>
-          </Feed.Content>
-        </Feed.Event>
-      ))}
-    </Feed>
+            </Table.Cell>
+            <Table.Cell>
+              <TimeAgo
+                date={new Date(node.createdAt).toLocaleString('en-US')}
+              />
+            </Table.Cell>
+            <Table.Cell>{node.message}</Table.Cell>
+          </Table.Row>
+        ))}
+      </Table.Body>
+    </Table>
   );
 };
 
