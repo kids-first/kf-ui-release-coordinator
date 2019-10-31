@@ -33,7 +33,7 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.2.0",
     "react-timeago": "^4.4.0",
-    "semantic-ui-react": "^0.87.1",
+    "semantic-ui-react": "^0.88.1",
     "semver": "^6.3.0",
     "victory": "^30.5.0"
   },
