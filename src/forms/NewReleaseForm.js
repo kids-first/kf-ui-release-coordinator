@@ -1,6 +1,6 @@
 import React, {Fragment, useState} from 'react';
 import {useMutation, useQuery} from '@apollo/react-hooks';
-import {withRouter} from 'react-router-dom';
+import {withRouter, Link} from 'react-router-dom';
 import {Formik, Field} from 'formik';
 import {
   Button,
@@ -9,6 +9,7 @@ import {
   Form,
   Icon,
   Label,
+  List,
   Message,
   Modal,
 } from 'semantic-ui-react';
@@ -16,7 +17,7 @@ import StudiesContainer from '../containers/StudiesContainer';
 import ServiceList from '../components/ServiceList';
 
 import {START_RELEASE} from '../mutations';
-import {ALL_SERVICES} from '../queries';
+import {ALL_SERVICES, ALL_STUDIES} from '../queries';
 
 const SemanticField = ({component, ...fieldProps}) => (
   <Field
@@ -51,6 +52,14 @@ const SemanticField = ({component, ...fieldProps}) => (
 const NewReleaseForm = props => {
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [release, setRelease] = useState({});
+
+  const {data: studiesData} = useQuery(ALL_STUDIES);
+
+  const studyEdges = studiesData ? studiesData.allStudies.edges : [];
+  const studyById = studyEdges.reduce((acc, {node}, i) => {
+    acc[node.id] = node;
+    return acc;
+  }, {});
 
   const [
     startRelease,
@@ -216,14 +225,16 @@ const NewReleaseForm = props => {
             These studies will be staged for review. This will not affect any
             public facing data until it is reviewed and published.
             {release.studies && (
-              <Label.Group>
+              <List bulleted>
                 {release.studies.map(sd => (
-                  <Label basic key={sd}>
-                    <Icon name="database" />
-                    {sd}
-                  </Label>
+                  <List.Item key={sd}>
+                    <Link to={`/studies/${studyById[sd].kfId}`}>
+                      {studyById[sd].kfId}
+                    </Link>{' '}
+                    - {studyById[sd].name}
+                  </List.Item>
                 ))}
-              </Label.Group>
+              </List>
             )}
             {startReleaseError && (
               <Message
