@@ -47,6 +47,7 @@ export const ALL_RELEASES = gql`
           createdAt
           isMajor
           description
+          author
         }
       }
     }
