@@ -41,7 +41,7 @@ const Service = ({match}) => {
     loading: eventsLoading,
     error: eventsError,
     data: eventsData,
-  } = useQuery(ALL_EVENTS, {variables: {id: relayId}});
+  } = useQuery(ALL_EVENTS, {variables: {taskService: relayId, first: 10}});
 
   const service = serviceData && serviceData.taskService;
 

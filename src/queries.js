@@ -47,6 +47,7 @@ export const ALL_RELEASES = gql`
           createdAt
           isMajor
           description
+          author
         }
       }
     }
@@ -120,8 +121,13 @@ export const ALL_NOTES = gql`
 `;
 
 export const ALL_EVENTS = gql`
-  query AllEvents($release: ID, $first: Int) {
-    allEvents(release: $release, orderBy: "-created_at", first: $first) {
+  query AllEvents($release: ID, $first: Int, $taskService: ID) {
+    allEvents(
+      release: $release
+      taskService: $taskService
+      orderBy: "-created_at"
+      first: $first
+    ) {
       edges {
         node {
           id
