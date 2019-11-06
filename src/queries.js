@@ -223,3 +223,13 @@ export const MY_PROFILE = gql`
     }
   }
 `;
+
+export const STATUS = gql`
+  query Status {
+    status {
+      name
+      version
+      commit
+    }
+  }
+`;
