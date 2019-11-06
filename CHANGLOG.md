@@ -1,3 +1,32 @@
+# Kids First Release Coordinator UI Release 1.7.0
+
+## Features
+
+Refactor to use the GraphQL api.
+
+### Summary
+
+Feature Emojis: 🐛x5 💄x4 ✨x3 ⬆️x1 ♻️x1
+Feature Labels: [refactor](https://api.github.com/repos/kids-first/kf-ui-release-coordinator/labels/refactor) x6 [bug](https://api.github.com/repos/kids-first/kf-ui-release-coordinator/labels/bug) x5 [feature](https://api.github.com/repos/kids-first/kf-ui-release-coordinator/labels/feature) x4
+
+### New features and changes
+
+- (#173) ✨ Add api status to header - @dankolbman
+- (#172) 🐛 Fix queries - @dankolbman
+- (#170) 🐛 List studies by name when confirming release - @dankolbman
+- (#171) ⬆️ Upgrade dependencies - @dankolbman
+- (#169) 💄 Restyle event logs - @dankolbman
+- (#168) ✨ Add git version and hash to header - @dankolbman
+- (#166) 🐛 Filter task list by release - @dankolbman
+- (#167) 🐛 Correct missing values - @dankolbman
+- (#165) ✨ Add myProfile query - @dankolbman
+- (#163) 💄 Page icons - @dankolbman
+- (#164) 🐛 Study sync - @dankolbman
+- (#162) 💄 Remove use of cards as layout elements - @dankolbman
+- (#161) 💄 Release view refactor - @dankolbman
+- (#160) ♻️ Replace REST api with GraphQL api - @dankolbman
+
+
 # Kids First Release Coordinator UI Release 1.6.0
 
 ## Features
