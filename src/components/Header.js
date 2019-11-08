@@ -1,7 +1,14 @@
 import React, {Fragment} from 'react';
 import {useQuery} from '@apollo/react-hooks';
 import {NavLink} from 'react-router-dom';
-import {Container, Dropdown, Icon, Image, Menu} from 'semantic-ui-react';
+import {
+  Container,
+  Dropdown,
+  Icon,
+  Image,
+  Menu,
+  Loader,
+} from 'semantic-ui-react';
 
 import {MY_PROFILE} from '../queries';
 
@@ -39,14 +46,14 @@ export const Header = () => {
         <Menu.Item header as={NavLink} to="/" activeClassName="">
           Release Coordinator
         </Menu.Item>
-        {profile && !profileLoading && !profileError && (
-          <Fragment>
-            <Menu.Item as={Nav} to="/" content="Status" />
-            <Menu.Item as={Nav} to="/planner" content="Planner" />
-            <Menu.Item as={Nav} to="/releases" content="Releases" />
-            <Menu.Item as={Nav} to="/studies" content="Studies" />
-            <Menu.Item as={Nav} to="/services" content="Services" />
+        <Fragment>
+          <Menu.Item as={Nav} to="/" content="Status" />
+          <Menu.Item as={Nav} to="/planner" content="Planner" />
+          <Menu.Item as={Nav} to="/releases" content="Releases" />
+          <Menu.Item as={Nav} to="/studies" content="Studies" />
+          <Menu.Item as={Nav} to="/services" content="Services" />
 
+          {profile && !profileLoading && !profileError ? (
             <Menu.Menu position="right">
               <Dropdown
                 trigger={
@@ -80,8 +87,10 @@ export const Header = () => {
                 </Dropdown.Menu>
               </Dropdown>
             </Menu.Menu>
-          </Fragment>
-        )}
+          ) : (
+            <Loader />
+          )}
+        </Fragment>
       </Container>
     </Menu>
   );
