@@ -1,14 +1,7 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useEffect} from 'react';
 import {useQuery} from '@apollo/react-hooks';
 import {NavLink} from 'react-router-dom';
-import {
-  Container,
-  Dropdown,
-  Icon,
-  Image,
-  Menu,
-  Loader,
-} from 'semantic-ui-react';
+import {Container, Dropdown, Icon, Image, Menu} from 'semantic-ui-react';
 
 import {MY_PROFILE} from '../queries';
 
@@ -22,12 +15,24 @@ export const Header = () => {
     loading: profileLoading,
     error: profileError,
     data: profileData,
+    refetch: profileRefetch,
   } = useQuery(MY_PROFILE);
+
+  useEffect(() => {
+    // Refetch the profile if it failed to load due to firing before the
+    // access token was available
+    const timer = setTimeout(() => {
+      if (!profileLoading && profileError && !profileData) {
+        setTimeout(profileRefetch, 500);
+      }
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [profileLoading, profileError, profileData, profileRefetch]);
 
   const profile = profileData && profileData.myProfile;
 
   if (profileError) {
-    console.log(profileError);
+    // console.log(profileError);
   }
 
   const picUrl = profile && profile.picture ? profile.picture : defaultAvatar;
@@ -53,8 +58,8 @@ export const Header = () => {
           <Menu.Item as={Nav} to="/studies" content="Studies" />
           <Menu.Item as={Nav} to="/services" content="Services" />
 
-          {profile && !profileLoading && !profileError ? (
-            <Menu.Menu position="right">
+          <Menu.Menu position="right">
+            {profile && !profileLoading && !profileError ? (
               <Dropdown
                 trigger={
                   <>
@@ -86,10 +91,13 @@ export const Header = () => {
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
-            </Menu.Menu>
-          ) : (
-            <Loader />
-          )}
+            ) : (
+              <Menu.Item>
+                <Icon name="user" />
+                <Icon name="spinner" loading />
+              </Menu.Item>
+            )}
+          </Menu.Menu>
         </Fragment>
       </Container>
     </Menu>
