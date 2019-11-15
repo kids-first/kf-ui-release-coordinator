@@ -124,21 +124,6 @@ const Release = ({user, history, match}) => {
     }
   });
 
-  const studyNotes =
-    notes &&
-    notes.allNotes &&
-    notes.allNotes.edges.length > 0 &&
-    notes.allNotes.edges.map(({node}) => {
-      return (
-        <StudyNotes
-          key={node.kfId}
-          notes={notes}
-          studyId={node.study.kfId}
-          releaseId={release.kfId}
-        />
-      );
-    });
-
   return (
     <>
       <ReleaseHeader release={release} loading={releaseLoading} />
@@ -189,11 +174,9 @@ const Release = ({user, history, match}) => {
       <Segment vertical>
         <Header>Release Notes</Header>
         <MarkdownEditor
-          type="release"
-          releaseId={release.kfId}
+          releaseId={release.id}
           description={release.description}
         />
-        {studyNotes}
       </Segment>
 
       <Segment vertical>
@@ -211,68 +194,5 @@ const Release = ({user, history, match}) => {
     </>
   );
 };
-
-/**
- * Grouping of notes for a single study
- **/
-const StudyNotes = ({notes, studyId, releaseId}) => {
-  // If no notes, only offer option for a new note
-  if (!notes) {
-    return (
-      <div>
-        <hr />
-        <h3>Notes for {studyId}</h3>
-        <StudyNote
-          type="release-note"
-          studyId={studyId}
-          releaseId={releaseId}
-        />
-      </div>
-    );
-  }
-  const studyNotes = notes.map((note, i) => (
-    <article key={i}>
-      <em>
-        Note by {note.author} <TimeAgo date={note.createdAt} />
-      </em>
-      <hr />
-      <StudyNote
-        key={i}
-        type="release-note"
-        author={note.author}
-        createdAt={note.createdAt}
-        studyId={note.studyId}
-        releaseId={note.releaseId}
-        description={note.description}
-        noteId={note.kfId}
-      />
-    </article>
-  ));
-
-  return (
-    <div>
-      <hr />
-      <h3>Notes for {studyId}</h3>
-      {studyNotes}
-
-      <StudyNote type="release-note" studyId={studyId} releaseId={releaseId} />
-    </div>
-  );
-};
-
-/**
- * A single study note
- **/
-const StudyNote = ({releaseId, studyId, noteId, description}) => (
-  <div>
-    <MarkdownEditor
-      type="release-note"
-      releaseId={releaseId}
-      studyId={studyId}
-      noteId={noteId}
-      description={description}
-    />
-  </div>
-);
 
 export default withRouter(Release);
