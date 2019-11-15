@@ -7,11 +7,7 @@ import {commitHash, lastVersion, syslevel} from '../globalConfig';
 
 import {STATUS} from '../queries';
 
-const HeaderContainer = ({...props}) => {
-  const profile = {
-    username: props.userName,
-  };
-
+const HeaderContainer = props => {
   const colors = {
     local: 'orange',
     dev: 'yellow',
@@ -31,7 +27,7 @@ const HeaderContainer = ({...props}) => {
 
   return (
     <Fragment>
-      <Header profile={profile} />
+      <Header />
       <Segment vertical secondary basic style={{padding: '0.4em 1em'}}>
         <Container>
           <List horizontal>
