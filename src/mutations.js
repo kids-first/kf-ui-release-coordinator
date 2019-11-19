@@ -200,3 +200,34 @@ export const UPDATE_RELEASE = gql`
     }
   }
 `;
+
+export const CREATE_RELEASE_NOTE = gql`
+  mutation CreateReleaseNote($input: ReleaseNoteInput!) {
+    createReleaseNote(input: $input) {
+      releaseNote {
+        id
+      }
+    }
+  }
+`;
+
+export const UPDATE_RELEASE_NOTE = gql`
+  mutation UpdateReleaseNote(
+    $input: UpdateReleaseNoteInput!
+    $releaseNote: ID!
+  ) {
+    updateReleaseNote(input: $input, releaseNote: $releaseNote) {
+      releaseNote {
+        id
+      }
+    }
+  }
+`;
+
+export const REMOVE_RELEASE_NOTE = gql`
+  mutation RemoveReleaseNote($releaseNote: ID!) {
+    removeReleaseNote(releaseNote: $releaseNote) {
+      success
+    }
+  }
+`;
