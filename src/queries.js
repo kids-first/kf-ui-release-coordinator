@@ -114,6 +114,9 @@ export const ALL_NOTES = gql`
           kfId
           description
           createdAt
+          study {
+            id
+          }
         }
       }
     }

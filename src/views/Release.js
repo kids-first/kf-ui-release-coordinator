@@ -1,6 +1,6 @@
 import React from 'react';
 import {useQuery} from '@apollo/react-hooks';
-import {withRouter, Link} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 import {
   Button,
   Dimmer,
@@ -9,10 +9,8 @@ import {
   Icon,
   Message,
   Segment,
-  List,
   Loader,
 } from 'semantic-ui-react';
-import TimeAgo from 'react-timeago';
 import Progress from '../components/Progress';
 import TaskList from '../components/TaskList';
 import Events from '../components/Events';
@@ -21,6 +19,7 @@ import ReleaseTimeline from '../components/ReleaseTimeline';
 import MarkdownEditor from '../components/MarkdownEditor';
 import ReleaseActions from '../components/ReleaseActions';
 import ReleaseReportSummary from '../components/ReleaseReportSummary';
+import ReleaseNotes from '../components/ReleaseNotes';
 import paragraph from '../paragraph.png';
 
 import {GET_RELEASE, ALL_NOTES, ALL_EVENTS} from '../queries';
@@ -113,17 +112,6 @@ const Release = ({user, history, match}) => {
     style.marginBottom = '4px';
   }
 
-  const notesByStudy = new Map();
-  release.notes.edges.forEach(({node}) => {
-    const key = node.study.slice(-11);
-    const collection = notesByStudy.get(key);
-    if (!collection) {
-      notesByStudy.set(key, [node]);
-    } else {
-      collection.push(node);
-    }
-  });
-
   return (
     <>
       <ReleaseHeader release={release} loading={releaseLoading} />
@@ -154,28 +142,19 @@ const Release = ({user, history, match}) => {
       )}
 
       <Segment vertical>
-        <Header>Studies in this Release</Header>
-        <List divided relaxed>
-          {release.studies.edges.map(({node}) => (
-            <List.Item key={node.kfId}>
-              <List.Icon name="database" size="large" verticalAlign="middle" />
-              <List.Content>
-                <Link to={`/studies/${node.kfId}`}>{node.kfId}</Link> -{' '}
-                {node.name}
-                <List.Description>
-                  Created <TimeAgo date={node.createdAt} />
-                </List.Description>
-              </List.Content>
-            </List.Item>
-          ))}
-        </List>
-      </Segment>
-
-      <Segment vertical>
-        <Header>Release Notes</Header>
+        <Header>Release Description</Header>
         <MarkdownEditor
           releaseId={release.id}
           description={release.description}
+        />
+      </Segment>
+
+      <Segment vertical>
+        <Header>Studies in this Release</Header>
+        <ReleaseNotes
+          release={release}
+          studies={release.studies}
+          releaseId={release.id}
         />
       </Segment>
 
