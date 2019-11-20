@@ -48,6 +48,27 @@ export const ALL_RELEASES = gql`
           isMajor
           description
           author
+          studies {
+            edges {
+              node {
+                id
+                kfId
+                name
+                createdAt
+              }
+            }
+          }
+          notes {
+            edges {
+              node {
+                id
+                description
+                study {
+                  id
+                }
+              }
+            }
+          }
         }
       }
     }
