@@ -55,6 +55,7 @@ export const Header = () => {
           <Menu.Item as={Nav} to="/" content="Status" />
           <Menu.Item as={Nav} to="/planner" content="Planner" />
           <Menu.Item as={Nav} to="/releases" content="Releases" />
+          <Menu.Item as={Nav} to="/release-notes" content="Release Notes" />
           <Menu.Item as={Nav} to="/studies" content="Studies" />
           <Menu.Item as={Nav} to="/services" content="Services" />
 
