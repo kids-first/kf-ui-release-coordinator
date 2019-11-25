@@ -1,3 +1,22 @@
+# Kids First Release Coordinator UI Release 1.8.0
+
+## Features
+
+Add release notes view and fix release description editor.
+
+### Summary
+
+Feature Emojis: ✨x3 🐛x1
+Feature Labels: [feature](https://api.github.com/repos/kids-first/kf-ui-release-coordinator/labels/feature) x2 [refactor](https://api.github.com/repos/kids-first/kf-ui-release-coordinator/labels/refactor) x1 [bug](https://api.github.com/repos/kids-first/kf-ui-release-coordinator/labels/bug) x1
+
+### New features and changes
+
+- (#181) ✨ Add release notes page listing out all published releases' notes - @XuTheBunny
+- (#180) ✨ Add release notes component to release page - @XuTheBunny
+- (#179) ✨ Use GraphQL mutation to update release description markdown - @XuTheBunny
+- (#175) 🐛 Reload new profile sign-ins - @dankolbman
+
+
 # Kids First Release Coordinator UI Release 1.7.0
 
 ## Features
