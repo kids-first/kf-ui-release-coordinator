@@ -1,4 +1,4 @@
-compareSemVer = (a, b) => {
+export const compareSemVer = (a, b) => {
   console.log(a);
   if (a === b) {
     return 0;
@@ -35,4 +35,29 @@ compareSemVer = (a, b) => {
   return 0;
 };
 
-export default compareSemVer;
+export const longDate = date => {
+  var mydate = new Date(date);
+  var month = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sept',
+    'Oct',
+    'Nov',
+    'Dec',
+  ][mydate.getMonth()];
+  var str = mydate.getUTCDate() + ' ' + month + ' ' + mydate.getFullYear();
+  return str;
+};
+
+export const numDate = date => {
+  var mydate = new Date(date);
+  var str =
+    mydate.getMonth() + '/' + mydate.getUTCDate() + '/' + mydate.getFullYear();
+  return str;
+};

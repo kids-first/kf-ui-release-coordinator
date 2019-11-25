@@ -7,7 +7,7 @@ import {
   UPDATE_RELEASE_NOTE,
   REMOVE_RELEASE_NOTE,
 } from '../mutations';
-import {ALL_NOTES} from '../queries';
+import {ALL_NOTES, GET_RELEASE} from '../queries';
 import {
   Button,
   Icon,
@@ -33,13 +33,23 @@ import '../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
  * Adding a new note will POST it to /release-notes and store the newly
  * assigned kfId. Future changes to the note will PATCH the existing kfId.
  **/
-const MarkdownEditor = ({releaseId, studyId, releaseNodeId, description}) => {
+const MarkdownEditor = ({
+  releaseId,
+  studyId,
+  releaseNodeId,
+  description,
+  onSave,
+}) => {
   const [updateRelease] = useMutation(UPDATE_RELEASE);
   const [createReleaseNote] = useMutation(CREATE_RELEASE_NOTE, {
     refetchQueries: [
       {
         query: ALL_NOTES,
         variables: {release: releaseId, study: studyId},
+      },
+      {
+        query: GET_RELEASE,
+        variables: {id: releaseId},
       },
     ],
   });
@@ -49,6 +59,10 @@ const MarkdownEditor = ({releaseId, studyId, releaseNodeId, description}) => {
         query: ALL_NOTES,
         variables: {release: releaseId, study: studyId},
       },
+      {
+        query: GET_RELEASE,
+        variables: {id: releaseId},
+      },
     ],
   });
   const [removeReleaseNote] = useMutation(REMOVE_RELEASE_NOTE, {
@@ -56,6 +70,10 @@ const MarkdownEditor = ({releaseId, studyId, releaseNodeId, description}) => {
       {
         query: ALL_NOTES,
         variables: {release: releaseId, study: studyId},
+      },
+      {
+        query: GET_RELEASE,
+        variables: {id: releaseId},
       },
     ],
   });
@@ -70,7 +88,8 @@ const MarkdownEditor = ({releaseId, studyId, releaseNodeId, description}) => {
     overflow: 'auto',
     resize: 'vertical',
   };
-  const [editing, setEditing] = useState(false);
+
+  const [editing, setEditing] = useState(onSave !== undefined);
   const [error, setError] = useState(null);
   const [editorState, setEditorState] = useState(
     EditorState.createWithContent(
@@ -131,6 +150,7 @@ const MarkdownEditor = ({releaseId, studyId, releaseNodeId, description}) => {
         });
     }
     setEditing(false);
+    onSave && onSave();
   };
 
   return (
@@ -198,7 +218,12 @@ const MarkdownEditor = ({releaseId, studyId, releaseNodeId, description}) => {
             />
           </Segment>
           <Segment basic clearing className="noMargin noPadding">
-            <Button floated="right" onClick={() => setEditing(false)}>
+            <Button
+              floated="right"
+              onClick={() => {
+                onSave ? onSave() : setEditing(false);
+              }}
+            >
               Cancel
             </Button>
             <Button floated="right" primary onClick={() => saveDescription()}>
@@ -246,6 +271,11 @@ const MarkdownEditor = ({releaseId, studyId, releaseNodeId, description}) => {
                                 releaseNote: releaseNodeId,
                               },
                             });
+                            setEditorState(
+                              EditorState.createWithContent(
+                                ContentState.createFromText(''),
+                              ),
+                            );
                           }}
                         />
                       </>

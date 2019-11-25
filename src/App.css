@@ -5,3 +5,11 @@
 .noPadding {
   padding: 0px !important;
 }
+
+.text-blue {
+  color: #4183c4 !important;
+}
+
+.pl-25 {
+  padding-left: 25px;
+}

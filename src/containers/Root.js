@@ -7,6 +7,7 @@ import Planner from '../views/Planner';
 import Profile from '../views/Profile';
 import Release from '../views/Release';
 import Releases from '../views/Releases';
+import ReleaseNotes from '../views/ReleaseNotes';
 import Studies from '../views/Studies';
 import Study from '../views/Study';
 import Services from '../views/Services';
@@ -43,6 +44,7 @@ const Root = props => (
         <AdminRoute path="/profile" component={Profile} />
         <AdminRoute path="/planner" component={Planner} />
         <AdminRoute exact path="/releases" component={Releases} />
+        <AdminRoute exact path="/release-notes" component={ReleaseNotes} />
         <AdminRoute exact path="/releases/:releaseId" component={Release} />
         <AdminRoute exact path="/studies" component={Studies} />
         <AdminRoute exact path="/studies/:studyId" component={Study} />
