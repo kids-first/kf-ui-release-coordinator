@@ -57,7 +57,7 @@ export const longDate = date => {
 
 export const numDate = date => {
   var mydate = new Date(date);
-  var str =
-    mydate.getMonth() + '/' + mydate.getUTCDate() + '/' + mydate.getFullYear();
+  const month = mydate.getMonth() + 1;
+  var str = month + '/' + mydate.getUTCDate() + '/' + mydate.getFullYear();
   return str;
 };
