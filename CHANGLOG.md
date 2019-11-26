@@ -1,3 +1,19 @@
+# Kids First Release Coordinator UI Release 1.8.1
+
+## Features
+
+Hotfix for devops scripts.
+
+### Summary
+
+Feature Emojis: 👷♂️x1
+Feature Labels: [devops](https://api.github.com/repos/kids-first/kf-ui-release-coordinator/labels/devops) x1
+
+### New features and changes
+
+- (#183) 👷♂️ Add agent label - @dankolbman
+
+
 # Kids First Release Coordinator UI Release 1.8.0
 
 ## Features
