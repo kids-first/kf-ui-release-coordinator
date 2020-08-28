@@ -12,7 +12,7 @@ ecs_service_existing_alb {
     entrypoint_command         = "nginx"
     quick_deploy               = "true"
     container_port             = "80"
-    health_check_path          = "/dashboard/"
+    health_check_path          = "/"
     external_config_repo       = "false"
     internal_app               = "false"
     dev_cidr                   = "0.0.0.0/0"
