@@ -1,8 +1,7 @@
 @Library(value='kids-first/aws-infra-jenkins-shared-libraries', changelog=false) _
 ecs_service_existing_alb {
     projectName                = "kf-ui-release-coordinator"
-    ecs_service_type_1_version = "feature/changed-to-entrypoint"
-    deploy_scripts_version     = "master"
+    deploy_scripts_version     = "feautre/nginx"
     host_based_routing         = "1"
     alb_name                   = "kf-api-release-coordinator"
     orgFullName                = "kids-first"
@@ -10,7 +9,7 @@ ecs_service_existing_alb {
     build_environments         = "dev,qa,prd"
     docker_image_type          = "debian"
     create_default_iam_role    = "1"
-    entrypoint_command         = "nginx -g daemon off"
+    entrypoint_command         = "nginx"
     quick_deploy               = "true"
     container_port             = "80"
     health_check_path          = "/dashboard/"
