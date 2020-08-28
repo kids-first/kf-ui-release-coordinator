@@ -9,7 +9,7 @@ ecs_service_existing_alb {
     build_environments         = "dev,qa,prd"
     docker_image_type          = "debian"
     create_default_iam_role    = "1"
-    entrypoint_command         = "nginx"
+    entrypoint_command         = "nginx -g 'daemon off;'"
     quick_deploy               = "true"
     container_port             = "80"
     health_check_path          = "/dashboard/"
