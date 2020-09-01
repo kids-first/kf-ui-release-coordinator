@@ -1,7 +1,6 @@
 @Library(value='kids-first/aws-infra-jenkins-shared-libraries', changelog=false) _
 ecs_service_existing_alb {
     projectName                = "kf-ui-release-coordinator"
-    deploy_scripts_version     = "feautre/nginx"
     host_based_routing         = "1"
     alb_name                   = "kf-api-release-coordinator"
     orgFullName                = "kids-first"
