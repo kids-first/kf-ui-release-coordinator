@@ -9,13 +9,8 @@
   REACT_APP_REPORTS_API = "https://kf-task-release-reports.kidsfirstdrc.org"
   REACT_APP_EGO_API = "https://ego-dev.kids-first.io"
 
-
 [context.master]
   command = "yarn build"
-
-[context.master.environment]
-  REACT_APP_ENV = "qa"
-
 
 [context.deploy-preview]
   publish = "build/"
@@ -30,8 +25,10 @@
   command = "REACT_APP_AUTH0_REDIRECT_URI=$DEPLOY_PRIME_URL/callback REACT_APP_AUTH0_LOGOUT_REDIRECT_URI=$DEPLOY_PRIME_URL/logout yarn build"
 
 [context.branch-deploy.environment]
-  REACT_APP_ENV = "dev"
-  REACT_APP_COORDINATOR_API = "https://kf-release-coord-dev.kidsfirstdrc.org"
+  REACT_APP_ENV = "qa"
+  REACT_APP_COORDINATOR_API = "https://kf-release-coord-qa.kidsfirstdrc.org"
+  REACT_APP_REPORTS_API = "https://kf-task-release-reports-qa.kidsfirstdrc.org"
+  REACT_APP_EGO_API = "https://ego-qa.kids-first.io"
 
 [[redirects]]
   from = "/*"
