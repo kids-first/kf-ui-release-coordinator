@@ -5,6 +5,9 @@
   REACT_APP_ENV = "prd"
   REACT_APP_AUTH0_REDIRECT_URI = "https://coordinator.kidsfirstdrc.org/callback"
   REACT_APP_AUTH0_LOGOUT_URI = "https://coordinator.kidsfirstdrc.org/logout"
+  REACT_APP_COORDINATOR_API = "https://kf-release-coord.kidsfirstdrc.org"
+  REACT_APP_REPORTS_API = "https://kf-task-release-reports.kidsfirstdrc.org"
+  REACT_APP_EGO_API = "https://ego-dev.kids-first.io"
 
 
 [context.master]
@@ -12,10 +15,6 @@
 
 [context.master.environment]
   REACT_APP_ENV = "qa"
-  REACT_APP_AUTH0_REDIRECT_URI = "https://kf-release-coordinator-netlify.kidsfirstdrc.org/callback"
-  REACT_APP_COORDINATOR_API = "https://kf-release-coord-qa.kidsfirstdrc.org"
-  REACT_APP_REPORTS_API = "https://kf-task-release-reports-qa.kidsfirstdrc.org"
-  REACT_APP_EGO_API = "https://ego-dev.kids-first.io"
 
 
 [context.deploy-preview]
