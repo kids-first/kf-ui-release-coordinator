@@ -40,7 +40,7 @@ jobs:
 
       - run: yarn install
       - run: yarn add netlify-cli
-      - run: ./node_modules/.bin/netlify build --context=production
+      - run: ./node_modules/.bin/netlify build --context=awsprod
       - aws-static-site-deploy/copy-site:
           access-key: AWS_ACCESS_KEY_ID
           secret-key: AWS_SECRET_ACCESS_KEY
