@@ -1,5 +1,17 @@
 # Release Coordinator Change History
 
+## Release 1.8.3
+
+### Summary
+
+- Emojis: 🐛 x1
+- Categories: Fixes x1
+
+### New features and changes
+
+- [#197](https://github.com/kids-first/kf-ui-release-coordinator/pull/197) - 🐛 Remove qa environment variables - [f1076df7](https://github.com/kids-first/kf-ui-release-coordinator/commit/f1076df7f1e4adc0419bd46aa9790064cd647707) by [dankolbman](https://github.com/dankolbman)
+
+
 ## Release 1.8.2
 
 ### Summary
