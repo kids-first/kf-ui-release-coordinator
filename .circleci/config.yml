@@ -1,8 +1,8 @@
-version: 2
+version: 2.1
 jobs:
   build:
     docker:
-      - image: circleci/node:10.15
+      - image: circleci/node:11
 
     working_directory: ~/repo
 
@@ -12,9 +12,9 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+            - v1-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
 
       - run: yarn
 
@@ -22,8 +22,45 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-        
+
       - run: yarn build
       - run: |
           yarn add -D bundlesize
           yarn run bundlesize
+  production:
+    docker:
+      - image: circleci/node:11
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - run: yarn install
+      - run: yarn add netlify-cli
+      - run: ./node_modules/.bin/netlify build --context=production
+      - aws-static-site-deploy/copy-site:
+          access-key: AWS_ACCESS_KEY_ID
+          secret-key: AWS_SECRET_ACCESS_KEY
+          to: $S3_BUCKET
+          from: build
+          distribution-id: $CLOUDFRONT_DISTRIBUTION
+
+orbs:
+  aws-static-site-deploy: realself/aws-static-site-deploy@1.0.1
+
+workflows:
+  version: 2
+  tests:
+    jobs:
+      - build
+  production:
+    jobs:
+      - production:
+          filters:
+            tags:
+              only: /^([0-9]+)\.([0-9]+)\.([0-9]+)$/
+            branches:
+              ignore: /.*/
