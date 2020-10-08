@@ -22,10 +22,11 @@
 
 [context.branch-deploy]
   publish = "build/"
-  command = "REACT_APP_AUTH0_REDIRECT_URI=$DEPLOY_PRIME_URL/callback REACT_APP_AUTH0_LOGOUT_REDIRECT_URI=$DEPLOY_PRIME_URL/logout yarn build"
 
 [context.branch-deploy.environment]
   REACT_APP_ENV = "qa"
+  REACT_APP_AUTH0_REDIRECT_URI = "https://kf-ui-release-coordinator-qa.kidsfirstdrc.org/callback"
+  REACT_APP_AUTH0_LOGOUT_URI = "https://kf-ui-release-coordinator-qa.kidsfirstdrc.org/logout"
   REACT_APP_COORDINATOR_API = "https://kf-release-coord-qa.kidsfirstdrc.org"
   REACT_APP_REPORTS_API = "https://kf-task-release-reports-qa.kidsfirstdrc.org"
   REACT_APP_EGO_API = "https://ego-qa.kids-first.io"
