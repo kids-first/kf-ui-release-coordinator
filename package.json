@@ -27,7 +27,7 @@
     "react": "^16.10.2",
     "react-app-rewired": "^2.0.0",
     "react-dom": "^16.10.2",
-    "react-draft-wysiwyg": "^1.12.13",
+    "react-draft-wysiwyg": "^1.14.6",
     "react-markdown": "^3.4.1",
     "react-progress-steps": "^0.0.8",
     "react-router-dom": "^5.1.2",
